@@ -1,3 +1,13 @@
+/*
+  This code is a working file used for everyday references.
+  
+  This code demonstrates how to create Transactions inside SQL and output an error that would be useful for developers.
+  
+  The following code demonstrates SQL interpretations used in SQL Azure 2016.
+  
+  This is not a copy of any current implementation of any company.
+*/
+
 BEGIN TRY  
     Begin Transaction SaveChanges;
     
