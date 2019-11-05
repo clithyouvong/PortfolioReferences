@@ -1,4 +1,12 @@
-
+  
+/*
+  This code demonstrates a AJAX call to a Server object using Javascript Ecmascript 5 and Jquery.
+ 
+  This implementation is a stripped down version of a current implementation and should be considered 'gibberish' 
+  when out of context. 
+  
+  This code is intended to be used as a 'copy and paste reference' when developing new systems and should be used as 'baseline'
+*/
 
 
         <%-- ----------------------------------
@@ -22,8 +30,6 @@
             $(labelObj).hide();
             $(sender).hide();
 
-            var courseCatId2 = $('someid').val();
-            var is2017AttendanceMode2 = $('someid').val();
             var classId2 = $('someid').val();
             var courseId2 = $(sender).parent().parent().find('input[type=hidden][id*=gcCourseId]').val();
             if (courseId2 == undefined) courseId2 = $('someid').val();
@@ -33,13 +39,7 @@
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify({
-                    addTableTag: true,
-                    isHeaderMode: false,
-                    addViaHeaderTag: false,
-                    mode: mode,
                     courseId: courseId2,
-                    courseCatId: courseCatId2,
-                    is2017AttendanceMode: is2017AttendanceMode2,
                     classId: classId2
                 }),
                 dataType: "json",
@@ -127,24 +127,16 @@
 
         ---------------------------------- --%>
         function AddAnotherSelectSection(mode, sender, stringvalue = "", showPlusButton = false) {
-            var courseCatId2 = $('someid').val();
-            var is2017AttendanceMode2 = $('someid').val();
             var classId2 = $('someid').val();
             var courseId2 = $(sender).parent().parent().parent().parent().parent().parent().find('input[type=hidden][id*=gcCourseId]').val();
             if (courseId2 == undefined) courseId2 = $('someid').val();
 
             $.ajax({
-                url: "ClassAttendance.aspx/GetNewTableRowForSelctions",
+                url: "someurl.aspx/GetNewTableRowForSelctions",
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify({
-                    addTableTag: false,
-                    isHeaderMode: false,
-                    addViaHeaderTag: (stringvalue === "all"),
-                    mode: mode,
                     courseId: courseId2,
-                    courseCatId: courseCatId2,
-                    is2017AttendanceMode: is2017AttendanceMode2,
                     classId: classId2
                 }),
                 dataType: "json",
