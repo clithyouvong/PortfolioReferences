@@ -1,4 +1,25 @@
+/*
+  This is the Questionnaire System used to edit Questionnaire Course or Project level groupping.
+  
+  The following code demonstrates a typical implementation of the front-end code done in C# ASP.NET 4.5 Webforms and Twitter Bootstrap 3
+  
+  This is not a copy of any current implementation of any company but rather a demonstration of how things 
+  were initially scaffolded during the design phrase.
 
+  
+  Order of Implementation:
+    - References
+    - Any inline CSS
+    - Heading Section
+    - Search Criteria
+    - Controls Criteria
+    - Main Content Criteria
+    - Popup / Views Criteria
+    - Any inline Scripts
+    
+  Dependencies:
+    - Company Specific User Controls
+*/
 
 
 <%@ Page Title="" Language="C#" MasterPageFile="~/bst-Web.master" AutoEventWireup="true" CodeFile="QECourse.aspx.cs" Inherits="ServicesQECourse" ValidateRequest="false"  %>
