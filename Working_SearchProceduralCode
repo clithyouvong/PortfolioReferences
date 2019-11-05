@@ -1,0 +1,12 @@
+/*
+  This code is a working file used for everyday references.
+  
+  This code searches SQL to identify any Procedure, View, Trigger, or Function based on Text. 
+*/
+
+SELECT DISTINCT
+       o.name AS Object_Name,
+       o.type_desc
+FROM   sys.sql_modules m
+       INNER JOIN sys.objects o ON m.object_id = o.object_id
+WHERE  m.definition Like '%[something]%' ESCAPE '\'
