@@ -1,3 +1,12 @@
+/*
+  The following is to be used for reference only. 
+  
+  The following implementation is not used in any implemenation for any company. 
+  
+  The following is written in C# 
+  
+  The following returns an int representing an Excel Column
+*/
 
     /// <summary>
     /// A -> 1<br/>
