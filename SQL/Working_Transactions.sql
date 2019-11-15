@@ -8,12 +8,12 @@
   This is not a copy of any current implementation of any company.
 */
 
-Begin Transaction [SaveChanges];
+Begin Transaction;
 BEGIN TRY  
     
     /* Do Work */
 
-    Commit Transaction [SaveChanges]; 
+    Commit Transaction; 
 END TRY  
 BEGIN CATCH  
     Declare @SaveChangesWarning nvarchar(max) = 
@@ -31,10 +31,9 @@ BEGIN CATCH
 
     IF ( @@TRANCOUNT > 0 )
     Begin
-      Rollback Transaction [SaveChanges];
+      Rollback Transaction;
+			Throw 51000, @SaveChangesWarning, 1; 
     End 
-
-    RAISERROR (@SaveChangesWarning , 16, 1);                                                              
-
+                                      
     Return;
 END CATCH
