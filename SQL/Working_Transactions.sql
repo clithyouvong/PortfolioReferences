@@ -7,6 +7,7 @@
   
   This is not a copy of any current implementation of any company.
 */
+Set XACT_ABORT ON;
 
 Begin Transaction;
 BEGIN TRY  
