@@ -1,0 +1,16 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3F5DD47B-6D26-4591-BC90-4FCD99A495A5}"
+	ProjectSection(SolutionItems) = preProject
+		mainWindow.html = mainWindow.html
+		main.js = main.js
+		package.json = package.json
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+	EndGlobalSection
+EndGlobal
