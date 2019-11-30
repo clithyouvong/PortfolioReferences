@@ -1,25 +1,4 @@
-﻿<Properties StartupConfiguration="{E4CEEEAF-EA8A-4583-BCF5-44D7F8DF9092}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="CourseLibraryAPI/Startup.cs">
-    <Files>
-      <File FileName="CourseLibraryAPI/Startup.cs" Line="11" Column="2" />
-    </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="CourseLibraryAPI" expanded="True">
-            <Node name="CourseLibraryAPI" expanded="True">
-              <Node name="Startup.cs" selected="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
-  </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.CourseLibraryAPI PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+﻿<Properties StartupConfiguration="{3CBB1BB4-7DA0-4841-9B36-B0DEA193471E}|Default">
+  <MonoDevelop.Ide.ItemProperties.CourseLibraryAPI FirstBuild="True" />
   <MultiItemStartupConfigurations />
 </Properties>
