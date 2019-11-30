@@ -1,28 +1,30 @@
 {
   "format": 1,
   "restore": {
-    "/Users/penguin/Documents/GitHub/PortfolioReferences/PluralSight/CourseLibraryAPI/CourseLibraryAPI/CourseLibraryAPI.csproj": {}
+    "\\\\Mac\\Home\\Documents\\GitHub\\PortfolioReferences\\PluralSight\\CourseLibraryAPI\\CourseLibraryAPI\\CourseLibraryAPI.csproj": {}
   },
   "projects": {
-    "/Users/penguin/Documents/GitHub/PortfolioReferences/PluralSight/CourseLibraryAPI/CourseLibraryAPI/CourseLibraryAPI.csproj": {
+    "\\\\Mac\\Home\\Documents\\GitHub\\PortfolioReferences\\PluralSight\\CourseLibraryAPI\\CourseLibraryAPI\\CourseLibraryAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/penguin/Documents/GitHub/PortfolioReferences/PluralSight/CourseLibraryAPI/CourseLibraryAPI/CourseLibraryAPI.csproj",
+        "projectUniqueName": "\\\\Mac\\Home\\Documents\\GitHub\\PortfolioReferences\\PluralSight\\CourseLibraryAPI\\CourseLibraryAPI\\CourseLibraryAPI.csproj",
         "projectName": "CourseLibraryAPI",
-        "projectPath": "/Users/penguin/Documents/GitHub/PortfolioReferences/PluralSight/CourseLibraryAPI/CourseLibraryAPI/CourseLibraryAPI.csproj",
-        "packagesPath": "/Users/penguin/.nuget/packages/",
-        "outputPath": "/Users/penguin/Documents/GitHub/PortfolioReferences/PluralSight/CourseLibraryAPI/CourseLibraryAPI/obj/",
+        "projectPath": "\\\\Mac\\Home\\Documents\\GitHub\\PortfolioReferences\\PluralSight\\CourseLibraryAPI\\CourseLibraryAPI\\CourseLibraryAPI.csproj",
+        "packagesPath": "C:\\Users\\penguin\\.nuget\\packages\\",
+        "outputPath": "\\\\Mac\\Home\\Documents\\GitHub\\PortfolioReferences\\PluralSight\\CourseLibraryAPI\\CourseLibraryAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "/Users/penguin/.config/NuGet/NuGet.Config"
+          "C:\\Users\\penguin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -72,7 +74,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.0.100/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

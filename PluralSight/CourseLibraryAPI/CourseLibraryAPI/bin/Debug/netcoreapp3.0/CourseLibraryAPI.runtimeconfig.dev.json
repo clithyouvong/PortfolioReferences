@@ -1,9 +1,9 @@
 {
   "runtimeOptions": {
     "additionalProbingPaths": [
-      "/Users/penguin/.dotnet/store/|arch|/|tfm|",
-      "/Users/penguin/.nuget/packages",
-      "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+      "C:\\Users\\penguin\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\penguin\\.nuget\\packages",
+      "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
     ]
   }
 }
