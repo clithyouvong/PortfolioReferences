@@ -10,10 +10,6 @@
   "scripts": {
     "start": "electron ."
   },
-  "repository": {
-    "type": "git",
-    "url": "https://neiep@dev.azure.com/neiep/NEIEP%20/Applications/_git/NEIEP%20Project%20Management2"
-  },
   "author": "Colby Lithyouvong",
   "license": "MIT"
 }
