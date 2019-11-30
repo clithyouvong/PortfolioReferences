@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/penguin/Projects/CourseLibraryAPI/CourseLibraryAPI/CourseLibraryAPI.csproj",
+      "projectUniqueName": "/Users/penguin/Documents/GitHub/PortfolioReferences/PluralSight/CourseLibraryAPI/CourseLibraryAPI/CourseLibraryAPI.csproj",
       "projectName": "CourseLibraryAPI",
-      "projectPath": "/Users/penguin/Projects/CourseLibraryAPI/CourseLibraryAPI/CourseLibraryAPI.csproj",
+      "projectPath": "/Users/penguin/Documents/GitHub/PortfolioReferences/PluralSight/CourseLibraryAPI/CourseLibraryAPI/CourseLibraryAPI.csproj",
       "packagesPath": "/Users/penguin/.nuget/packages/",
-      "outputPath": "/Users/penguin/Projects/CourseLibraryAPI/CourseLibraryAPI/obj/",
+      "outputPath": "/Users/penguin/Documents/GitHub/PortfolioReferences/PluralSight/CourseLibraryAPI/CourseLibraryAPI/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
