@@ -1,10 +1,16 @@
 ﻿<Properties StartupConfiguration="{3CBB1BB4-7DA0-4841-9B36-B0DEA193471E}|Default">
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="CourseLibraryAPI/Program.cs">
+    <Files>
+      <File FileName="CourseLibraryAPI/Startup.cs" Line="19" Column="1" />
+      <File FileName="CourseLibraryAPI/Program.cs" Line="10" Column="2" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="CourseLibraryAPI" expanded="True">
             <Node name="CourseLibraryAPI" expanded="True">
+              <Node name="DbContexts" expanded="True" />
+              <Node name="Entities" expanded="True" />
               <Node name="Properties" expanded="True" />
               <Node name="Program.cs" selected="True" />
             </Node>
