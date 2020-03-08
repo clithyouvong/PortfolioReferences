@@ -1,50 +1,33 @@
+
 /*
-  This is the timecard System used to simulate an online time tracking / management System.
+  This code is a working file used for everyday references.
+  
+  This code demonstrates a creation of a temporalized table and a reload/migration of data from 
+  an existing data structure. 
+  Results may vary based on company implementation.
   
   The following code demonstrates SQL interpretations used in SQL Azure 2016.
   
-  The Time Card system is designed to record a person's timecard in any given week. 
-    - The system will always create a Week worth of Data
-    - Each Type will also be created per Day
-  
-  Schema: Timecard
-  Architecture / Structure:
-    - Card
-        - Root object (Folder Like) Denoting the Start / End Date, the Final Status of the Time Card, and date Created / date Changed.
-    - Detail
-        - Hours Per Type Per Date with all the Date Flags of the Card Table
-    - Type
-        - The type of the Detail
-  
-  Possible Implementation:
-    - Detail
-        There is a possibility where instead of 'Date' Field in the Detail Table that there would be an Index to allow the data 
-        to be more Normalized. 
-    - Detail
-        Per Requirement, a record will be created in the detail table for each Day and Type combination for that given Card Date Range. 
-        There is a possible implementation where that doesn't need to happen. 
-    
-  Dependencies:
-    - Individual. This system assumes there is a centralized Identification Table that stores user information and referened by ID.
+  This is not a copy of any current implementation of any company.
 */
 
 
 Create Table TimeCard.[Card] (
 	CardId int Primary Key identity (1,1) not null,
-	IndividualId int Foreign Key References dbo.Individual(IndividualId) not null,
+	Id int Foreign Key References dbo.Id(Id) not null,
 	DateStart date not null,
 	DateEnd date not null,
 	[Status] nvarchar(50) not null default N'Pending',
 	DateCreated datetimeoffset(0) null default SYSDATETIMEOFFSET(),
-	DateCreatedBy int null Foreign Key References dbo.Individual(IndividualId),
+	DateCreatedBy int null Foreign Key References dbo.Id(Id),
 	DateUpdated datetimeoffset(0) null default SYSDATETIMEOFFSET(),
-	DateUpdatedBy int null Foreign Key References dbo.Individual(IndividualId),
+	DateUpdatedBy int null Foreign Key References dbo.Id(Id),
 	CardGuid uniqueidentifier null default newid(),
 	SysDateStart datetime2(3) GENERATED ALWAYS AS ROW START HIDDEN NOT NULL,
 	SysDateEnd datetime2(3) GENERATED ALWAYS AS ROW END HIDDEN NOT NULL,
 	Period For System_Time (SysDateStart, SysDateEnd),
 	Constraint [CK_Status]  Check ([Status] in ('Open', 'Submitted', 'Approved', 'Rejected', 'Paid')),
-	Constraint [UK_IndividualId-DateStart-DateEnd] Unique (IndividualId, DateStart, DateEnd)
+	Constraint [UK_Id-DateStart-DateEnd] Unique (Id, DateStart, DateEnd)
 ) with (System_Versioning = On (History_Table = TimeCard.[CardLog]));
 go
 
@@ -52,14 +35,14 @@ Create Table TimeCard.[DetailType] (
 	DetailTypeId int Primary Key identity (1,1) not null,
 	[Type] nvarchar(200) not null,
 	[Description] nvarchar(max) null default N'',
-	ADPCode nvarchar(50) null default N'',
+	Code nvarchar(50) null default N'',
 	AllowFull bit null default 0,
 	AllowHalf bit null default 0,
 	AllowHour bit null default 0, 
 	DateCreated datetimeoffset(0) null default SYSDATETIMEOFFSET(),
-	DateCreatedBy int null Foreign Key References dbo.Individual(IndividualId),
+	DateCreatedBy int null Foreign Key References dbo.Id(Id),
 	DateUpdated datetimeoffset(0) null default SYSDATETIMEOFFSET(),
-	DateUpdatedBy int null Foreign Key References dbo.Individual(IndividualId),
+	DateUpdatedBy int null Foreign Key References dbo.Id(Id),
 	SysDateStart datetime2(3) GENERATED ALWAYS AS ROW START HIDDEN NOT NULL,
 	SysDateEnd datetime2(3) GENERATED ALWAYS AS ROW END HIDDEN NOT NULL,
 	Period For System_Time (SysDateStart, SysDateEnd),
@@ -77,15 +60,15 @@ Create Table TimeCard.[Detail] (
 	[HoursTypeSeq] int not null,
 	AdjustmentNotes nvarchar(max) null default N'',
 	DateSubmitted datetimeoffset(0) null,
-	DateSubmittedBy int null Foreign Key References dbo.Individual(IndividualId),
+	DateSubmittedBy int null Foreign Key References dbo.Id(Id),
 	DateApproved datetimeoffset(0),
-	DateApprovedBy int null Foreign Key References dbo.Individual(IndividualId),
+	DateApprovedBy int null Foreign Key References dbo.Id(Id),
 	DatePaid datetimeoffset(0),
-	DatePaidBy int null Foreign Key References dbo.Individual(IndividualId),
+	DatePaidBy int null Foreign Key References dbo.Id(Id),
 	DateCreated datetimeoffset(0) null default SYSDATETIMEOFFSET(),
-	DateCreatedBy int null Foreign Key References dbo.Individual(IndividualId),
+	DateCreatedBy int null Foreign Key References dbo.Id(Id),
 	DateUpdated datetimeoffset(0) null default SYSDATETIMEOFFSET(),
-	DateUpdatedBy int null Foreign Key References dbo.Individual(IndividualId),
+	DateUpdatedBy int null Foreign Key References dbo.Id(Id),
 	SysDateStart datetime2(3) GENERATED ALWAYS AS ROW START HIDDEN NOT NULL,
 	SysDateEnd datetime2(3) GENERATED ALWAYS AS ROW END HIDDEN NOT NULL,
 	Period For System_Time (SysDateStart, SysDateEnd),
@@ -140,7 +123,7 @@ go
 Set Identity_Insert TimeCard.[Card] On;
 Insert into TimeCard.[Card] (
 	CardId,
-	IndividualId,
+	Id,
 	DateStart,
 	DateEnd,
 	[Status],
@@ -151,7 +134,7 @@ Insert into TimeCard.[Card] (
 	CardGuid
 )
 Select   t.TimeCardId,
-		 t.IndividualId,
+		 t.Id,
 		 t.DateStart,
 		 t.DateEnd,
 		 case 
@@ -164,7 +147,6 @@ Select   t.TimeCardId,
 		 t.DateUpdatedBy,
 		 t.TimeCardGuid
 From	 dbo.TimeCard t
-where	 t.TimeCardId not in (279, 763)
 order by t.TimeCardId;
 Set Identity_Insert TimeCard.[Card] Off;
 go
@@ -195,22 +177,9 @@ Select   t.TimeCardDetailId,
 		 t.TimeCardTypeId,
 		 t.TimeCardId,	
 		 t.[Date],
-		 convert(decimal(18,2), case 
-			when t.TimeCardDetailId = 21864 then 11.8
-			when t.TimeCardDetailId = 21851 then 8
-			when t.TimeCardDetailId = 21852 then 8
-			when t.TimeCardDetailId = 21853 then 8
-			when t.TimeCardDetailId = 21875 then 8
-			when t.TimeCardDetailId = 70230 then 14
-			when t.TimeCardDetailId = 70231 then 35
-			else t.[Hours]
-		 end),
+		 t.[Hours],
 		 t.[HoursType],
-		 case 
-			when t.timecarddetailid in (95622, 95623)		
-				then 2 
-				else 1 
-		 end,
+		 t.timecarddetailid,
 		 t.AdjustmentNotes,
 		 t.DateSubmitted,
 		 t.DateSubmittedBy,
@@ -223,11 +192,6 @@ Select   t.TimeCardDetailId,
 		 t.DateUpdated,
 		 t.DateUpdatedBy
 From	 dbo.TimeCardDetail t
-where	 t.TimeCardId not in (279, 763) and 
-		 t.TimeCardId in (
-			Select t2.CardId
-			From	TimeCard.Card t2
-		 )
 order by t.TimeCardDetailId;
 Set Identity_Insert TimeCard.Detail Off;
 go

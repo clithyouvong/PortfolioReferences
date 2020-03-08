@@ -1,22 +1,13 @@
+
 /*
-  This is the Standard Operating Procedures (SOP) System used to simulate a centralized repository for procedures using SQL as the backend controlling versioning.
+  This code is a working file used for everyday references.
+  
+  This code demonstrates a creation of a CRUD system without the use of Temporalized Tables.
+  Results may vary based on company implementation.
   
   The following code demonstrates SQL interpretations used in SQL Azure 2016.
   
-  This is not a copy of any current implementation of any company but rather a demonstration of how things 
-  were initially scaffolded during the design phrase.
-  
-  Schema: dbo
-  Architecture / Structure:
-    - SOPProcedure - represents the procedure
-    - SOPCategory - defines the procedure's characteristics
-    - SOPDocument - defines any files associated to a specific procedure
-  
-  Implementation:
-    - N/A
-    
-  Dependencies:
-    - N/A
+  This is not a copy of any current implementation of any company.
 */
 
 SET ANSI_NULLS ON
@@ -552,7 +543,7 @@ GO
 CREATE PROCEDURE [dbo].[SOPProcedure_Modify]
 (
 	@Mode nvarchar(50) null,
-	@PassportIndividualId int null,
+	@PIdId int null,
 
 	@ProcedureId int = null,
 	@Procedure nvarchar(max) = null,
@@ -646,9 +637,9 @@ BEGIN
 			@Body19,
 			@Body20,
 			GETDATE(),
-			@PassportIndividualId,
+			@PIdId,
 			GETDATE(),
-			@PassportIndividualId
+			@PIdId
 		)
 	End
 
@@ -684,7 +675,7 @@ BEGIN
 				[SOPProcedure].[Body19] = @Body19,
 				[SOPProcedure].[Body20] = @Body20,
 				[SOPProcedure].[DateUpdated] = GETDATE(),
-				[SOPProcedure].[DateUpdatedBy] = @PassportIndividualId
+				[SOPProcedure].[DateUpdatedBy] = @PIdId
 		Where	[SOPProcedure].[ProcedureId] = @ProcedureId
 	End
 
@@ -713,7 +704,7 @@ GO
 CREATE PROCEDURE [dbo].[SOPCategory_Modify]
 (
 	@Mode nvarchar(50) null,
-	@PassportIndividualId int null,
+	@PIdId int null,
 
 	@CategoryId int = null,
 	@ProcedureId int = null,
@@ -750,9 +741,9 @@ BEGIN
 			@Category,
 			@Status,
 			GETDATE(),
-			@PassportIndividualId,
+			@PIdId,
 			GETDATE(),
-			@PassportIndividualId
+			@PIdId
 		)
 	End
 
@@ -769,7 +760,7 @@ BEGIN
 				[SOPCategory].[Category] = @Category,
 				[SOPCategory].[Status] = @Status,
 				[SOPCategory].[DateUpdated] = GETDATE(),
-				[SOPCategory].[DateUpdatedBy] = @PassportIndividualId
+				[SOPCategory].[DateUpdatedBy] = @PIdId
 		Where	[SOPCategory].[CategoryId] = @CategoryId
 	End
 
@@ -797,7 +788,7 @@ GO
 CREATE PROCEDURE [dbo].[SOPDocument_Modify]
 (
 	@Mode nvarchar(50) null,
-	@PassportIndividualId int null,
+	@PIdId int null,
 
 	@DocumentId int = null,
 	@ProcedureId int = null,
@@ -840,9 +831,9 @@ BEGIN
 			@DocumentFileName,
 			@Status,
 			GETDATE(),
-			@PassportIndividualId,
+			@PIdId,
 			GETDATE(),
-			@PassportIndividualId
+			@PIdId
 		)
 	End
 
@@ -861,7 +852,7 @@ BEGIN
 				[SOPDocument].[DocumentFileName] = @DocumentFileName,
 				[SOPDocument].[Status] = @Status,
 				[SOPDocument].[DateUpdated] = GETDATE(),
-				[SOPDocument].[DateUpdatedBy] = @PassportIndividualId
+				[SOPDocument].[DateUpdatedBy] = @PIdId
 		Where	[SOPDocument].[DocumentId] = @DocumentId
 	End
 
@@ -889,7 +880,7 @@ GO
 CREATE PROCEDURE [dbo].[SOP_Editor]
 (
 	@Mode nvarchar(50) null,
-	@PassportIndividualId int null,
+	@PIdId int null,
 
 	@ProcedureId int = null,
 	@CategoryId int = null,

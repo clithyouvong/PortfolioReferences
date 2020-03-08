@@ -1,27 +1,13 @@
+
 /*
-  This is the Questionnaire System used to simulate an online Exam or Survey System.
+  This code is a working file used for everyday references.
+  
+  This code demonstrates a creation of a CRUD system with the use of Temporalized Tables.
+  Results may vary based on company implementation.
   
   The following code demonstrates SQL interpretations used in SQL Azure 2016.
   
-  This is not a copy of any current implementation of any company but rather a demonstration of how things 
-  were initially scaffolded during the design phrase.
-  
-  Schema: Questionnaire
-  Architecture / Structure:
-    - Course is the root defining a project level. This is used for grouping and establishing global variables.
-      - CourseType is an ajoining Table of Course. This holds properties of the Course.
-    - Section is a child of Course. This is the implementation level.
-    - Question is a child of Section. This is the content that is shown on each screen.
-      - QuestionType is an ajoining Table of Question. This holds properties of the Question.
-    - Answer is a child of Question. This is the content that is shown on each screen.
-  
-  Implementation:
-    - Exam is a root defining Table representing the implementation of the Questionnaire Architecture. 
-        Users interacting with this system create a reference here.
-    - ExamAnswer is a child of Exam. All interactions regarding this 'Exam' are recorded here
-    
-  Dependencies:
-    - Individual. This system assumes there is a centralized Identification Table that stores user information and referened by ID.
+  This is not a copy of any current implementation of any company.
 */
 
 
@@ -38,8 +24,8 @@ Create Table Questionnaire.CourseType (
 	Index [IX_QuestionnaireCourseType_CourseType] Nonclustered (CourseType),
 	Constraint [PK_QuestionnaireCourseType_CourseTypeId] Primary Key (CourseTypeId),
 	Constraint [UC_QuestionnaireCourseType_CourseType] Unique (CourseType),
-	Constraint [FK_QuestionnaireCourseType_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[Individual](IndividualId),
-	Constraint [FK_QuestionnaireCourseType_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[Individual](IndividualId)
+	Constraint [FK_QuestionnaireCourseType_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
+	Constraint [FK_QuestionnaireCourseType_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)
 )
 With (System_Versioning = On (History_Table = Questionnaire.CourseTypeLog))
 Go
@@ -69,8 +55,8 @@ Create Table Questionnaire.Course (
 	Constraint [PK_QuestionnaireCourse_CourseId] Primary Key (CourseId),
 	Constraint [UC_QuestionnaireCourse_Course] Unique (CourseTypeId, Course), 
 	Constraint [FK_QuestionnaireCourse_CourseTypeId] Foreign Key (CourseTypeId) References Questionnaire.CourseType(CourseTypeId),
-	Constraint [FK_QuestionnaireCourse_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[Individual](IndividualId),
-	Constraint [FK_QuestionnaireCourse_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[Individual](IndividualId)
+	Constraint [FK_QuestionnaireCourse_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
+	Constraint [FK_QuestionnaireCourse_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)
 )
 With (System_Versioning = On (History_Table = Questionnaire.CourseLog))
 Go
@@ -124,8 +110,8 @@ Create Table Questionnaire.Section (
 	Index [IX_QuestionnaireSection_Section] NonClustered (Section),
 	Constraint [PK_QuestionnaireSection_SectionId] Primary Key (SectionId),
 	Constraint [FK_QuestionnaireSection_CourseId] Foreign Key (CourseId) References Questionnaire.Course(CourseId),
-	Constraint [FK_QuestionnaireSection_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[Individual](IndividualId),
-	Constraint [FK_QuestionnaireSection_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[Individual](IndividualId)
+	Constraint [FK_QuestionnaireSection_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
+	Constraint [FK_QuestionnaireSection_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)
 )
 With (System_Versioning = On (History_Table = Questionnaire.SectionLog))
 Go
@@ -143,8 +129,8 @@ Create Table Questionnaire.QuestionType (
 	Index [IX_QuestionnaireQuestionType_QuestionType] NonClustered (QuestionType),
 	Constraint [UC_QuestionnaireQuestionType_QuestionType] Unique (QuestionType),
 	Constraint [PK_QuestionnaireQuestionType_QuestionTypeId] Primary Key (QuestionTypeId),
-	Constraint [FK_QuestionnaireQuestionType_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[Individual](IndividualId),
-	Constraint [FK_QuestionnaireQuestionType_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[Individual](IndividualId)
+	Constraint [FK_QuestionnaireQuestionType_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
+	Constraint [FK_QuestionnaireQuestionType_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)
 )
 With (System_Versioning = On (History_Table = Questionnaire.QuestionTypeLog))
 Go
@@ -180,8 +166,8 @@ Create Table Questionnaire.Question (
 	Period For System_Time(SysDateStart, SysDateEnd),
 	Constraint [FK_QuestionnaireQuestion_QuestionTypeId] Foreign Key (QuestionTypeId) References Questionnaire.QuestionType(QuestionTypeId),
 	Constraint [FK_QuestionnaireQuestion_SectionId] Foreign Key (SectionId) References Questionnaire.Section(SectionId),
-	Constraint [FK_QuestionnaireQuestion_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[Individual](IndividualId),
-	Constraint [FK_QuestionnaireQuestion_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[Individual](IndividualId)	
+	Constraint [FK_QuestionnaireQuestion_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
+	Constraint [FK_QuestionnaireQuestion_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)	
 )
 With (System_Versioning = On (History_Table = Questionnaire.QuestionLog))
 Go
@@ -213,8 +199,8 @@ Create Table Questionnaire.Answer (
 	Index [IX_QuesitonnaireAnswer_QuestionId] Nonclustered (QuestionId),
 	Constraint [PK_QuestionnaireAnswer_AnswerId] Primary Key (AnswerId),
 	Constraint [FK_QuestionnaireAnswer_QuestionId] Foreign Key (QuestionId) References Questionnaire.Question(QuestionId) ON DELETE CASCADE,
-	Constraint [FK_QuestionnaireAnswer_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[Individual](IndividualId),
-	Constraint [FK_QuestionnaireAnswer_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[Individual](IndividualId)
+	Constraint [FK_QuestionnaireAnswer_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
+	Constraint [FK_QuestionnaireAnswer_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)
 )
 With (System_Versioning = On (History_Table = Questionnaire.AnswerLog))
 Go
@@ -222,7 +208,7 @@ Go
 Create Table Questionnaire.Exam (
 	ExamId int Not Null Identity(1,1),
 	SectionId int Not Null,
-	IndividualId nvarchar(50) Not Null,
+	IId nvarchar(50) Not Null,
 	SessionId nvarchar(250) Not Null,
 	Score decimal(18,2) Null,
 	[Status] nvarchar(50) Null Default N'Open' Check ([Status] IN ('Open','Complete')),
@@ -247,11 +233,11 @@ Create Table Questionnaire.Exam (
 	SysDateStart datetime2(3) GENERATED ALWAYS AS ROW START HIDDEN Not Null,
 	SysDateEnd datetime2(3) GENERATED ALWAYS AS ROW END HIDDEN Not Null,
 	Period For System_Time(SysDateStart, SysDateEnd),
-	Index [IX_QuestionnaireExam_IndividualId] Nonclustered (IndividualId),
+	Index [IX_QuestionnaireExam_IId] Nonclustered (IId),
 	Constraint [PK_QuestionnaireExam_ExamId] Primary Key (ExamId),
 	Constraint [FK_QuestionnaireExam_SectionId] Foreign Key (SectionId) References Questionnaire.Section(SectionId),
-	Constraint [FK_QuestionnaireExam_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[Individual](IndividualId),
-	Constraint [FK_QuestionnaireExam_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[Individual](IndividualId)
+	Constraint [FK_QuestionnaireExam_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
+	Constraint [FK_QuestionnaireExam_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)
 )
 With (System_Versioning = On (History_Table = Questionnaire.ExamLog))
 Go
@@ -283,8 +269,8 @@ Create Table Questionnaire.ExamAnswer (
 	Constraint [FK_QuestionnaireExamAnswer_ExamId] Foreign Key (ExamId) References Questionnaire.Exam(ExamId) ON DELETE CASCADE,
 	Constraint [FK_QuestionnaireExamAnswer_QuestionId] Foreign Key (QuestionId) References Questionnaire.Question(QuestionId) ON DELETE CASCADE,
 	Constraint [FK_QuestionnaireExamAnswer_AnswerId] Foreign Key (AnswerId) References Questionnaire.Answer(AnswerId),
-	Constraint [FK_QuestionnaireExamAnswer_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[Individual](IndividualId),
-	Constraint [FK_QuestionnaireExamAnswer_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[Individual](IndividualId)
+	Constraint [FK_QuestionnaireExamAnswer_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
+	Constraint [FK_QuestionnaireExamAnswer_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)
 )
 With (System_Versioning = On (History_Table = Questionnaire.ExamAnswerLog))
 Go
