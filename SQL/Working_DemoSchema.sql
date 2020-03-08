@@ -11,7 +11,7 @@
 */
 
 
-Create Table Questionnaire.CourseType (
+Create Table Demo.CourseType (
 	CourseTypeId int Not Null Identity(1,1),
 	CourseType nvarchar(100) Not Null,
 	DateCreated datetimeoffset Null Default SYSDATETIMEOFFSET(),
@@ -21,16 +21,16 @@ Create Table Questionnaire.CourseType (
 	SysDateStart datetime2(3) GENERATED ALWAYS AS ROW START HIDDEN Not Null,
 	SysDateEnd datetime2(3) GENERATED ALWAYS AS ROW END HIDDEN Not Null,
 	Period For System_Time(SysDateStart, SysDateEnd),
-	Index [IX_QuestionnaireCourseType_CourseType] Nonclustered (CourseType),
-	Constraint [PK_QuestionnaireCourseType_CourseTypeId] Primary Key (CourseTypeId),
-	Constraint [UC_QuestionnaireCourseType_CourseType] Unique (CourseType),
-	Constraint [FK_QuestionnaireCourseType_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
-	Constraint [FK_QuestionnaireCourseType_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)
+	Index [IX_DemoCourseType_CourseType] Nonclustered (CourseType),
+	Constraint [PK_DemoCourseType_CourseTypeId] Primary Key (CourseTypeId),
+	Constraint [UC_DemoCourseType_CourseType] Unique (CourseType),
+	Constraint [FK_DemoCourseType_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
+	Constraint [FK_DemoCourseType_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)
 )
-With (System_Versioning = On (History_Table = Questionnaire.CourseTypeLog))
+With (System_Versioning = On (History_Table = Demo.CourseTypeLog))
 Go
 
-Create Table Questionnaire.Course (
+Create Table Demo.Course (
 	CourseId int Not Null Identity(1,1),
 	CourseTypeId int Not Null ,
 	Course nvarchar(500) Not Null,
@@ -50,19 +50,19 @@ Create Table Questionnaire.Course (
 	SysDateStart datetime2(3) GENERATED ALWAYS AS ROW START HIDDEN Not Null,
 	SysDateEnd datetime2(3) GENERATED ALWAYS AS ROW END HIDDEN Not Null,
 	Period For System_Time(SysDateStart, SysDateEnd),
-	Index [IX_QuestionnaireCourse_Course] NonClustered (Course),
-	Index [IX_QuestionnaireCourse_CourseTypeId] Nonclustered (CourseTypeId),
-	Constraint [PK_QuestionnaireCourse_CourseId] Primary Key (CourseId),
-	Constraint [UC_QuestionnaireCourse_Course] Unique (CourseTypeId, Course), 
-	Constraint [FK_QuestionnaireCourse_CourseTypeId] Foreign Key (CourseTypeId) References Questionnaire.CourseType(CourseTypeId),
-	Constraint [FK_QuestionnaireCourse_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
-	Constraint [FK_QuestionnaireCourse_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)
+	Index [IX_DemoCourse_Course] NonClustered (Course),
+	Index [IX_DemoCourse_CourseTypeId] Nonclustered (CourseTypeId),
+	Constraint [PK_DemoCourse_CourseId] Primary Key (CourseId),
+	Constraint [UC_DemoCourse_Course] Unique (CourseTypeId, Course), 
+	Constraint [FK_DemoCourse_CourseTypeId] Foreign Key (CourseTypeId) References Demo.CourseType(CourseTypeId),
+	Constraint [FK_DemoCourse_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
+	Constraint [FK_DemoCourse_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)
 )
-With (System_Versioning = On (History_Table = Questionnaire.CourseLog))
+With (System_Versioning = On (History_Table = Demo.CourseLog))
 Go
 
 
-Create Table Questionnaire.Section (
+Create Table Demo.Section (
 	SectionId int Not Null Identity(1,1),
 	CourseId int Not Null ,
 	Section nvarchar(500) Not Null ,
@@ -106,17 +106,17 @@ Create Table Questionnaire.Section (
 	SysDateStart datetime2(3) GENERATED ALWAYS AS ROW START HIDDEN Not Null,
 	SysDateEnd datetime2(3) GENERATED ALWAYS AS ROW END HIDDEN Not Null,
 	Period For System_Time(SysDateStart, SysDateEnd),
-	Index [IX_QuestionnaireSection_CourseId] Nonclustered (CourseId), 
-	Index [IX_QuestionnaireSection_Section] NonClustered (Section),
-	Constraint [PK_QuestionnaireSection_SectionId] Primary Key (SectionId),
-	Constraint [FK_QuestionnaireSection_CourseId] Foreign Key (CourseId) References Questionnaire.Course(CourseId),
-	Constraint [FK_QuestionnaireSection_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
-	Constraint [FK_QuestionnaireSection_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)
+	Index [IX_DemoSection_CourseId] Nonclustered (CourseId), 
+	Index [IX_DemoSection_Section] NonClustered (Section),
+	Constraint [PK_DemoSection_SectionId] Primary Key (SectionId),
+	Constraint [FK_DemoSection_CourseId] Foreign Key (CourseId) References Demo.Course(CourseId),
+	Constraint [FK_DemoSection_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
+	Constraint [FK_DemoSection_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)
 )
-With (System_Versioning = On (History_Table = Questionnaire.SectionLog))
+With (System_Versioning = On (History_Table = Demo.SectionLog))
 Go
 
-Create Table Questionnaire.QuestionType (
+Create Table Demo.QuestionType (
 	QuestionTypeId int Not Null Identity(1,1),
 	QuestionType nvarchar(50) Not Null,
 	DateCreated datetimeoffset Null Default SYSDATETIMEOFFSET(),
@@ -126,17 +126,17 @@ Create Table Questionnaire.QuestionType (
 	SysDateStart datetime2(3) GENERATED ALWAYS AS ROW START HIDDEN Not Null,
 	SysDateEnd datetime2(3) GENERATED ALWAYS AS ROW END HIDDEN Not Null,
 	Period For System_Time(SysDateStart, SysDateEnd),
-	Index [IX_QuestionnaireQuestionType_QuestionType] NonClustered (QuestionType),
-	Constraint [UC_QuestionnaireQuestionType_QuestionType] Unique (QuestionType),
-	Constraint [PK_QuestionnaireQuestionType_QuestionTypeId] Primary Key (QuestionTypeId),
-	Constraint [FK_QuestionnaireQuestionType_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
-	Constraint [FK_QuestionnaireQuestionType_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)
+	Index [IX_DemoQuestionType_QuestionType] NonClustered (QuestionType),
+	Constraint [UC_DemoQuestionType_QuestionType] Unique (QuestionType),
+	Constraint [PK_DemoQuestionType_QuestionTypeId] Primary Key (QuestionTypeId),
+	Constraint [FK_DemoQuestionType_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
+	Constraint [FK_DemoQuestionType_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)
 )
-With (System_Versioning = On (History_Table = Questionnaire.QuestionTypeLog))
+With (System_Versioning = On (History_Table = Demo.QuestionTypeLog))
 Go
 
-Create Table Questionnaire.Question (
-	QuestionId int Not Null Identity(1,1) Constraint [PK_QuestionnaireQuestion_QuestionId] Primary Key,
+Create Table Demo.Question (
+	QuestionId int Not Null Identity(1,1) Constraint [PK_DemoQuestion_QuestionId] Primary Key,
 	QuestionTypeId int Not Null,
 	Question nvarchar(max) Not Null ,
 	SectionId int Not Null,
@@ -164,15 +164,15 @@ Create Table Questionnaire.Question (
 	SysDateStart datetime2(3) GENERATED ALWAYS AS ROW START HIDDEN Not Null,
 	SysDateEnd datetime2(3) GENERATED ALWAYS AS ROW END HIDDEN Not Null,
 	Period For System_Time(SysDateStart, SysDateEnd),
-	Constraint [FK_QuestionnaireQuestion_QuestionTypeId] Foreign Key (QuestionTypeId) References Questionnaire.QuestionType(QuestionTypeId),
-	Constraint [FK_QuestionnaireQuestion_SectionId] Foreign Key (SectionId) References Questionnaire.Section(SectionId),
-	Constraint [FK_QuestionnaireQuestion_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
-	Constraint [FK_QuestionnaireQuestion_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)	
+	Constraint [FK_DemoQuestion_QuestionTypeId] Foreign Key (QuestionTypeId) References Demo.QuestionType(QuestionTypeId),
+	Constraint [FK_DemoQuestion_SectionId] Foreign Key (SectionId) References Demo.Section(SectionId),
+	Constraint [FK_DemoQuestion_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
+	Constraint [FK_DemoQuestion_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)	
 )
-With (System_Versioning = On (History_Table = Questionnaire.QuestionLog))
+With (System_Versioning = On (History_Table = Demo.QuestionLog))
 Go
 
-Create Table Questionnaire.Answer (
+Create Table Demo.Answer (
 	AnswerId int Not Null Identity(1,1),
 	QuestionId int Not Null,
 	Answer nvarchar(max) Not Null,
@@ -197,15 +197,15 @@ Create Table Questionnaire.Answer (
 	SysDateEnd datetime2(3) GENERATED ALWAYS AS ROW END HIDDEN Not Null,
 	Period For System_Time(SysDateStart, SysDateEnd),
 	Index [IX_QuesitonnaireAnswer_QuestionId] Nonclustered (QuestionId),
-	Constraint [PK_QuestionnaireAnswer_AnswerId] Primary Key (AnswerId),
-	Constraint [FK_QuestionnaireAnswer_QuestionId] Foreign Key (QuestionId) References Questionnaire.Question(QuestionId) ON DELETE CASCADE,
-	Constraint [FK_QuestionnaireAnswer_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
-	Constraint [FK_QuestionnaireAnswer_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)
+	Constraint [PK_DemoAnswer_AnswerId] Primary Key (AnswerId),
+	Constraint [FK_DemoAnswer_QuestionId] Foreign Key (QuestionId) References Demo.Question(QuestionId) ON DELETE CASCADE,
+	Constraint [FK_DemoAnswer_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
+	Constraint [FK_DemoAnswer_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)
 )
-With (System_Versioning = On (History_Table = Questionnaire.AnswerLog))
+With (System_Versioning = On (History_Table = Demo.AnswerLog))
 Go
 
-Create Table Questionnaire.Exam (
+Create Table Demo.Exam (
 	ExamId int Not Null Identity(1,1),
 	SectionId int Not Null,
 	IId nvarchar(50) Not Null,
@@ -233,16 +233,16 @@ Create Table Questionnaire.Exam (
 	SysDateStart datetime2(3) GENERATED ALWAYS AS ROW START HIDDEN Not Null,
 	SysDateEnd datetime2(3) GENERATED ALWAYS AS ROW END HIDDEN Not Null,
 	Period For System_Time(SysDateStart, SysDateEnd),
-	Index [IX_QuestionnaireExam_IId] Nonclustered (IId),
-	Constraint [PK_QuestionnaireExam_ExamId] Primary Key (ExamId),
-	Constraint [FK_QuestionnaireExam_SectionId] Foreign Key (SectionId) References Questionnaire.Section(SectionId),
-	Constraint [FK_QuestionnaireExam_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
-	Constraint [FK_QuestionnaireExam_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)
+	Index [IX_DemoExam_IId] Nonclustered (IId),
+	Constraint [PK_DemoExam_ExamId] Primary Key (ExamId),
+	Constraint [FK_DemoExam_SectionId] Foreign Key (SectionId) References Demo.Section(SectionId),
+	Constraint [FK_DemoExam_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
+	Constraint [FK_DemoExam_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)
 )
-With (System_Versioning = On (History_Table = Questionnaire.ExamLog))
+With (System_Versioning = On (History_Table = Demo.ExamLog))
 Go
 
-Create Table Questionnaire.ExamAnswer (
+Create Table Demo.ExamAnswer (
 	ExamAnswerId int Not Null Identity(1,1),
 	ExamId int Not Null,
 	QuestionId int Not Null,
@@ -265,12 +265,12 @@ Create Table Questionnaire.ExamAnswer (
 	SysDateStart datetime2(3) GENERATED ALWAYS AS ROW START HIDDEN Not Null,
 	SysDateEnd datetime2(3) GENERATED ALWAYS AS ROW END HIDDEN Not Null,
 	Period For System_Time(SysDateStart, SysDateEnd),
-	Constraint [PK_QuestionnaireExamAnswer_ExamAnswerId] Primary Key (ExamAnswerId),
-	Constraint [FK_QuestionnaireExamAnswer_ExamId] Foreign Key (ExamId) References Questionnaire.Exam(ExamId) ON DELETE CASCADE,
-	Constraint [FK_QuestionnaireExamAnswer_QuestionId] Foreign Key (QuestionId) References Questionnaire.Question(QuestionId) ON DELETE CASCADE,
-	Constraint [FK_QuestionnaireExamAnswer_AnswerId] Foreign Key (AnswerId) References Questionnaire.Answer(AnswerId),
-	Constraint [FK_QuestionnaireExamAnswer_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
-	Constraint [FK_QuestionnaireExamAnswer_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)
+	Constraint [PK_DemoExamAnswer_ExamAnswerId] Primary Key (ExamAnswerId),
+	Constraint [FK_DemoExamAnswer_ExamId] Foreign Key (ExamId) References Demo.Exam(ExamId) ON DELETE CASCADE,
+	Constraint [FK_DemoExamAnswer_QuestionId] Foreign Key (QuestionId) References Demo.Question(QuestionId) ON DELETE CASCADE,
+	Constraint [FK_DemoExamAnswer_AnswerId] Foreign Key (AnswerId) References Demo.Answer(AnswerId),
+	Constraint [FK_DemoExamAnswer_DateCreatedBy] Foreign Key (DateCreatedBy) References [dbo].[I](IId),
+	Constraint [FK_DemoExamAnswer_DateUpdatedBy] Foreign Key (DateUpdatedBy) References [dbo].[I](IId)
 )
-With (System_Versioning = On (History_Table = Questionnaire.ExamAnswerLog))
+With (System_Versioning = On (History_Table = Demo.ExamAnswerLog))
 Go
