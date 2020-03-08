@@ -9,7 +9,7 @@
 */
 
 
-        <%-- ----------------------------------
+        /*-- ----------------------------------
         -- Function:    AddSelectSection(mode, sender, xmlData = null)
         -- Mode:        String, denotes what column to apply the actions to
         -- Sender:      The selector on the row and column
@@ -22,7 +22,7 @@
         --              AddAnotherSelectSelection(). 
         -- Debug:
         --      console.log("original string: [" + str + "], strarrif: [" + strarrif + "], strarriffirst: [" + strarriffirst + "]");
-        ---------------------------------- --%>
+        ---------------------------------- --*/
         function AddSelectSection(mode, sender, xmlData = null) {
             var parentObj = $(sender).parent();
             var labelObj = $(parentObj).children('span');
@@ -119,13 +119,13 @@
             });
         }
 
-        <%-- ----------------------------------
+        /*-- ----------------------------------
         -- Function:    AddAnotherSelectSection(mode, sender, stringvalue = "")
         -- Mode:        String, denotes what column to apply the actions to
         -- Sender:      The selector on the row and column
         -- Description: Calls the corresponding webservice to bring back HTML. 
 
-        ---------------------------------- --%>
+        ---------------------------------- --*/
         function AddAnotherSelectSection(mode, sender, stringvalue = "", showPlusButton = false) {
             var classId2 = $('someid').val();
             var courseId2 = $(sender).parent().parent().parent().parent().parent().parent().find('input[type=hidden][id*=gcCourseId]').val();
@@ -237,14 +237,14 @@
         }
         
 
-        <%-- ----------------------------------
+        /*-- ----------------------------------
         -- Function:    RemoveAnotherSelectSection(mode, sender) 
         -- Mode:        String, denotes what column to apply the actions to
         -- Sender:      The selector on the row and column
         -- Description: Assumes the '-' button on the TABLE object, 
         --              Removes that ROW and adjusts for the surrounding TRs
         --              to properly show the '-' and '+' functions
-        ---------------------------------- --%>
+        ---------------------------------- --*/
         function RemoveAnotherSelectSection(mode, sender) {
             if ($(sender).parent().parent().next().length <= 0) {
                 $(sender).parent().parent().prev().children('td.rp' + mode + mode + 'TdWrapper').css('display', '');
@@ -254,7 +254,7 @@
             $(sender).parent().parent().remove();
         }
 
-        <%-- ----------------------------------
+        /*-- ----------------------------------
         -- Function:        RemoveSelectSection(mode, sender, validateSender = true)
         -- Mode:            String, denotes what column to apply the actions to
         -- Sender:          The selector on the row and column
@@ -269,7 +269,7 @@
         --      console.log(">  Selector value[" + selectorValue + "] text[" + selectorText + "]");
         --      console.log(">  Passfail value[" + passFailValue + "] text[" + passFailText + "] visible[" + passFailVisible + "]");
         --      console.log(">  Input value[" + inputValue + "] visible[" + inputVisible + "]");
-        ---------------------------------- --%>
+        ---------------------------------- --*/
         function RemoveSelectSection(mode, sender, validateSender = true) {
             if (validateSender) {
                 if (!ValidateSelect(mode, sender))
@@ -314,7 +314,7 @@
             return true;
         }
 
-        <%-- ----------------------------------
+        /*-- ----------------------------------
         -- Function:            SelectSelectorShowInput(mode, sender, inputpassfailvalue = "")
         -- Mode:                String, denotes what column to apply the actions to
         -- Sender:              The selector on the row and column
@@ -323,7 +323,7 @@
         --                      (Expects [value:selectormode:type?]). Then based on the selctormode,
         --                      Hide or show either the passfail TD or the input TD. but not both. 
         --                      Optional, we can set the values based on the passed in inputpassfailvalue.
-        ---------------------------------- --%>
+        ---------------------------------- --*/
         function SelectSelectorShowInput(mode, sender, inputpassfailvalue = "") {
             var selectorValue = $(sender).find('option:selected').val().split(':');
             var passFailSelector = $(sender).parent().parent().find('.rp' + mode + 'PassFailTd');
@@ -346,13 +346,13 @@
             }
         }
 
-        <%-- ----------------------------------
+        /*-- ----------------------------------
         -- Function:            SelectTypeSelector(mode, sender, value)
         -- Mode:                String, denotes what column to apply the actions to
         -- Sender:              The selector on the row and column
         -- Value:               The 'Mode' / 'Type' Value to set this to.
         -- Description:         Finds the Type Selector of the given sender, and sets the Type accordingly.
-        ---------------------------------- --%>
+        ---------------------------------- --*/
         function SelectTypeSelector(mode, sender, value) {
             var typeSelector = $(sender).parent().parent().find('.' + mode + 'TypeSelector');
 
@@ -361,30 +361,30 @@
             }
         }
 
-        <%-- ----------------------------------
+        /*-- ----------------------------------
         -- Function:    DisplayMessage(jqXhr, exception)
         -- jqXhr:       Jquery Handler
         -- exception:   Browser DOM
         -- Description: displays a message to the user when AJAX calls encouter an error
-        ---------------------------------- --%>
+        ---------------------------------- --*/
         function DisplayMessage(jqXhr, exception) {
             var msg;
 
             if (jqXhr.status === 0) {
                 msg = 'System has detected no connection to the network protocol. Please verify your Network access.';
             } else if (jqXhr.status === 404) {
-                msg = 'System has encountered an unknown response. Please contact NEIEP IT Support. Requested page not found. [404]';
+                msg = 'System has encountered an unknown response. Please contact  IT Support. Requested page not found. [404]';
             } else if (jqXhr.status === 500) {
                 msg = 'System has been altered. Please reload the page to continue. Internal Server Error [500].';
             } else if (exception === 'parsererror') {
-                msg = 'System has failed. Please contact NEIEP IT Support. Requested JSON parse failed.';
+                msg = 'System has failed. Please contact  IT Support. Requested JSON parse failed.';
             } else if (exception === 'timeout') {
                 msg = 'System detects that you are no longer logged in. Please login again. Time out error.';
             } else if (exception === 'abort') {
                 msg = 'System has aborted the Ajax request. Please reload the page and try again. ';
             } else {
                 msg = 'System has detected an uncaught Error. \r\n ' +
-                    'Please reload the page and try again. If this message continues to occur, please contact NEIEP IT Support. \r\n' +
+                    'Please reload the page and try again. If this message continues to occur, please contact  IT Support. \r\n' +
                     jqXhr.responseText;
             }
 

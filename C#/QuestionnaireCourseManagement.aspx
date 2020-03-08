@@ -1,30 +1,15 @@
 /*
-  This is the Questionnaire System used to edit Questionnaire Course or Project level groupping.
+  This is the Demo System used to edit Demo Course or Project level groupping.
   
   The following code demonstrates a typical implementation of the front-end code done in C# ASP.NET 4.5 Webforms and Twitter Bootstrap 3
   
   This is not a copy of any current implementation of any company but rather a demonstration of how things 
   were initially scaffolded during the design phrase.
-
-  
-  Order of Implementation:
-    - References
-    - Any inline CSS
-    - Heading Section
-    - Search Criteria
-    - Controls Criteria
-    - Main Content Criteria
-    - Popup / Views Criteria
-    - Any inline Scripts
-    
-  Dependencies:
-    - Company Specific User Controls
 */
 
 
-<%@ Page Title="" Language="C#" MasterPageFile="~/bst-Web.master" AutoEventWireup="true" CodeFile="QECourse.aspx.cs" Inherits="ServicesQECourse" ValidateRequest="false"  %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Web.master" AutoEventWireup="true" CodeFile="DemoCourse.aspx.cs" Inherits="ServicesDemoCourse" ValidateRequest="false"  %>
 <%@ Register TagPrefix="N" TagName="Heading" Src="~/Global/Controls/NHeading.ascx" %>
-<%@ Register TagPrefix="cc2" Namespace="N.WebControls" Assembly="WebControls" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolderHeader" Runat="Server">
     <style type="text/css">
@@ -90,7 +75,7 @@
     -- Header
     -----------------------------%>
     <asp:Panel runat="server" ID="pnlHeader" CssClass="hidden-print">
-        <N:Heading runat="server" HeadingLabel="Questionnaire Editor v4" HeadingHyperlink="~/Services/QECourse.aspx" />
+        <N:Heading runat="server" HeadingLabel="Demo Editor" HeadingHyperlink="DemoCourse.aspx" />
         <cc2:MessageBox ID="MessageBox1" runat="server" width="100%" />
     </asp:Panel>
     
@@ -101,7 +86,12 @@
     -- 2019 Mar
     ---------------------------------%>
     <asp:Panel ID="pnlContent" runat="server">
-        Use this system to design Questionnaires. If you have any questions please contact IT support at ITStaff@domain.org or by phone at (800) 000 - 0000.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut 
+        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
+        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
+        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. If you have any 
+        questions please contact IT support at ITStaff@domain.org or by phone at (800) 000 - 0000.
     </asp:Panel>
     
     <%----------------------------------
@@ -370,74 +360,8 @@
             </div>
         </div>
     </div>
-    
-    <script type="text/javascript" src="<%=ResolveUrl("~/Global/Javascript/jquery.autosize.min.js") %>"></script>
+
     <script type="text/javascript">
-        function ToggleWaitToLoad2(obj) {
-            if (obj.includes('Modal')) {
-                $('.modal-footer table').hide();
-            }
-            if (obj === 'Search') {
-                $('#pnlControlsControls').hide();
-            }
-
-            ToggleAppendObject2("span[id*=" + obj + "WaitToLoad]");
-        }
-        
-
-        function ToggleAppendObject2(obj) {
-            $(obj).html(
-                $('<img>',
-                    {
-                        src: '<%= ResolveUrl("~/Images/loading_blue.gif") %>',
-                        alt: '[Please Wait!... Do not refresh or reload the page...]',
-                        style: 'width: auto;height: 100%;max-height: 25px;'
-                    })
-            );
-        }
-
-        function ToggleContent2(obj) {
-            if (confirm("Are you sure you want to delete this? Once deleted, you won't be able to recover it.")) {
-                ToggleWaitToLoad2(obj);
-
-                return true;
-            } else {
-                return false;
-            }
-        }
-    </script>
-    <script type="text/javascript">
-        //-------------------------------------------------------+
-        // CHARACTER COUNTER CODE
-        //DHTML textbox character counter script. Courtesy of SmartWebby.com (http://www.smartwebby.com/dhtml/)
-        //-------------------------------------------------------+
-        var bName = navigator.appName;
-
-        function taLimit(taObj, maxLength) {
-            if (taObj.value.length === maxLength) return false;
-            return true;
-        }
-
-        function taCount(taObj, cnt, maxLength) {
-            var objCnt = createObject(cnt);
-            var objVal = taObj.value;
-            if (objVal.length > maxLength) objVal = objVal.substring(0, maxLength);
-            if (objCnt) {
-                if (bName === "Netscape") {
-                    objCnt.textContent = maxLength - objVal.length;
-                }
-                else { objCnt.innerText = maxLength - objVal.length; }
-            }
-            return true;
-        }
-
-
-        function createObject(objId) {
-            if (document.getElementById) return document.getElementById(objId);
-            else if (document.layers) return eval("document." + objId);
-            else if (document.all) return eval("document.all." + objId);
-            else return eval("document." + objId);
-        }
-        //-------------------------------------------------------+
+        /* Scripts go here... */
     </script>
 </asp:Content>

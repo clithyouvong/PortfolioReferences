@@ -1,25 +1,11 @@
 /*
-  This is the Questionnaire System used to edit Questionnaire Course or Project level groupping.
+  This is the Demo System used to edit Demo Course or Project level groupping.
   
   The following code demonstrates a typical implementation of the back-end code done in C# ASP.NET 4.5 Webforms
   
   This is not a copy of any current implementation of any company but rather a demonstration of how things 
   were initially scaffolded during the design phrase.
 
-  
-  Order of Implementation:
-    - Imports
-    - Global Variables
-    - OnInit() // Equivalent to ConfigureServices
-    - OnPageLoad() // Equivalent to Startup
-    - ConnectToSql() // Main DBContext Section
-    - BindControls() // Main Controller Section
-    - Any Main Content Processing Section 
-    - Any Handlers Content Processing Section
-    - Any Javascript or Return Content Processing Section
-    
-  Dependencies:
-    - Company Specific User Controls
 */
 
 using System;
@@ -31,10 +17,7 @@ using System.Net;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using NEIEP;
-using NEIEP.ClassLibrary.Security;
 
-// ReSharper disable once InconsistentNaming
 public partial class ServicesQECourse : Page
 {
     private SqlConnection _cn = new SqlConnection(ConfigurationManager.AppSettings["something"]);
@@ -42,7 +25,7 @@ public partial class ServicesQECourse : Page
     private DataSet _ds = new DataSet();
     private DataSet _dsOninit = new DataSet();
     private DataSet _dsModal = new DataSet();
-    private Passport _pass;
+    private P _object;
 
     private bool _isAuthorized;
     private int _courseId;
@@ -57,15 +40,15 @@ public partial class ServicesQECourse : Page
         try
         {
 
-            if (Session["Passport"] == null)
+            if (Session["P"] == null)
             {
                 Response.RedirectPermanent("~/bst-Default.aspx");
                 return;
             }
 
             //---------------------------------------------------
-            _pass = (Passport)Session["Passport"];
-            _isAuthorized = _pass.IsAuthorized("something");
+            _object = (P)Session["P"];
+            _isAuthorized = _object.IsAuthorized("something");
 
             if (!_isAuthorized)
             {
@@ -133,7 +116,7 @@ public partial class ServicesQECourse : Page
             {
                 case "Oninit":
                     _dsOninit = new DataSet();
-                    using (SqlCommand cm = new SqlCommand("[Questionnaire].[EditorCourse_OnInit]", _cn2))
+                    using (SqlCommand cm = new SqlCommand("[Demo].[Demo_OnInit]", _cn2))
                     {
                         cm.CommandType = CommandType.StoredProcedure;
                         using (SqlDataAdapter da = new SqlDataAdapter(cm))
@@ -146,7 +129,7 @@ public partial class ServicesQECourse : Page
                     if (call == 0)
                     {
                         _ds = new DataSet();
-                        using (SqlCommand cm = new SqlCommand("[Questionnaire].[EditorCourse_Select]", _cn2))
+                        using (SqlCommand cm = new SqlCommand("[Demo].[Demo_Select]", _cn2))
                         {
                             cm.CommandType = CommandType.StoredProcedure;
                             cm.Parameters.AddWithValue("@Course", SearchCourse.Text.Trim());
@@ -167,10 +150,10 @@ public partial class ServicesQECourse : Page
                     break;
                 case "Modal":
                     _dsModal = new DataSet();
-                    using (SqlCommand cm = new SqlCommand("[Questionnaire].[EditorCourse_Modal]", _cn2))
+                    using (SqlCommand cm = new SqlCommand("[Demo].[Demo_Modal]", _cn2))
                     {
                         cm.CommandType = CommandType.StoredProcedure;
-                        cm.Parameters.AddWithValue("@CourseId", Int32.Parse(ModalCourseCourseId.Value));
+                        cm.Parameters.AddWithValue("@CourseId", Int32.Parse(ModalId.Value));
                         using (SqlDataAdapter da = new SqlDataAdapter(cm))
                         {
                             da.Fill(_dsModal);
@@ -179,14 +162,14 @@ public partial class ServicesQECourse : Page
                     break;
                 case "Insert":
                     transaction = _cn2.BeginTransaction();
-                    using (SqlCommand cm = new SqlCommand("[Questionnaire].[EditorCourse_Modify]", _cn2, transaction))
+                    using (SqlCommand cm = new SqlCommand("[Demo].[Demo_Modify]", _cn2, transaction))
                     {
                         cm.CommandType = CommandType.StoredProcedure;
                         cm.Parameters.AddWithValue("@Mode", "Insert");
-                        cm.Parameters.AddWithValue("@Course", ModalCourseCourse.Text.Trim());
-                        cm.Parameters.AddWithValue("@CourseTypeId", Int32.Parse(ModalCourseCourseType.SelectedValue));
-                        cm.Parameters.AddWithValue("@Status", ModalCourseStatus.Checked);
-                        cm.Parameters.AddWithValue("@PassportIndividualId", _pass.IndividualId);
+                        cm.Parameters.AddWithValue("@Course", Modal.Text.Trim());
+                        cm.Parameters.AddWithValue("@CourseTypeId", Int32.Parse(ModalType.SelectedValue));
+                        cm.Parameters.AddWithValue("@Status", ModalStatus.Checked);
+                        cm.Parameters.AddWithValue("@PIId", _object.IId);
                         cm.Parameters.AddWithValue("@DateModified", DateTimeOffset.Now);
                         cm.Parameters.AddWithValue("@BrowserIPv4", ip4);
                         cm.Parameters.AddWithValue("@BrowserIPv6", HttpContext.Current.Request.UserHostAddress);
@@ -202,15 +185,15 @@ public partial class ServicesQECourse : Page
                     break;
                 case "Update":
                     transaction = _cn2.BeginTransaction();
-                    using (SqlCommand cm = new SqlCommand("[Questionnaire].[EditorCourse_Modify]", _cn2, transaction))
+                    using (SqlCommand cm = new SqlCommand("[Demo].[Demo_Modify]", _cn2, transaction))
                     {
                         cm.CommandType = CommandType.StoredProcedure;
                         cm.Parameters.AddWithValue("@Mode", "Update");
-                        cm.Parameters.AddWithValue("@CourseId", Int32.Parse(ModalCourseCourseId.Value));
-                        cm.Parameters.AddWithValue("@Course", ModalCourseCourse.Text.Trim());
-                        cm.Parameters.AddWithValue("@CourseTypeId", Int32.Parse(ModalCourseCourseType.SelectedValue));
-                        cm.Parameters.AddWithValue("@Status", ModalCourseStatus.Checked);
-                        cm.Parameters.AddWithValue("@PassportIndividualId", _pass.IndividualId);
+                        cm.Parameters.AddWithValue("@CourseId", Int32.Parse(ModalId.Value));
+                        cm.Parameters.AddWithValue("@Course", Modal.Text.Trim());
+                        cm.Parameters.AddWithValue("@CourseTypeId", Int32.Parse(ModalType.SelectedValue));
+                        cm.Parameters.AddWithValue("@Status", ModalStatus.Checked);
+                        cm.Parameters.AddWithValue("@PIId", _object.IId);
                         cm.Parameters.AddWithValue("@DateModified", DateTimeOffset.Now);
                         cm.Parameters.AddWithValue("@BrowserIPv4", ip4);
                         cm.Parameters.AddWithValue("@BrowserIPv6", HttpContext.Current.Request.UserHostAddress);
@@ -226,12 +209,12 @@ public partial class ServicesQECourse : Page
                     break;
                 case "Delete":
                     transaction = _cn2.BeginTransaction();
-                    using (SqlCommand cm = new SqlCommand("[Questionnaire].[EditorCourse_Modify]", _cn2, transaction))
+                    using (SqlCommand cm = new SqlCommand("[Demo].[Demo_Modify]", _cn2, transaction))
                     {
                         cm.CommandType = CommandType.StoredProcedure;
                         cm.Parameters.AddWithValue("@Mode", "Delete");
-                        cm.Parameters.AddWithValue("@CourseId", Int32.Parse(ModalCourseCourseId.Value));
-                        cm.Parameters.AddWithValue("@PassportIndividualId", _pass.IndividualId);
+                        cm.Parameters.AddWithValue("@CourseId", Int32.Parse(ModalId.Value));
+                        cm.Parameters.AddWithValue("@PIId", _object.IId);
                         cm.Parameters.AddWithValue("@DateModified", DateTimeOffset.Now);
                         cm.Parameters.AddWithValue("@BrowserIPv4", ip4);
                         cm.Parameters.AddWithValue("@BrowserIPv6", HttpContext.Current.Request.UserHostAddress);
@@ -271,12 +254,12 @@ public partial class ServicesQECourse : Page
         switch (mode)
         {
             case "Oninit":
-                ModalCourseCourseType.Items.Clear();
+                ModalType.Items.Clear();
                 SearchCourseType.Items.Clear();
                 SearchCourseType.Items.Add(new ListItem("All Course Types", "-1"));
                 foreach (DataRow row in _dsOninit.Tables[0].Rows)
                 {
-                    ModalCourseCourseType.Items.Add(new ListItem(row["CourseType"].ToString(), row["CourseTypeId"].ToString()));
+                    ModalType.Items.Add(new ListItem(row["CourseType"].ToString(), row["CourseTypeId"].ToString()));
                     SearchCourseType.Items.Add(new ListItem(row["CourseType"].ToString(), row["CourseTypeId"].ToString()));
                 }
                 break;
@@ -313,28 +296,28 @@ public partial class ServicesQECourse : Page
     {
         _ds = (DataSet) ViewState["DS"];
 
-        Utils.DumpExcel(_ds.Tables[1], "Export Questionnaire Editor Course Report", "ExportQuestionnaireEditorCourseReport_");
+        Utils.DumpExcel(_ds.Tables[1], "Export Demo Editor Course Report", "ExportDemoDemoReport_");
     }
 
     protected void ControlsCreate_OnClick(object sender, EventArgs e)
     {
-        ModalCourseCourse.Text = "";
-        ModalCourseCourseId.Value = "";
-        ModalCourseCourseType.SelectedIndex = 0;
+        Modal.Text = "";
+        ModalId.Value = "";
+        ModalType.SelectedIndex = 0;
 
-        ModalCourseStatus.Checked = true;
+        ModalStatus.Checked = true;
 
-        ModalCourseHistoryWrapper.Visible = false;
-        ModalCourseDialog.Attributes["style"] = "max-width: 600px;width: 100%;";
+        ModalHistoryWrapper.Visible = false;
+        ModalDialog.Attributes["style"] = "max-width: 600px;width: 100%;";
 
-        ModalCourseInsert.Visible = true;
-        ModalCourseInsertAndAddSection.Visible = true;
-        ModalCourseDelete.Visible = false;
-        ModalCourseUpdate.Visible = false;
+        ModalInsert.Visible = true;
+        ModalInsertAndAddSection.Visible = true;
+        ModalDelete.Visible = false;
+        ModalUpdate.Visible = false;
         
         ScriptManager.RegisterStartupScript(this, GetType(), "onrowcommandscript1", @"
-            var obj = document.getElementById('" + ModalCourseCourse.ClientID + "'); " + "taCount(obj,'ModalCourseCourseCounter', 500);", true);
-        ScriptManager.RegisterStartupScript(this, GetType(), "onrowcommandscript2", "$('#ModalCourse').modal({backdrop: 'static', keyboard: false}).modal('show');", true);
+            var obj = document.getElementById('" + Modal.ClientID + "'); " + "taCount(obj,'ModalCounter', 500);", true);
+        ScriptManager.RegisterStartupScript(this, GetType(), "onrowcommandscript2", "$('#Modal').modal({backdrop: 'static', keyboard: false}).modal('show');", true);
     }
 
     //----------------------------------------------------
@@ -452,7 +435,7 @@ public partial class ServicesQECourse : Page
         }
     }
 
-    protected void ModalCourseHistory_OnRowDataBound(object sender, GridViewRowEventArgs e)
+    protected void ModalHistory_OnRowDataBound(object sender, GridViewRowEventArgs e)
     {
         foreach (TableCell cell in e.Row.Cells)
         {
@@ -468,30 +451,30 @@ public partial class ServicesQECourse : Page
         var linq = _ds.Tables[0].AsEnumerable().First(x => x.Field<int>("CourseId") == courseId);
 
 
-        ModalCourseCourse.Text = linq["Course"].ToString();
-        ModalCourseCourseId.Value = linq["CourseId"].ToString();
+        Modal.Text = linq["Course"].ToString();
+        ModalId.Value = linq["CourseId"].ToString();
 
-        ListItem currentCourseType = ModalCourseCourseType.Items.FindByValue(linq["CourseTypeId"].ToString());
-        ModalCourseCourseType.SelectedIndex = ModalCourseCourseType.Items.IndexOf(currentCourseType);
+        ListItem currentCourseType = ModalType.Items.FindByValue(linq["CourseTypeId"].ToString());
+        ModalType.SelectedIndex = ModalType.Items.IndexOf(currentCourseType);
 
-        ModalCourseStatus.Checked = (bool)linq["Status"];
+        ModalStatus.Checked = (bool)linq["Status"];
 
         ConnectToSql(0, "Modal");
-        ModalCourseHistoryWrapper.Visible = true;
-        ModalCourseHistory.DataSource = _dsModal.Tables[0];
-        ModalCourseHistory.DataBind();
-        ModalCourseHistoryCount.Text = String.Format("[{0}] ", _dsModal.Tables[0].Rows.Count);
+        ModalHistoryWrapper.Visible = true;
+        ModalHistory.DataSource = _dsModal.Tables[0];
+        ModalHistory.DataBind();
+        ModalHistoryCount.Text = String.Format("[{0}] ", _dsModal.Tables[0].Rows.Count);
 
-        ModalCourseDialog.Attributes["style"] = "max-width: 1200px;width: 100%;";
+        ModalDialog.Attributes["style"] = "max-width: 1200px;width: 100%;";
 
-        ModalCourseInsert.Visible = false;
-        ModalCourseInsertAndAddSection.Visible = false;
-        ModalCourseDelete.Visible = _pass.IsAuthorized("Website_Questionnaire2_Editor", 0);
-        ModalCourseUpdate.Visible = true;
+        ModalInsert.Visible = false;
+        ModalInsertAndAddSection.Visible = false;
+        ModalDelete.Visible = _object.IsAuthorized("Website_Demo2_Editor", 0);
+        ModalUpdate.Visible = true;
 
         ScriptManager.RegisterStartupScript(this, GetType(), "onrowcommandscript1", @"
-            var obj = document.getElementById('" + ModalCourseCourse.ClientID + "'); " + "taCount(obj,'ModalCourseCourseCounter', 500);", true);
-        ScriptManager.RegisterStartupScript(this, GetType(), "onrowcommandscript2", "$('#ModalCourse').modal({backdrop: 'static', keyboard: false}).modal('show');", true);
+            var obj = document.getElementById('" + Modal.ClientID + "'); " + "taCount(obj,'ModalCounter', 500);", true);
+        ScriptManager.RegisterStartupScript(this, GetType(), "onrowcommandscript2", "$('#Modal').modal({backdrop: 'static', keyboard: false}).modal('show');", true);
     }
 
     private void gvCourses_OnRowCommand_LoadSection(int courseId, bool autoShowCreateMenu = false)
@@ -502,11 +485,11 @@ public partial class ServicesQECourse : Page
     //----------------------------------------------------
     // HANDLERS
     //----------------------------------------------------
-    protected void ModalCourseInsert_OnClick(object sender, EventArgs e)
+    protected void ModalInsert_OnClick(object sender, EventArgs e)
     {
         try
         {
-            string course = ModalCourseCourse.Text.Trim();
+            string course = Modal.Text.Trim();
             if (course.Equals(""))
                 throw new Exception("Course is required");
             if (course.Length >= 500 || course.Length <= 0)
@@ -515,27 +498,27 @@ public partial class ServicesQECourse : Page
             if (ConnectToSql(0, "Insert"))
             {
                 MessageBox1.Add(
-                    "Sucessfully created Course: [" + ModalCourseCourse.Text + "] of type [" + ModalCourseCourseType.SelectedItem.Text + @"].", 
+                    "Sucessfully created Course: [" + Modal.Text + "] of type [" + ModalType.SelectedItem.Text + @"].", 
                     MessageStatus.Success);
             }
         }
         catch (Exception exception)
         {
-            ModalCourseMessageBox.Add(exception.Message, MessageStatus.Error);
+            ModalMessageBox.Add(exception.Message, MessageStatus.Error);
             ScriptManager.RegisterStartupScript(this, GetType(), "onrowcommandscript1", @"
-            var obj = document.getElementById('" + ModalCourseCourse.ClientID + "'); " + "taCount(obj,'ModalCourseCourseCounter', 500);", true);
-            ScriptManager.RegisterStartupScript(this, GetType(), "onrowcommandscript2", "$('#ModalCourse').modal({backdrop: 'static', keyboard: false}).modal('show');", true);
+            var obj = document.getElementById('" + Modal.ClientID + "'); " + "taCount(obj,'ModalCounter', 500);", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "onrowcommandscript2", "$('#Modal').modal({backdrop: 'static', keyboard: false}).modal('show');", true);
         }
 
         ConnectToSql(0, "Form");
         BindControls("Form");
     }
 
-    protected void ModalCourseUpdate_OnClick(object sender, EventArgs e)
+    protected void ModalUpdate_OnClick(object sender, EventArgs e)
     {
         try
         {
-            string course = ModalCourseCourse.Text.Trim();
+            string course = Modal.Text.Trim();
             if (course.Equals(""))
                 throw new Exception("Course is required");
             if (course.Length > 500 || course.Length <= 0)
@@ -544,50 +527,50 @@ public partial class ServicesQECourse : Page
             if (ConnectToSql(0, "Update"))
             {
                 MessageBox1.Add(
-                    "Sucessfully Updated the Course: [" + ModalCourseCourse.Text + "] of type [" + ModalCourseCourseType.SelectedItem.Text + @"].",
+                    "Sucessfully Updated the Course: [" + Modal.Text + "] of type [" + ModalType.SelectedItem.Text + @"].",
                     MessageStatus.Success);
             }
         }
         catch (Exception exception)
         {
-            ModalCourseMessageBox.Add(exception.Message, MessageStatus.Error);
+            ModalMessageBox.Add(exception.Message, MessageStatus.Error);
             ScriptManager.RegisterStartupScript(this, GetType(), "onrowcommandscript1", @"
-            var obj = document.getElementById('" + ModalCourseCourse.ClientID + "'); " + "taCount(obj,'ModalCourseCourseCounter', 500);", true);
-            ScriptManager.RegisterStartupScript(this, GetType(), "onrowcommandscript2", "$('#ModalCourse').modal({backdrop: 'static', keyboard: false}).modal('show');", true);
+            var obj = document.getElementById('" + Modal.ClientID + "'); " + "taCount(obj,'ModalCounter', 500);", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "onrowcommandscript2", "$('#Modal').modal({backdrop: 'static', keyboard: false}).modal('show');", true);
         }
 
         ConnectToSql(0, "Form");
         BindControls("Form");
     }
 
-    protected void ModalCourseDelete_OnClick(object sender, EventArgs e)
+    protected void ModalDelete_OnClick(object sender, EventArgs e)
     {
         try
         {
             if (ConnectToSql(0, "Delete"))
             {
                 MessageBox1.Add(
-                    "Sucessfully Deleted the Course: [" + ModalCourseCourse.Text + "] of type [" + ModalCourseCourseType.SelectedItem.Text + "]",
+                    "Sucessfully Deleted the Course: [" + Modal.Text + "] of type [" + ModalType.SelectedItem.Text + "]",
                     MessageStatus.Success);
             }
         }
         catch (Exception exception)
         {
-            ModalCourseMessageBox.Add(exception.Message, MessageStatus.Error);
+            ModalMessageBox.Add(exception.Message, MessageStatus.Error);
             ScriptManager.RegisterStartupScript(this, GetType(), "onrowcommandscript1", @"
-            var obj = document.getElementById('" + ModalCourseCourse.ClientID + "'); " + "taCount(obj,'ModalCourseCourseCounter', 500);", true);
-            ScriptManager.RegisterStartupScript(this, GetType(), "onrowcommandscript2", "$('#ModalCourse').modal({backdrop: 'static', keyboard: false}).modal('show');", true);
+            var obj = document.getElementById('" + Modal.ClientID + "'); " + "taCount(obj,'ModalCounter', 500);", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "onrowcommandscript2", "$('#Modal').modal({backdrop: 'static', keyboard: false}).modal('show');", true);
         }
 
         ConnectToSql(0, "Form");
         BindControls("Form");
     }
 
-    protected void ModalCourseInsertAndAddSection_OnClick(object sender, EventArgs e)
+    protected void ModalInsertAndAddSection_OnClick(object sender, EventArgs e)
     {
         try
         {
-            ModalCourseInsert_OnClick(sender, e);
+            ModalInsert_OnClick(sender, e);
             var linq = _ds.Tables[0].AsEnumerable()
                 .OrderByDescending(x => x.Field<DateTimeOffset>("DateCreated"))
                 .Select(x => x.Field<int>("CourseId"))
@@ -596,10 +579,10 @@ public partial class ServicesQECourse : Page
         }
         catch (Exception exception)
         {
-            ModalCourseMessageBox.Add(exception.Message, MessageStatus.Error);
+            ModalMessageBox.Add(exception.Message, MessageStatus.Error);
             ScriptManager.RegisterStartupScript(this, GetType(), "onrowcommandscript1", @"
-            var obj = document.getElementById('" + ModalCourseCourse.ClientID + "'); " + "taCount(obj,'ModalCourseCourseCounter', 500);", true);
-            ScriptManager.RegisterStartupScript(this, GetType(), "onrowcommandscript2", "$('#ModalCourse').modal({backdrop: 'static', keyboard: false}).modal('show');", true);
+            var obj = document.getElementById('" + Modal.ClientID + "'); " + "taCount(obj,'ModalCounter', 500);", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "onrowcommandscript2", "$('#Modal').modal({backdrop: 'static', keyboard: false}).modal('show');", true);
         }
     }
 }
