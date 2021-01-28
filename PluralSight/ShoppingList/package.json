@@ -4,7 +4,7 @@
   "description": "Shopping List",
   "main": "main.js",
   "dependencies": {
-    "electron": "^6.0.9"
+    "electron": "^9.4.0"
   },
   "devDependencies": {},
   "scripts": {
