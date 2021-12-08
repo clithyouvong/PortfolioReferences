@@ -22,11 +22,11 @@
 
 #>
 
-param {
+param (
   [string] $StartDate = "2021-01-01",
   
   [string] $EndDate = "2021-01-31"
-}
+)
 
 
 function GetDateTimeNow(){
