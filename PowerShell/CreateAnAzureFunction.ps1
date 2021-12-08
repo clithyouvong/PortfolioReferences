@@ -1,39 +1,70 @@
- 
-# -------------------------
-# 0. Variables
-# -------------------------
-#The Region you want to create the resources in
-$RegionAzure = 'EastUs2'
+<#
+.SYNOPSIS
+    Creates an Azure Function app with all the fixings. 
 
-#The Resource group you want to create the resouces in
-$ResourceGroupName = "myfavoritegroup"
+.DESCRIPTION
+    Creates an azure function app with it's dependencies such as the resource group, the storage account, the app insights, the app service plan, the function app with 2 slots (dev and qa) + backup policy + identity.
 
-#The Name of the App Service Plan
-$AppServicePlanName = "$($ResourceGroupName)-AppServicePlan"
+.PARAMETER RegionAzure
+    The Region you want to create the resources in
 
-#The Name of the App
-$AppName = "myFunctionApp-Functions2"
+.PARAMETER ResourceGroupName
+    The Resource group you want to create the resouces in
+    
+.PARAMETER AppServicePlanName
+    The Name of the App Service Plan
+    
+.PARAMETER AppName
+    The Name of the App
+    
+.PARAMETER AppInsightsName
+    The Name of App Insights
+    
+.PARAMETER StorageAccountName
+    The StorageAccount Name used to manage Azure Functions
+    
+.PARAMETER TagHash
+    The Tags that will be assigned to these resources upon creation
+    
+.PARAMETER Environments
+    Environments to create
 
-#The Name of App Insights
-$AppInsightsName = "$($AppName)-Insights"
+.EXAMPLE
+    executes the procedure as written
+    PS C:\> .\CreateAnAzureFunction.ps1 -RegionAzure "EastUS2" -$ResourceGroupName "SomeresourceGroup" -$AppServicePlanName "MyAppServicePlan" -$AppInsightsName "SomeInsightsName" -$StorageAccountName "somestorageaccountName"
 
-#The StorageAccount Name used to manage Azure Functions
-$StorageAccountName = "azfunc$(Get-Random -Minimum 1000 -Maximum 10000)"
+.NOTES
+    Author: Colby Lithyouvong
+    Last Edit: 2021-12-06
+    Version 1.0 - initial release
 
+#>
 
-#The Tags that will be assigned to these resources upon creation
-$TagHash = @{
-    created=(Get-Date -Format "yyyy-MM-dd"); 
-    createdBy='Colby Lithyouvong';
-    Desc='';
-    Project='';
-    Ticket=''
-}
+param (
+  [string]$RegionAzure = 'EastUs2'
 
-#Environments to create
-$Environments = @(
-   "Dev",
-   "QA"
+  [string]$ResourceGroupName = "myfavoritegroup"
+
+  [string]$AppServicePlanName = "$($ResourceGroupName)-AppServicePlan"
+
+  [string]$AppName = "myFunctionApp-Functions2"
+
+  [string]$AppInsightsName = "$($AppName)-Insights"
+
+  [string]$StorageAccountName = "azfunc$(Get-Random -Minimum 1000 -Maximum 10000)"
+
+  [hashtable]$TagHash = @{
+      created=(Get-Date -Format "yyyy-MM-dd"); 
+      createdBy='Colby Lithyouvong';
+      Desc='';
+      Project='';
+      Ticket=''
+  }
+
+  [string[]]$Environments = @(
+     "Dev",
+     "QA"
+  )
 )
 
 
