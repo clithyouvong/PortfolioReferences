@@ -1,0 +1,22 @@
+Directions to Enabling an Azure SQL Virtual Machine for SSIS
+
+1. Install the Extension
+- go to SQL Virtual Machines
+- Install the extension: SqlIaasExtension
+
+2. Configure the Settings
+- Expose port 1433 in Firewall
+- Go to SSMS / Connect to Server / RightClick Properties / Enable SQL Authentication 
+- Go to SQL Configuration Manager / Network Configuration / Protocols / TCP/IP / Enable
+- Go to SQL Configuration Manager / Services / Restart SQL Server
+
+3. Add a Login Record to Server and a User Record to each database
+- run something like this:
+	Create Login [Colby.Lithyouvong] with password = 'somepassword';
+
+	Create User [Colby.Lithyouvong] from login [Colby.Lithyouvong];
+
+	Grant Select, Execute, Insert, Update, Alter ON Database::[DatabaseName] To [Colby.Lithyouvong];
+
+4. Expose the Port in Azure VM NIC
+- Azure VM / Configuration / Add Rule / Source IP & Destination Port 1433 & Protocol: TCP or select SSMS
