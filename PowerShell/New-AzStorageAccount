@@ -1,0 +1,194 @@
+# =============================================
+# Original Author(s):		Colby Lithyouvong
+# Original Date (YYYY/MM):	2020 Oct
+# Original Description:	    Creates a storage account
+# Further Documentation:	
+#    https://docs.microsoft.com/en-us/powershell/module/az.storage/new-azstoragequeue?view=azps-4.8.0
+#    https://docs.microsoft.com/en-us/powershell/module/az.storage/new-azstorageshare?view=azps-4.8.0
+#    https://docs.microsoft.com/en-us/powershell/module/az.storage/new-azstoragetable?view=azps-4.8.0
+#    https://docs.microsoft.com/en-us/powershell/module/az.storage/new-azstoragecontainer?view=azps-4.8.0
+# Notes:	
+#    Built using Azure Powershell Modules 4.8.0		
+#   
+#
+#    STEP 1: MODIFY THE VARIABLES
+#
+#    STEP 2: EXECUTE	
+# =============================================
+
+# -------------------------
+# 0. Variables
+# -------------------------
+#The Region you want to create the resources in
+$RegionAzure = 'placeholder'
+
+#The Resource group you want to create the resouces in
+$ResourceGroupName = "placeholder"
+
+#The Storage Account you want to create
+#Storage Account Must be alphanumeric. lowercase only. starts and ends with a letter. and can only contain letters or numbers.
+$StorageAccountName = "$($RegionAzure.ToLower())storage"
+
+#The Environments you want your storage account to loop through to create blobs,tables,queues,files when we create an account
+$Environments = @(
+   "placeholder",
+   "placeholder"
+)
+
+#The Tags that will be assigned to these resources upon creation
+$TagHash = @{
+    created=(Get-Date -Format 'yyyy-MM-dd'); 
+    createdBy='Colby Lithyouvong';
+    Desc='';
+    Project='';
+    Ticket=''
+}
+
+
+
+
+#Debug visual division
+""
+""
+"==============================================="
+
+# -------------------------
+# 1. PRE-SETUP, DON'T TOUCH
+# -------------------------
+function GetDateTimeNow(){
+    return Get-Date -Format 'yyyy-MM-dd hh:mm:ss'
+}
+
+$WarningPreference = 'SilentlyContinue'
+
+
+# -------------------------
+# 2. vALIDATION CHECK
+# -------------------------
+# must be a letter or a number
+# must begin and end with a letter
+# must be lowercase only
+if($StorageAccountName -cnotmatch "^[a-z][a-z0-9]*[a-z]$"){
+    throw "Cannot Proceed. Storage Account Must be alphanumeric. lowercase only. starts and ends with a letter. and can only contain letters or numbers."
+}
+
+
+# -------------------------
+# 3. Connect to Azure
+# -------------------------
+try{    
+    Write-Output "$(GetDateTimeNow) AZURE CONNECT - Connecting..."
+    $connection = Connect-AzAccount -ErrorAction Stop
+}
+catch{
+    Write-output "$(GetDateTimeNow) AZURE CONNECT - $($_)"
+}
+
+
+# -------------------------
+# 4. Resource Group 
+# -------------------------
+try{
+    Write-Output "$(GetDateTimeNow) RESOURCE GROUP - Retrieving..."
+    $ResourceGroup = Get-AzResourceGroup `
+                        -Name $ResourceGroupName `
+                        -ErrorAction Stop
+}
+catch {
+    Write-Output "$(GetDateTimeNow) RESOURCE GROUP - Not Found. Creating new..."
+    $ResourceGroup = New-AzResourceGroup `
+                        -Name $ResourceGroupName `
+                        -Location $RegionAzure `
+                        -Tag $TagHash
+}
+
+
+# -------------------------
+# 5. Azure Monitor
+# ------------------------- 
+try{
+    Write-Output "$(GetDateTimeNow) ACTION GROUP - Retrieving..."
+    $ActionGroup = Get-AzActionGroup `
+        -Name "$($RegionAzure)-ActionGroup" `
+        -ResourceGroup $ResourceGroup.ResourceGroupName `
+        -ErrorAction Stop
+} catch{
+    Write-Output "$(GetDateTimeNow) ACTION GROUP - Not Found. Creating Alert Rule Action Group..."
+    $ActionGroupReceiver = New-AzActionGroupReceiver `
+        -Name "$($RegionAzure)-Email-Reciever" `
+        -EmailReceiver `
+        -EmailAddress "placeholder@domain.com"
+
+    $ActionGroup = Set-AzActionGroup `
+        -Name "$($RegionAzure)-ActionGroup" `
+        -ResourceGroup $ResourceGroup.ResourceGroupName `
+        -ShortName "AAA-AG" `
+        -Receiver $ActionGroupReceiver
+}
+$ActionGroupId = New-AzActionGroup -ActionGroupId $ActionGroup.Id
+
+
+
+# -------------------------
+# 6. Storage Account
+# -------------------------
+try {
+    Write-Output "$(GetDateTimeNow) STORAGE ACCOUNT - Retrieving..."
+    $StorageAccount = Get-AzStorageAccount `
+                        -Name $StorageAccountName `
+                        -ResourceGroupName $ResourceGroup.ResourceGroupName `
+                        -ErrorAction Stop
+} catch {
+    Write-Output "$(GetDateTimeNow) STORAGE ACCOUNT - Not Found. Creating New..."    
+    New-AzStorageAccount `
+        -ResourceGroupName $ResourceGroup.ResourceGroupName `
+        -Name $StorageAccountName `
+        -SkuName 'Standard_GRS' `
+        -Location $RegionAzure `
+        -Kind 'StorageV2' `
+        -AccessTier 'Hot' `
+        -Tag $TagHash `
+        -EnableHttpsTrafficOnly $true `
+        -AssignIdentity |
+    Enable-AzStorageDeleteRetentionPolicy -RetentionDays 7 |
+    Out-Null
+    
+    Write-Output "$(GetDateTimeNow) STORAGE ACCOUNT - Retrieving..."
+    $StorageAccount = Get-AzStorageAccount `
+                        -Name $StorageAccountName `
+                        -ResourceGroupName $ResourceGroup.ResourceGroupName
+
+    # Add scripts here to create the create the queues,shares,tables, or containers
+    # see references below
+
+
+    foreach($environment in $Environments){
+        #For every environment add something here. 
+        # Add scripts here to create the create the queues,shares,tables, or containers
+
+        # New-AzStorageQueue
+        # New-AzStorageQueue -Name "queueabc"
+        # https://docs.microsoft.com/en-us/powershell/module/az.storage/new-azstoragequeue?view=azps-4.8.0
+
+        # New-AzStorageShare (Files)
+        # New-AzRmStorageShare `
+        #            -ResourceGroupName $ResourceGroup.ResourceGroupName `
+        #            -StorageAccountName $StorageAccount.StorageAccountName `
+        #            -Name $share `
+        #            -QuotaGiB 5120 `
+        #            -ErrorAction Stop |
+        #            Out-Null
+        # https://docs.microsoft.com/en-us/powershell/module/az.storage/new-azstorageshare?view=azps-4.8.0
+
+        # New-AzStorageTable
+        # New-AzStorageTable -Name "tableabc"
+        # https://docs.microsoft.com/en-us/powershell/module/az.storage/new-azstoragetable?view=azps-4.8.0
+
+        # New-AzStorageContainer
+        # New-AzStorageContainer `
+        #    -Name "$($SystemRegion.ToLower())-webpp-applicationlogs" `
+        #    -Context $StorageAccount.Context |
+        #    Out-Null
+        # https://docs.microsoft.com/en-us/powershell/module/az.storage/new-azstoragecontainer?view=azps-4.8.0
+    }    
+}
