@@ -15,6 +15,8 @@ Declare @Cursor_LastName nvarchar(30);
 Declare @Cursor_NumberRecords int;
 Declare @Cursor_RowCount int;
 
+-- Insert the resultset we want to loop through
+-- into the temporary table
 Declare @Cursor_Table table (
 	 RowID int identity(1, 1), 
 	 CustomerID int,
@@ -27,10 +29,6 @@ Select	CustomerID,
 		LastName
 From	dbo.Customer
 Where	Active = 1; 
-
-
--- Insert the resultset we want to loop through
--- into the temporary table
 
 -- Get the number of records in the temporary table
 Select @Cursor_NumberRecords = @@ROWCOUNT;
