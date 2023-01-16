@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<!--
+  Colby Lithyouvong
+  IT-634-Q1657 Distributed App Development 22TW1
+  Final Project Part I Submission: Web Application With Annotated Code
+-->
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>SNHU Airlines | Login</title>
+		<meta name="description" content="SNHU flight simulator search for flight screen"/>
+		<meta name="author" content="colby lithyouvong"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+
+		<!-- bootstrap -->
+		<link rel="stylesheet" href="/bootstrap/bootstrap.min.css" />
+		<script type="text/javascript" src="/bootstrap/bootstrap.min.js"></script>
+		
+		<!-- JQuery -->
+		<script type="text/javascript" src="/jquery/jquery-3.6.1.min.js"></script>
+		
+		<!-- JQuery UI -->
+		<link rel="stylesheet" href="/jquery-ui/jquery-ui.css">
+	 	<script src="/jquery-ui/jquery-ui.js"></script>
+	 	
+		<!-- Select Picker -->
+		<link rel="stylesheet" href="/select2/select2.min.css">
+		<script type="text/javascript" src="/select2/select2.min.js"></script>
+		
+		<!-- Axios -->
+		<script type="text/javascript" src="/axios/dist/axios.min.js"></script>
+		
+		<style type="text/css">
+			#username,
+			#password {
+				max-width: 150px;
+			}
+			
+			#usernameInvalidFeedback,
+			#passwordInvalidFeedback {
+				display: none;
+				color: coral;
+				font-style: italic;
+			}
+			
+			footer {
+			    position: fixed;
+			    bottom: 0;
+			    width: 100%;
+			    padding: 3px;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<!--Navigation section-->
+			<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+				<div class="container-fluid">
+					<a class="navbar-brand" href="/">SNHU Airlines</a>
+	
+					<button class="navbar-toggler" type="button"
+						data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+						aria-controls="navbarCollapse" aria-expanded="false"
+						aria-label="navbarcollapselabel">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+	
+					<div class="collapse navbar-collapse" id="navbarCollapse">
+						<ul class="navbar-nav me-auto mb-2 mb-md-0">
+							<li class="nav-item">
+								<a class="nav-link" aria-current="page" href="/">Book</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">Check-In</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link">My Trips</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link">Flight Status</a>
+							</li>
+						</ul>
+						<form name="loginForm2" id="loginForm2" th:action="@{/login}" method="get">
+							<button class="btn btn-outline-success" type="submit">Login</button>
+						</form>
+					</div>
+				</div>
+			</nav>
+		</header>
+	        
+		<p>&nbsp;</p>
+		
+		<main class="container" style="margin-top: 50px;">
+			<h2>Login</h2>
+			
+			<div>[(${error})]</div>
+			
+			<form id="loginForm" th:action="@{/login/login}" th:object="${Login}" method="post">
+				<div class="row">
+					<!-- ---------------------------------------------
+			        -- Username
+			        ---------------------------------------------- -->
+					<div class="col-md-auto">
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="usernameText">
+								Username
+							</span> 
+								
+							<input 	type="text" 
+									autocomplete="off" 
+									class="form-control" 
+									placeholder="username" 
+									id="username"
+									aria-label="username" 
+									aria-describedby="username"
+									required
+									th:field="*{username}">
+						    <div id="usernameInvalidFeedback">
+						    	Required: Please enter a Username
+					    	</div>
+						</div>
+					</div>
+				</div>
+					
+				<div class="row">
+					<!-- ---------------------------------------------
+			        -- Password
+			        ---------------------------------------------- -->
+					<div class="col-md-auto">
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="passwordText">
+								Password
+							</span> 
+								
+							<input 	type="password" 
+									autocomplete="off" 
+									class="form-control" 
+									placeholder="password..." 
+									id="password"
+									aria-label="password" 
+									aria-describedby="password"
+									required
+									th:field="*{password}">
+						    <div id="passwordInvalidFeedback">
+						    	Required: Please enter a Password
+					    	</div>
+						</div>
+					</div>
+				</div>
+					
+					
+				<!-- ---------------------------------------------
+		        -- Submit
+		        ---------------------------------------------- -->
+				<div class="row">
+					<div class="col">
+						<input 	type="submit" 
+								value="Login" 
+								id="loginSubmit" 
+								class="btn btn-primary" />
+					</div>
+				</div>
+			</form>
+			
+			<form id="createNewAccountForm" th:action="@{/create}" method="get">
+				<!-- ---------------------------------------------
+		        -- New Account
+		        ---------------------------------------------- -->
+		        <div class="row">
+		        	<div class="col">
+						Don't have an Account? 
+		        		<input type="submit"
+		        			   value="Click here to Create an Account"
+		        			   id="CreateNewAccountSubmit"
+		        			   class="btn btn-link" />
+		        	</div>
+		        </div>
+	        </form>
+	        
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+	        
+			<!-- FOOTER -->
+			<footer class="fixed-bottom" style="background-color:white;padding-top:10px;border-top: 1px solid gainsboro;">
+				<p class="float-end">
+					<a href="#">Help Center</a>
+				</p>
+				<p>
+					&copy; 2017–2022 Company, Inc. &middot; <a href="#">Private
+						Policy</a> &middot; <a href="#">Legal</a>
+				</p>
+			</footer>
+		</main>
+		
+		<script type="text/javascript">
+			$('#loginForm').on('submit', function() {
+				return ValidateForm("all");
+			});
+	
+			$('#username').keyup(function(){
+				ValidateForm("username");
+			});
+			
+			$('#password').keyup(function(){
+				ValidateForm("password");
+			});
+	
+			function ValidateForm(){
+				//declare variables
+				let username = $.trim($('#username').val());
+				let password = $.trim($('#password').val());
+				
+				//if field is invalid, show the error, otherwise hide it.
+				if(mode === 'username' || mode === 'all'){
+					if(username !== ''){
+						$('#usernameInvalidFeedback').css("display","none");
+					}
+					else {
+						$('#usernameInvalidFeedback').css("display","inline");
+					}					
+				}
+	
+				//if field is invalid, show the error, otherwise hide it.
+				if(mode === 'password' || mode === 'all'){
+					if(password !== ''){
+						$('#passwordInvalidFeedback').css("display","none");
+					}
+					else {
+						$('#passwordInvalidFeedback').css("display","inline");
+					}					
+				}
+				
+				return (username !== '' && password !== '');
+			}
+		
+		</script>
+	</body>
+</html>

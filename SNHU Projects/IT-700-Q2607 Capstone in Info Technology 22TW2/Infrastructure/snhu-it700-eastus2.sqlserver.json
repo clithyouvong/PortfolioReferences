@@ -1,0 +1,1080 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Sql/servers",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2",
+            "location": "eastus2",
+            "kind": "v12.0",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "administratorLogin": "lithiumion4321",
+                "version": "12.0",
+                "minimalTlsVersion": "1.0",
+                "publicNetworkAccess": "Enabled",
+                "restrictOutboundNetworkAccess": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advancedThreatProtectionSettings",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/Default",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "snhu-it700-eastus2/CreateIndex",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "snhu-it700-eastus2/DbParameterization",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "snhu-it700-eastus2/DefragmentIndex",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "snhu-it700-eastus2/DropIndex",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "snhu-it700-eastus2/ForceLastGoodPlan",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/auditingPolicies",
+            "apiVersion": "2014-04-01",
+            "name": "snhu-it700-eastus2/Default",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "auditingState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/auditingSettings",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/Default",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": false,
+                "isManagedIdentityInUse": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/connectionPolicies",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/default",
+            "location": "eastus2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "connectionType": "Redirect"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/SNHU",
+            "location": "eastus2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "sku": {
+                "name": "Standard",
+                "tier": "Standard",
+                "capacity": 10
+            },
+            "kind": "v12.0,user",
+            "properties": {
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "maxSizeBytes": 21474836480,
+                "catalogCollation": "SQL_Latin1_General_CP1_CI_AS",
+                "zoneRedundant": false,
+                "readScale": "Disabled",
+                "requestedBackupStorageRedundancy": "Local",
+                "maintenanceConfigurationId": "/subscriptions/c37ac3ad-755e-4200-b498-7fd7e8fea23a/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default",
+                "isLedgerOn": false
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advancedThreatProtectionSettings",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/master/Default",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingPolicies",
+            "apiVersion": "2014-04-01",
+            "name": "snhu-it700-eastus2/master/Default",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "auditingState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingSettings",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/master/Default",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "isAzureMonitorTargetEnabled": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/extendedAuditingSettings",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/master/Default",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "isAzureMonitorTargetEnabled": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/geoBackupPolicies",
+            "apiVersion": "2014-04-01",
+            "name": "snhu-it700-eastus2/master/Default",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/ledgerDigestUploads",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/master/Current",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/securityAlertPolicies",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/master/Default",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "state": "Disabled",
+                "disabledAlerts": [
+                    ""
+                ],
+                "emailAddresses": [
+                    ""
+                ],
+                "emailAccountAdmins": false,
+                "retentionDays": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/master/Current",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/vulnerabilityAssessments",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/master/Default",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "recurringScans": {
+                    "isEnabled": false,
+                    "emailSubscriptionAdmins": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/devOpsAuditingSettings",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/Default",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "isAzureMonitorTargetEnabled": false,
+                "isManagedIdentityInUse": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/encryptionProtector",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/current",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "kind": "servicemanaged",
+            "properties": {
+                "serverKeyName": "ServiceManaged",
+                "serverKeyType": "ServiceManaged",
+                "autoRotationEnabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/extendedAuditingSettings",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/Default",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": false,
+                "isManagedIdentityInUse": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/104.209.45.67",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/13.91.108.234",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/13.93.205.56",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/13.93.220.109",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/13.93.235.174",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.119.0.28",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.119.136.8",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.146.195",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.146.223",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.146.241",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.147.165",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.147.174",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.147.183",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.147.185",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.147.243",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.147.58",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.147.85",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.148.129",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.148.158",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.148.192",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.148.209",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.148.210",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.148.212",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.148.246",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.149.123",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.149.124",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.149.138",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.149.141",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.149.193",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.149.199",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.241.149.67",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.69.195.190",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.69.195.62",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.69.199.227",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.69.199.80",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.94.17.214",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.94.18.110",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.94.18.116",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.94.18.118",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.94.18.125",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.94.18.132",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.94.18.144",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.94.18.18",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.94.18.187",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.94.18.244",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.94.19.133",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.94.19.149",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.94.19.165",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.94.19.170",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.94.19.174",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.94.19.249",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.94.19.29",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.94.19.39",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.94.19.68",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/20.94.20.15",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/52.160.105.227",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/52.160.85.43",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/AllowAllWindowsAzureIps",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/Colby",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/VM",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/keys",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/ServiceManaged",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "kind": "servicemanaged",
+            "properties": {
+                "serverKeyType": "ServiceManaged"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/securityAlertPolicies",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/Default",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "state": "Disabled",
+                "disabledAlerts": [
+                    ""
+                ],
+                "emailAddresses": [
+                    ""
+                ],
+                "emailAccountAdmins": false,
+                "retentionDays": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/sqlVulnerabilityAssessments",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/Default",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/virtualNetworkRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/EastUS2VNET",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "virtualNetworkSubnetId": "/subscriptions/c37ac3ad-755e-4200-b498-7fd7e8fea23a/resourceGroups/SNHU-IT700-ResourceGroup-EastUS2/providers/Microsoft.Network/virtualNetworks/SNHU-IT700-VNET-EastUS2/subnets/default",
+                "ignoreMissingVnetServiceEndpoint": false
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/vulnerabilityAssessments",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/Default",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "recurringScans": {
+                    "isEnabled": false,
+                    "emailSubscriptionAdmins": true
+                },
+                "storageContainerPath": null
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advancedThreatProtectionSettings",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/SNHU/Default",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', 'snhu-it700-eastus2', 'SNHU')]",
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "snhu-it700-eastus2/SNHU/CreateIndex",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', 'snhu-it700-eastus2', 'SNHU')]",
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "snhu-it700-eastus2/SNHU/DbParameterization",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', 'snhu-it700-eastus2', 'SNHU')]",
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "snhu-it700-eastus2/SNHU/DefragmentIndex",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', 'snhu-it700-eastus2', 'SNHU')]",
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "snhu-it700-eastus2/SNHU/DropIndex",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', 'snhu-it700-eastus2', 'SNHU')]",
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "snhu-it700-eastus2/SNHU/ForceLastGoodPlan",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', 'snhu-it700-eastus2', 'SNHU')]",
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingPolicies",
+            "apiVersion": "2014-04-01",
+            "name": "snhu-it700-eastus2/SNHU/Default",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', 'snhu-it700-eastus2', 'SNHU')]",
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "auditingState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingSettings",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/SNHU/Default",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', 'snhu-it700-eastus2', 'SNHU')]",
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "isAzureMonitorTargetEnabled": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/backupLongTermRetentionPolicies",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/SNHU/default",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', 'snhu-it700-eastus2', 'SNHU')]",
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "weeklyRetention": "PT0S",
+                "monthlyRetention": "PT0S",
+                "yearlyRetention": "PT0S",
+                "weekOfYear": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/backupShortTermRetentionPolicies",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/SNHU/default",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', 'snhu-it700-eastus2', 'SNHU')]",
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "retentionDays": 7,
+                "diffBackupIntervalInHours": 24
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/extendedAuditingSettings",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/SNHU/Default",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', 'snhu-it700-eastus2', 'SNHU')]",
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "isAzureMonitorTargetEnabled": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/geoBackupPolicies",
+            "apiVersion": "2014-04-01",
+            "name": "snhu-it700-eastus2/SNHU/Default",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', 'snhu-it700-eastus2', 'SNHU')]",
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/ledgerDigestUploads",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/SNHU/Current",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', 'snhu-it700-eastus2', 'SNHU')]",
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/securityAlertPolicies",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/SNHU/Default",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', 'snhu-it700-eastus2', 'SNHU')]",
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "state": "Disabled",
+                "disabledAlerts": [
+                    ""
+                ],
+                "emailAddresses": [
+                    ""
+                ],
+                "emailAccountAdmins": false,
+                "retentionDays": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/SNHU/Current",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', 'snhu-it700-eastus2', 'SNHU')]",
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "state": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/vulnerabilityAssessments",
+            "apiVersion": "2022-05-01-preview",
+            "name": "snhu-it700-eastus2/SNHU/Default",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', 'snhu-it700-eastus2', 'SNHU')]",
+                "[resourceId('Microsoft.Sql/servers', 'snhu-it700-eastus2')]"
+            ],
+            "properties": {
+                "recurringScans": {
+                    "isEnabled": false,
+                    "emailSubscriptionAdmins": true
+                }
+            }
+        }
+    ]
+}

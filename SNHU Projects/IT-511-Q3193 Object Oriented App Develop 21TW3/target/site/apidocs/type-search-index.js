@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","u":"allclasses-index.html"},{"p":"SteppingStones","l":"Ingredient"},{"p":"SteppingStones","l":"Main"},{"p":"SteppingStones","l":"Recipe"},{"p":"SteppingStones","l":"RecipeBox"}];updateSearchResults();

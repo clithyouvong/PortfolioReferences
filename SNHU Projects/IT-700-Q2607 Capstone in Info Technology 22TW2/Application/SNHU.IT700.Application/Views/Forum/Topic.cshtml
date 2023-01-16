@@ -1,0 +1,40 @@
+﻿@model IEnumerable<SNHU.IT700.Application.Models.ForumPostModel>
+@{
+    ViewData["Title"] = "Forum | Topic";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2 class="border-bottom">Forum</h2>
+<h3>@ViewBag.Topic</h3>
+
+<p>
+    <a href="~/Forum">Back to Forums Screen</a>
+</p>
+
+<p>
+    <a href="../PostCreate/@ViewBag.ForumTopicId" class="btn btn-primary">Create Post</a>
+</p>
+
+<p>
+    Total Records: @ViewBag.RowCount
+</p>
+<table class="table table-striped table-bordered table-hover table-sm">
+    <thead>
+        <tr>
+            <th>Posts</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Post)
+                    <br/><br/>
+                    @item.DateUpdated | @Html.Raw(item.DateUpdatedByName)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

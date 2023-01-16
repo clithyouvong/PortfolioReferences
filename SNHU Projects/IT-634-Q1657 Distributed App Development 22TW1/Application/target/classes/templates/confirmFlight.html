@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<!--
+  Colby Lithyouvong
+  IT-634-Q1657 Distributed App Development 22TW1
+  Final Project Part I Submission: Web Application With Annotated Code
+-->
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>SNHU Airlines | Confirm Flight</title>
+		<meta name="description" content="SNHU flight simulator search for flight screen"/>
+		<meta name="author" content="colby lithyouvong"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+
+		<!-- bootstrap -->
+		<link rel="stylesheet" href="/bootstrap/bootstrap.min.css" />
+		<script type="text/javascript" src="/bootstrap/bootstrap.min.js"></script>
+		
+		<!-- JQuery -->
+		<script type="text/javascript" src="/jquery/jquery-3.6.1.min.js"></script>
+		
+		<!-- JQuery UI -->
+		<link rel="stylesheet" href="/jquery-ui/jquery-ui.css">
+	 	<script src="/jquery-ui/jquery-ui.js"></script>
+	 	
+		<!-- Select Picker -->
+		<link rel="stylesheet" href="/select2/select2.min.css">
+		<script type="text/javascript" src="/select2/select2.min.js"></script>
+	</head>
+	
+	<body>
+	
+		<header>
+			<!--Navigation section-->
+			<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+				<div class="container-fluid">
+					<a class="navbar-brand" href="/">SNHU Airlines</a>
+	
+					<button class="navbar-toggler" type="button"
+						data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+						aria-controls="navbarCollapse" aria-expanded="false"
+						aria-label="navbarcollapselabel">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+	
+					<div class="collapse navbar-collapse" id="navbarCollapse">
+						<ul class="navbar-nav me-auto mb-2 mb-md-0">
+							<li class="nav-item">
+								<a class="nav-link active" aria-current="page" href="/">Book</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">Check-In</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link">My Trips</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link">Flight Status</a>
+							</li>
+						</ul>
+						<div th:if="${loginAuthorized == null}" id="loginDiv">
+							<form name="loginForm" id="loginForm" th:action="@{/login}" method="get">
+								<button class="btn btn-outline-success" type="submit">Login</button>
+							</form>
+						</div>
+						<div th:if="${loginAuthorized != null}" id="logoutDiv">
+							<span style="color:ghostwhite;">Hello [(${loginAuthorized.firstName})]</span>
+							
+							<form name="accountForm" id="accountForm" th:action="@{/dashboard}" method="get" style="display:inline;">
+								<button class="btn btn-outline-secondary" type="submit">Account</button>
+							</form>	
+							
+							<form name="logoutForm" id="logoutForm" th:action="@{/logout}" method="get" style="display:inline;">
+								<button class="btn btn-outline-secondary" type="submit">Logout</button>
+							</form>						
+						</div>
+					</div>
+				</div>
+			</nav>
+		</header>
+		
+		<main class="container" style="margin-top: 50px;">
+			<!-- ---------------------------------------------
+			-- Booking confirmation section
+			---------------------------------------------- -->
+	        <p>&nbsp;</p>
+	
+	        <h2>Confirmation</h2>
+	
+	        <h3>Booking Reference: [(${confirmationCode})]</h3>
+	
+	        <p>[(${currentDate})]</p>
+	 
+	        <p>Dear [(${loginAuthorized.firstName})] [(${loginAuthorized.lastName})],</p>
+	        
+	        <p>Thank you for booking your flight with SNHU Airlines.</p>
+	        
+	        <p>This is your booking confirmation, passenger itinerary and receipt email. Please review the passport and visa information before travel.</p>
+	
+	        <blockquote>
+	            From: [(${currentFlight.originAirportCode})]<br/>
+	            To: [(${currentFlight.destinationAirportCode})]<br/>
+	            Type: [(${Search.RoundTripOrOneWay})]<br/>
+	            Date: [(${Search.LeavingOn})]<br/>
+	            Date Return: [(${Search.ReturningOn})]<br/>
+	            Travelers: [(${Search.AdultPassengers})] Adult, [(${Search.ChildrenPassengers})] Children<br/>
+	            Time: [(${currentFlight.DepartureTime})] to [(${currentFlight.ArrivalTime})]<br/>
+	            Class: [(${currentClass})] 
+	        </blockquote>
+	
+	        <blockquote>
+	            Passenger 1<br/>
+	            [(${loginAuthorized.firstName})] [(${loginAuthorized.middleName})] [(${loginAuthorized.lastName})]<br/>
+	            Gender: [(${loginAuthorized.gender})]<br/>
+	            Date of Birth: [(${loginAuthorized.dateOfBirth})]<br/>
+	            Phone: [(${loginAuthorized.phone})]<br/>
+	            Email: [(${loginAuthorized.email})]<br/>
+	        </blockquote>
+	
+	        <blockquote>
+	        	$[(${currentClassPrice})]<br/>
+	            Payment ending in ****4356<br/>
+	            Visa<br/>
+	        </blockquote>
+	        
+	        
+	        <form id="SearchResults" th:action="@{/}" method="get">
+	        	<div class="row">
+	        	
+					<!-- ---------------------------------------------
+					-- Submit
+					---------------------------------------------- -->
+					<div class="col-md-auto">
+					    <input type="submit" value="Return to Search Screen" id="returnToSearchScreen" class="btn btn-secondary"/>
+					</div>
+				</div>
+	        </form>
+	        
+	        <p>&nbsp;</p>
+		
+			<!-- FOOTER -->
+			<footer class="container position-sticky bottom-0 end-0" style="background-color:white;padding-top:10px;border-top: 1px solid gainsboro;">
+				<p class="float-end">
+					<a href="#">Help Center</a>
+				</p>
+				<p>
+					&copy; 2017–2022 Company, Inc. &middot; <a href="#">Private
+						Policy</a> &middot; <a href="#">Legal</a>
+				</p>
+			</footer>
+		</main>
+	</body>
+</html>

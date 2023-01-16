@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html>
+
+<!--
+  Colby Lithyouvong
+  IT-634-Q1657 Distributed App Development 22TW1
+  Final Project Part I Submission: Web Application With Annotated Code
+-->
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>SNHU Airlines | Create</title>
+		<meta name="description" content="SNHU flight simulator search for flight screen"/>
+		<meta name="author" content="colby lithyouvong"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+
+		<!-- bootstrap -->
+		<link rel="stylesheet" href="/bootstrap/bootstrap.min.css" />
+		<script type="text/javascript" src="/bootstrap/bootstrap.min.js"></script>
+		
+		<!-- JQuery -->
+		<script type="text/javascript" src="/jquery/jquery-3.6.1.min.js"></script>
+		
+		<!-- JQuery UI -->
+		<link rel="stylesheet" href="/jquery-ui/jquery-ui.css">
+	 	<script src="/jquery-ui/jquery-ui.js"></script>
+	 	
+		<!-- Select Picker -->
+		<link rel="stylesheet" href="/select2/select2.min.css">
+		<script type="text/javascript" src="/select2/select2.min.js"></script>
+		
+		<!-- Axios -->
+		<script type="text/javascript" src="/axios/dist/axios.min.js"></script>
+		
+		<style type="text/css">
+			#username,
+			#password {
+				max-width: 150px;
+			}
+			
+			.invalidFeedback {
+				display: none;
+				color: coral;
+				font-style: italic;
+			}
+			
+			footer {
+			    position: fixed;
+			    bottom: 0;
+			    width: 100%;
+			    padding: 3px;
+			}
+			
+			.subscript {
+				vertical-align: sub;  
+				color:red;
+				padding-left:5px;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<!--Navigation section-->
+			<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+				<div class="container-fluid">
+					<a class="navbar-brand" href="/">SNHU Airlines</a>
+	
+					<button class="navbar-toggler" type="button"
+						data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+						aria-controls="navbarCollapse" aria-expanded="false"
+						aria-label="navbarcollapselabel">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+	
+					<div class="collapse navbar-collapse" id="navbarCollapse">
+						<ul class="navbar-nav me-auto mb-2 mb-md-0">
+							<li class="nav-item">
+								<a class="nav-link" aria-current="page" href="/">Book</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">Check-In</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link">My Trips</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link">Flight Status</a>
+							</li>
+						</ul>
+						<form name="loginForm" id="loginForm" th:action="@{/login}" method="get">
+							<button class="btn btn-outline-success" type="submit">Login</button>
+						</form>
+					</div>
+				</div>
+			</nav>
+		</header>
+
+		<p>&nbsp;</p>
+		
+		<main class="container" style="margin-top: 50px;">
+			<h2>Step 1: Enter a Username / Password</h2>
+			
+			<div>[(${error})]</div>
+			
+			<form id="createForm" th:action="@{/create/verify}" th:object="${Login}" method="post">
+				<div class="row">
+					<!-- ---------------------------------------------
+			        -- Username
+			        ---------------------------------------------- -->
+					<div class="col-md-auto">
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="usernameText">
+								Username
+							</span> 
+								
+							<input 	type="text" 
+									autocomplete="off" 
+									class="form-control" 
+									placeholder="username" 
+									id="username"
+									aria-label="username" 
+									aria-describedby="username"
+									required
+									th:field="*{username}">
+							<span class="subscript">*</span>
+						</div>
+					</div>
+				</div>
+					
+				<div class="row">
+					<!-- ---------------------------------------------
+			        -- Password
+			        ---------------------------------------------- -->
+					<div class="col-md-auto">
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="passwordText">
+								Password
+							</span> 
+								
+							<input 	type="password" 
+									autocomplete="off" 
+									class="form-control" 
+									placeholder="password..." 
+									id="password"
+									aria-label="password" 
+									aria-describedby="password"
+									required
+									th:field="*{password}">
+							<span class="subscript">*</span>
+						</div>
+					</div>
+				</div>
+				
+				
+				<h2>Step 2: Enter Contact Information</h2>
+				<div class="row">
+					
+					<!-- ---------------------------------------------
+			        -- First Name
+			        ---------------------------------------------- -->
+					<div class="col-md-auto">
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="firstNameText">
+								First
+							</span> 
+								
+							<input 	type="text" 
+									autocomplete="off" 
+									class="form-control" 
+									placeholder="first name..." 
+									id="firstName"
+									aria-label="firstName" 
+									aria-describedby="firstName"
+									style="max-width: 150px;"
+									required
+									th:field="*{firstName}">
+							<span class="subscript">*</span>
+						</div>
+					</div>
+						
+					<!-- ---------------------------------------------
+			        -- Middle Name
+			        ---------------------------------------------- -->
+					<div class="col-md-auto">
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="middleNameText">
+								Middle
+							</span> 
+								
+							<input 	type="text" 
+									autocomplete="off" 
+									class="form-control" 
+									placeholder="middle name..." 
+									id="middleName"
+									aria-label="middleName" 
+									aria-describedby="middleName"
+									style="max-width: 75px;"
+									maxlength="1"
+									th:field="*{middleName}">
+						</div>
+					</div>
+					
+					<!-- ---------------------------------------------
+			        -- Last Name
+			        ---------------------------------------------- -->
+					<div class="col-md-auto">
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="lastNameText">
+								Last
+							</span> 
+								
+							<input 	type="text" 
+									autocomplete="off" 
+									class="form-control" 
+									placeholder="Last name..." 
+									id="lastName"
+									aria-label="lastName" 
+									aria-describedby="lastName"
+									style="max-width: 250px;"
+									required
+									th:field="*{lastName}">
+							<span class="subscript">*</span>
+						</div>
+					</div>
+				</div>
+					
+				<div class="row">
+				
+					<!-- ---------------------------------------------
+			        -- Date of Birth
+			        ---------------------------------------------- -->
+					<div class="col-md-auto">
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="dateOfBirthText">
+								Date of Birth
+							</span> 
+								
+							<input 	type="text" 
+									autocomplete="off" 
+									class="form-control" 
+									placeholder="mm/dd/yyyy" 
+									id="dateOfBirth"
+									aria-label="dateOfBirth" 
+									aria-describedby="dateOfBirth"
+									style="max-width: 150px;"
+									required
+									th:field="*{dateOfBirth}">
+							<span class="subscript">*</span>
+						</div>
+					</div>
+					
+									
+					<!-- ---------------------------------------------
+			        -- Gender
+			        ---------------------------------------------- -->
+					<div class="col-md-auto">
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="genderText">
+								Gender
+							</span> 
+								
+							<select name="gender" id="gender" class="form-control" style="max-width: 100px;" th:field="*{gender}">
+								<option value="Male" selected>Male</option>
+								<option value="Female">Female</option>
+							</select>
+							<span class="subscript">*</span>
+						</div>
+					</div>
+				</div>
+				
+				<div class="row">
+				
+					<!-- ---------------------------------------------
+			        -- Phone
+			        ---------------------------------------------- -->
+					<div class="col-md-auto">
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="phoneText">
+								Phone Number
+							</span> 
+								
+							<input 	type="text" 
+									autocomplete="off" 
+									class="form-control" 
+									placeholder="(xxx) xxx - xxxx" 
+									id="phone"
+									aria-label="phone" 
+									aria-describedby="phone"
+									style="max-width: 175px;"
+									maxlength="16"
+									required
+									th:field="*{phone}">
+							<span class="subscript">*</span>
+						</div>
+					</div>
+					
+					<!-- ---------------------------------------------
+			        -- Email
+			        ---------------------------------------------- -->
+					<div class="col-md-auto">
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="EmailText">
+								Email
+							</span> 
+								
+							<input 	type="text" 
+									autocomplete="off" 
+									class="form-control" 
+									placeholder="email@domail.com" 
+									id="email"
+									aria-label="email" 
+									aria-describedby="email"
+									style="max-width: 200px;"
+									required
+									th:field="*{email}">
+							<span class="subscript">*</span>
+						</div>
+					</div>
+				</div>
+					
+				<!-- ---------------------------------------------
+		        -- Submit
+		        ---------------------------------------------- -->
+				<div class="row">
+					<div class="col">
+						<input 	type="submit" 
+								value="Create Account" 
+								id="createAccountSubmit" 
+								class="btn btn-primary" />
+								
+							
+					    <div class="invalidFeedback" id="usernameInvalidFeedback">
+					    	Required: Please enter a User name
+				    	</div>
+					    <div class="invalidFeedback" id="passwordInvalidFeedback">
+					    	Required: Please enter a Password
+				    	</div>	
+					    <div class="invalidFeedback" id="firstNameInvalidFeedback">
+					    	Required: Please enter your first name
+				    	</div>
+					    <div class="invalidFeedback" id="lastNameInvalidFeedback">
+					    	Required: Please enter your last name
+				    	</div>
+					    <div class="invalidFeedback" id="dateOfBirthInvalidFeedback">
+					    	Required: Please enter your date of birth in the format of mm/dd/yyyy
+				    	</div>
+					    <div class="invalidFeedback" id="phoneInvalidFeedback">
+					    	Required: Please enter your phone number in the format of (xxx) xxx - xxxx
+				    	</div>
+					    <div class="invalidFeedback" id="emailInvalidFeedback">
+					    	Required: Please enter your email in the format of email@domain.com
+				    	</div>
+					</div>
+				</div>
+			</form>
+	        
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+	        
+			<!-- FOOTER -->
+			<footer class="fixed-bottom" style="background-color:white;padding-top:10px;border-top: 1px solid gainsboro;">
+				<p class="float-end">
+					<a href="#">Help Center</a>
+				</p>
+				<p>
+					&copy; 2017–2022 Company, Inc. &middot; <a href="#">Private
+						Policy</a> &middot; <a href="#">Legal</a>
+				</p>
+			</footer>
+		</main>
+		
+		
+		<!-- ----------------------------------------------------
+		-- Script for validation
+		----------------------------------------------------- -->
+		<script type="text/javascript">
+			$('#createForm').on('submit', function() { return ValidateForm("all"); });
+			
+			$('#username').keyup(function(){ ValidateForm("username"); });
+			$('#password').keyup(function(){ ValidateForm("password"); });
+			
+			$('#firstName').keyup(function(){ ValidateForm("firstName"); });
+			$('#lastName').keyup(function(){ ValidateForm("lastName"); });
+			$('#dateOfBirth').keyup(function(){ ValidateForm("dateOfBirth"); });
+			$('#phone').keyup(function(){ ValidateForm("phone"); });
+			$('#email').keyup(function(){ ValidateForm("email"); });
+
+			function ValidateForm(mode){
+				//declare variables
+				let username = $.trim($('#username').val());
+				let password = $.trim($('#password').val());
+				
+				let firstName = $.trim($('#firstName').val());
+				let lastName = $.trim($('#lastName').val());
+				let dateOfBirth = $.trim($('#dateOfBirth').val());
+				let phone = $.trim($('#phone').val());
+				let email = $.trim($('#email').val());
+				let isValid = true;
+				
+				//username
+				if(mode === 'username' || mode === 'all'){
+					if(username !== ''){
+						$('#usernameInvalidFeedback').css("display","none");
+					}
+					else {
+						$('#usernameInvalidFeedback').css("display","block");
+						isValid = false;
+					}					
+				}
+	
+				//password
+				if(mode === 'password' || mode === 'all'){
+					if(password !== ''){
+						$('#passwordInvalidFeedback').css("display","none");
+					}
+					else {
+						$('#passwordInvalidFeedback').css("display","block");
+						isValid = false;
+					}					
+				}
+				
+
+				//firstName
+				if(mode === 'firstName' || mode === 'all'){
+					if(firstName !== ''){
+						$('#firstNameInvalidFeedback').css("display","none");
+					}
+					else {
+						$('#firstNameInvalidFeedback').css("display","block");
+						isValid = false;
+					}					
+				}
+
+				//lastName
+				if(mode === 'lastName' || mode === 'all'){
+					if(lastName !== ''){
+						$('#lastNameInvalidFeedback').css("display","none");
+					}
+					else {
+						$('#lastNameInvalidFeedback').css("display","block");
+						isValid = false;
+					}					
+				}
+
+				//dateOfBirth
+				if(mode === 'dateOfBirth' || mode === 'all'){
+					if(dateOfBirth !== ''){
+						$('#dateOfBirthInvalidFeedback').css("display","none");
+					}
+					else {
+						$('#dateOfBirthInvalidFeedback').css("display","block");
+						isValid = false;
+					}					
+				}
+
+				//phone
+				if(mode === 'phone' || mode === 'all'){
+					if(phone !== ''){
+						$('#phoneInvalidFeedback').css("display","none");
+					}
+					else {
+						$('#phoneInvalidFeedback').css("display","block");
+						isValid = false;
+					}					
+				}
+				
+				//email
+				if(mode === 'email' || mode === 'all'){
+					if(email !== '' && validateEmail(email)){
+						$('#emailInvalidFeedback').css("display","none");
+					}
+					else {
+						$('#emailInvalidFeedback').css("display","block");
+						isValid = false;
+					}
+				}
+				
+				return isValid;
+			}
+
+			function validateEmail(email) {
+			  var re = /\S+@\S+\.\S+/;
+			  return re.test(email);
+			}
+
+		</script>
+		
+		<!-- ----------------------------------------------------
+		-- Script to control date of birth formating and masking
+		----------------------------------------------------- -->
+		<script type="text/javascript">
+	  		$( "#dateOfBirth" ).datepicker({
+					maxDate: new Date(),
+					numberOfMonths: 2,
+				changeMonth: true,
+				changeYear: true
+			});
+	  		
+	  		var date = document.getElementById('dateOfBirth');
+
+
+	  		function checkValue(str, max) {
+	  		  if (str.charAt(0) !== '0' || str == '00') {
+	  		    var num = parseInt(str);
+	  		    if (isNaN(num) || num <= 0 || num > max) num = 1;
+	  		    str = num > parseInt(max.toString().charAt(0)) && num.toString().length == 1 ? '0' + num : num.toString();
+	  		  };
+	  		  return str;
+	  		};
+
+	  		date.addEventListener('input', function(e) {
+	  		  this.type = 'text';
+	  		  var input = this.value;
+	  		  if (/\D\/$/.test(input)) input = input.substr(0, input.length - 3);
+	  		  var values = input.split('/').map(function(v) {
+	  		    return v.replace(/\D/g, '')
+	  		  });
+	  		  if (values[0]) values[0] = checkValue(values[0], 12);
+	  		  if (values[1]) values[1] = checkValue(values[1], 31);
+	  		  var output = values.map(function(v, i) {
+	  		    return v.length == 2 && i < 2 ? v + ' / ' : v;
+	  		  });
+	  		  this.value = output.join('').substr(0, 14);
+	  		});
+
+	  		date.addEventListener('blur', function(e) {
+	  		  this.type = 'text';
+	  		  var input = this.value;
+	  		  var values = input.split('/').map(function(v, i) {
+	  		    return v.replace(/\D/g, '')
+	  		  });
+	  		  var output = '';
+	  		  
+	  		  if (values.length == 3) {
+	  		    var year = values[2].length !== 4 ? parseInt(values[2]) + 2000 : parseInt(values[2]);
+	  		    var month = parseInt(values[0]) - 1;
+	  		    var day = parseInt(values[1]);
+	  		    var d = new Date(year, month, day);
+	  		    if (!isNaN(d)) {
+  		    		$('#result').val(d.toString());
+	  		      var dates = [d.getMonth() + 1, d.getDate(), d.getFullYear()];
+	  		      output = dates.map(function(v) {
+	  		        v = v.toString();
+	  		        return v.length == 1 ? '0' + v : v;
+	  		      }).join(' / ');
+	  		    };
+	  		  };
+	  		  this.value = output;
+	  		});
+		</script>
+		
+		<!-- ----------------------------------------------------
+		-- Script to control phone number formating and masking
+		----------------------------------------------------- -->
+		<script type="text/javascript">
+
+			const isNumericInput = (event) => {
+			    const key = event.keyCode;
+			    return ((key >= 48 && key <= 57) || // Allow number line
+			        (key >= 96 && key <= 105) // Allow number pad
+			    );
+			};
+	
+			const isModifierKey = (event) => {
+			    const key = event.keyCode;
+			    return (event.shiftKey === true || key === 35 || key === 36) || // Allow Shift, Home, End
+			        (key === 8 || key === 9 || key === 13 || key === 46) || // Allow Backspace, Tab, Enter, Delete
+			        (key > 36 && key < 41) || // Allow left, up, right, down
+			        (
+			            // Allow Ctrl/Command + A,C,V,X,Z
+			            (event.ctrlKey === true || event.metaKey === true) &&
+			            (key === 65 || key === 67 || key === 86 || key === 88 || key === 90)
+			        )
+			};
+	
+			const enforceFormat = (event) => {
+			    // Input must be of a valid number format or a modifier key, and not longer than ten digits
+			    if(!isNumericInput(event) && !isModifierKey(event)){
+			        event.preventDefault();
+			    }
+			};
+	
+			const formatToPhone = (event) => {
+			    if(isModifierKey(event)) {return;}
+	
+			    const input = event.target.value.replace(/\D/g,'').substring(0,10); // First ten digits of input only
+			    const areaCode = input.substring(0,3);
+			    const middle = input.substring(3,6);
+			    const last = input.substring(6,10);
+	
+			    if(input.length > 6){event.target.value = `(${areaCode}) ${middle} - ${last}`;}
+			    else if(input.length > 3){event.target.value = `(${areaCode}) ${middle}`;}
+			    else if(input.length > 0){event.target.value = `(${areaCode}`;}
+			};
+	
+			const inputElement = document.getElementById('phone');
+			inputElement.addEventListener('keydown',enforceFormat);
+			inputElement.addEventListener('keyup',formatToPhone);
+		</script>
+	</body>
+</html>

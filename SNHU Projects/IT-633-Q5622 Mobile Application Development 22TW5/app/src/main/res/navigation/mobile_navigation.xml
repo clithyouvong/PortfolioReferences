@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.finalproject2.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_admissions"
+        android:name="com.example.finalproject2.ui.Admissions.AdmissionsFragment"
+        android:label="@string/menu_admissions"
+        tools:layout="@layout/fragment_admissions" />
+
+    <fragment
+        android:id="@+id/nav_course_catalog"
+        android:name="com.example.finalproject2.ui.CourseCatalog.CourseCatalogFragment"
+        android:label="Course Catalog"
+        tools:layout="@layout/fragment_coursecatalog" />
+
+    <fragment
+        android:id="@+id/nav_tuitionAndFinancialAid"
+        android:name="com.example.finalproject2.ui.TuitionAndFinancialAid.TuitionAndFinancialAidFragment"
+        android:label="Tutition and Financial Aid"
+        tools:layout="@layout/fragment_tuition_and_financial_aid" />
+</navigation>

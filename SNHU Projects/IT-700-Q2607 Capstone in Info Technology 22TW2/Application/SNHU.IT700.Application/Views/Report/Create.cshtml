@@ -1,0 +1,668 @@
+﻿@model SNHU.IT700.Application.Models.ReportFilterModel
+
+@{
+    ViewData["Title"] = "Report Missing";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    #Description {
+        resize:none;
+    }
+
+    .invalidFeedback {
+        color: red;
+        font-style: italic;
+    }
+
+    .required {
+        color: red;
+        font-size: small;
+    }
+</style>
+
+<!-- Select Picker -->
+<link rel="stylesheet" href="~/lib/select2/css/select2.min.css">
+<script type="text/javascript" src="~/lib/select2/js/select2.min.js"></script>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<h1 class="border-bottom">Report Missing Individuals</h1>
+
+<p>@Html.Raw((String)ViewBag.Message)</p>
+
+<form id="reportForm" action="Submit" method="post">
+
+	<h3 class="border-bottom">Name: </h3>
+	<div class="row">
+		<div class="col-md-auto">
+			<!-- ---------------------------------------------
+			-- First Name
+			---------------------------------------------- -->
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="FirstNameText">
+					First
+				</span> 
+
+				<input	type="text" 
+						autocomplete="off" 
+						class="form-control" 
+						placeholder="first name..."
+						id="FirstName"
+						name="FirstName"
+						aria-label="FirstName" 
+						aria-describedby="FirstName"
+						style="max-width: 150px;"/>
+			</div>
+		</div>
+
+		<div class="col-md-auto">
+			<!-- ---------------------------------------------
+			-- Last Name
+			---------------------------------------------- -->
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="LastNameText">
+					Last
+				</span>
+
+				<input type="text"
+						autocomplete="off"
+						class="form-control"
+						placeholder="Last name..."
+						id="LastName"
+						name="LastName"
+						aria-label="LastName"
+						aria-describedby="LastName"
+						style="max-width: 250px;"/>
+			</div>
+		</div>
+	</div>
+
+
+	<h3 class="border-bottom">Location: </h3>
+	<div class="row">
+		<div class="col-md-auto">
+			<!-- ---------------------------------------------
+			-- City
+			---------------------------------------------- -->
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="CityText">
+					City
+				</span>
+
+				<input type="text"
+					   autocomplete="off"
+					   class="form-control"
+					   placeholder="City..."
+					   id="City"
+					   name="City"
+					   aria-label="City"
+					   aria-describedby="City"
+					   style="max-width: 150px;" />
+			</div>
+		</div>
+
+		<div class="col-md-auto">
+			<!-- ---------------------------------------------
+			-- State
+			---------------------------------------------- -->
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="StateText">
+					State
+				</span>
+
+				<select class="form-control"
+						id="State"
+						name="State"
+						aria-label="State"
+						aria-describedby="State"
+						style="max-width: 150px;">
+					<option value="0">Select State...</option>
+					@foreach (var c in Model.StateList)
+					{
+						<option value="@Html.Raw(c.ID)">
+							@Html.DisplayFor(modelItem => c.Name)
+							( @Html.DisplayFor(modelItem => c.Abbreviation) )
+						</option>
+					}
+				</select>
+			</div>
+		</div>
+
+		<div class="col-md-auto">
+			<!-- ---------------------------------------------
+			-- Country
+			---------------------------------------------- -->
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="CountryText">
+					Country
+				</span>
+
+				<select class="form-control"
+						id="Country"
+						name="Country"
+						aria-label="Country"
+						aria-describedby="Country"
+						style="max-width: 150px;">
+					<option value="0">Select Country...</option>
+					@foreach (var c in Model.CountryList)
+					{
+						<option value="@Html.Raw(c.ID)">
+							@Html.DisplayFor(modelItem => c.PrintableName)
+							( @Html.DisplayFor(modelItem => c.ISOCode3) )
+						</option>
+					}
+				</select>
+			</div>
+		</div>
+	</div>
+
+
+	<h3 class="border-bottom">Date: </h3>
+	<div class="row">
+		<div class="col-md-auto">
+			<!-- ---------------------------------------------
+			-- DateLostStart
+			---------------------------------------------- -->
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="DateLostStartText">
+					Date Lost Reported
+				</span>
+
+				<input type="text"
+					   autocomplete="off"
+					   class="form-control"
+					   placeholder="mm/dd/yyyy"
+					   id="DateLost"
+					   name="DateLost"
+					   aria-label="DateLost"
+					   aria-describedby="DateLost"
+					   style="max-width: 150px;" />
+			</div>
+		</div>
+	</div>
+
+
+	<h3 class="border-bottom">Age: </h3>
+	<div class="row">
+		<div class="col-md-auto">
+			<!-- ---------------------------------------------
+			-- Age Now
+			---------------------------------------------- -->
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="AgeNowText">
+					Age Reported
+				</span>
+
+				<select class="form-control"
+						id="Age"
+						name="Age"
+						style="max-width: 50px;">
+					<option value="0"></option>
+					@foreach (var c in Model.Age)
+					{
+						<option value="@Html.Raw(c)">
+							@Html.DisplayFor(modelItem => c)
+						</option>
+					}
+				</select>
+			</div>
+		</div>
+	</div>
+
+
+	<h3 class="border-bottom">Gender: </h3>
+	<div class="row">
+		<!-- ---------------------------------------------
+		-- Gender
+		---------------------------------------------- -->
+		<div class="col-md-auto">
+			<input class="form-check-input"
+				   type="radio"
+				   name="GenderRadios"
+				   id="GenderAnyRadio"
+				   checked="checked"
+				   value="0" />
+			<label class="form-check-label" for="GenderAnyRadio"> N/A </label>
+
+			<input class="form-check-input"
+				   type="radio"
+				   name="GenderRadios"
+				   id="GenderMaleRadio"
+				   value="1" />
+			<label class="form-check-label" for="GenderMaleRadio"> Male </label>
+
+			<input class="form-check-input"
+				   type="radio"
+				   name="GenderRadios"
+				   id="GenderFemaleRadio"
+				   value="2" />
+			<label class="form-check-label" for="GenderFemaleRadio"> Female </label>
+
+			<input class="form-check-input"
+				   type="radio"
+				   name="GenderRadios"
+				   id="GenderUnknownRadio"
+				   value="3" />
+			<label class="form-check-label" for="GenderUnknownRadio"> Unknown </label>
+		</div>
+	</div>
+
+
+	<h3 class="border-bottom">Descriptive Features: </h3>
+	<div class="row">
+		<!-- ---------------------------------------------
+		-- Ethnicity
+		---------------------------------------------- -->
+		<div class="col-md-auto">
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="EthnicityText">
+					Ethnicity
+				</span>
+
+				<select class="form-control"
+						id="Ethnicity"
+						name="Ethnicity"
+						aria-label="Ethnicity"
+						aria-describedby="Ethnicity"
+						style="max-width: 150px;">
+					<option value="0">Select...</option>
+					@foreach (var c in Model.EthnicityList)
+					{
+						<option value="@Html.Raw(c.ID)">
+							@Html.DisplayFor(modelItem => c.Name)
+						</option>
+					}
+				</select>
+			</div>
+		</div>
+
+		<!-- ---------------------------------------------
+		-- Hair Color
+		---------------------------------------------- -->
+		<div class="col-md-auto">
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="HairColorText">
+					Hair Color
+				</span>
+
+				<select class="form-control"
+						id="HairColor"
+						name="HairColor"
+						aria-label="HairColor"
+						aria-describedby="HairColor"
+						style="max-width: 150px;">
+					<option value="0">Select...</option>
+					@foreach (var c in Model.HairColorList)
+					{
+						<option value="@Html.Raw(c.ID)">
+							@Html.DisplayFor(modelItem => c.Color)
+						</option>
+					}
+				</select>
+			</div>
+		</div>
+
+		<!-- ---------------------------------------------
+		-- Eye Color
+		---------------------------------------------- -->
+		<div class="col-md-auto">
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="EyeColorText">
+					Eye Color
+				</span>
+
+				<select class="form-control"
+						id="EyeColor"
+						name="EyeColor"
+						aria-label="EyeColor"
+						aria-describedby="EyeColor"
+						style="max-width: 150px;">
+					<option value="0">Select...</option>
+					@foreach (var c in Model.EyeColorList)
+					{
+						<option value="@Html.Raw(c.ID)">
+							@Html.DisplayFor(modelItem => c.Color)
+						</option>
+					}
+				</select>
+			</div>
+		</div>
+	</div>
+
+
+	<h3 class="border-bottom">Contact: </h3>
+	<div class="row">
+		<div class="col-md-auto">
+			<!-- ---------------------------------------------
+			-- Phone1
+			---------------------------------------------- -->
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="Phone1Text">
+					Phone1
+				</span>
+
+				<input type="text"
+					   autocomplete="off"
+					   class="form-control"
+					   placeholder="(xxx) xxx - xxxx..."
+					   id="Phone1"
+					   name="Phone1"
+					   aria-label="Phone1"
+					   aria-describedby="Phone1"
+					   style="max-width: 150px;" />
+			</div>
+		</div>
+		<div class="col-md-auto">
+			<!-- ---------------------------------------------
+			-- Phone2
+			---------------------------------------------- -->
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="Phone2Text">
+					Phone2
+				</span>
+
+				<input type="text"
+					   autocomplete="off"
+					   class="form-control"
+					   placeholder="(xxx) xxx - xxxx..."
+					   id="Phone2"
+					   name="Phone2"
+					   aria-label="Phone2"
+					   aria-describedby="Phone2"
+					   style="max-width: 250px;" />
+			</div>
+		</div>
+		<div class="col-md-auto">
+			<!-- ---------------------------------------------
+			-- Phone3
+			---------------------------------------------- -->
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="Phone3Text">
+					Phone3
+				</span>
+
+				<input type="text"
+					   autocomplete="off"
+					   class="form-control"
+					   placeholder="(xxx) xxx - xxxx..."
+					   id="Phone3"
+					   name="Phone3"
+					   aria-label="Phone3"
+					   aria-describedby="Phone3"
+					   style="max-width: 350px;" />
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-auto">
+			<!-- ---------------------------------------------
+			-- Email1
+			---------------------------------------------- -->
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="Email1Text">
+					Email1
+				</span>
+
+				<input type="text"
+					   autocomplete="off"
+					   class="form-control"
+					   placeholder="sender@domain.com"
+					   id="Email1"
+					   name="Email1"
+					   aria-label="Email1"
+					   aria-describedby="Email1"
+					   style="max-width: 150px;" />
+			</div>
+		</div>
+		<div class="col-md-auto">
+			<!-- ---------------------------------------------
+			-- Email2
+			---------------------------------------------- -->
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="Email2Text">
+					Email2
+				</span>
+
+				<input type="text"
+					   autocomplete="off"
+					   class="form-control"
+					   placeholder="sender@domain.com"
+					   id="Email2"
+					   name="Email2"
+					   aria-label="Email2"
+					   aria-describedby="Email2"
+					   style="max-width: 250px;" />
+			</div>
+		</div>
+		<div class="col-md-auto">
+			<!-- ---------------------------------------------
+			-- Email3
+			---------------------------------------------- -->
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="Email3Text">
+					Email3
+				</span>
+
+				<input type="text"
+					   autocomplete="off"
+					   class="form-control"
+					   placeholder="sender@domain.com"
+					   id="Email3"
+					   name="Email3"
+					   aria-label="Email3"
+					   aria-describedby="Email3"
+					   style="max-width: 350px;" />
+			</div>
+		</div>
+	</div>
+
+
+	<h3 class="border-bottom">Description: </h3>
+	<div class="row">
+		<div class="col-md-auto">
+			<!-- ---------------------------------------------
+			-- Description
+			---------------------------------------------- -->
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="DescriptionText">
+					Description
+				</span>
+
+				<textarea class="form-control"
+						  id="Description"
+						  name="Description"
+						  placeholder="Description of Individual"
+						  style="height: 10rem;" rows="10" cols="100"
+						  autocomplete="off"></textarea>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- ---------------------------------------------
+	-- Submit
+	---------------------------------------------- -->
+	<div class="row">
+		<div class="col">
+			<div class="g-recaptcha" data-sitekey="@ViewBag.ReCaptchaKey"></div>
+
+			<button class="btn btn-primary btn-lg"
+					id="submitButton"
+					type="submit">
+				Submit
+			</button>
+			<button class="btn btn-secondary btn-lg"
+					id="resetButton"
+					type="reset">
+				Reset
+			</button>
+
+			<div id="FirstNameInvalidFeedback" class="invalidFeedback">
+				- First Name is required!
+			</div>
+			<div id="LastNameInvalidFeedback" class="invalidFeedback">
+				- Last Name is required!
+			</div>
+			<div id="Email1InvalidFeedback" class="invalidFeedback">
+				- Email1 is malformed. You must use the format: sender@domain.com
+			</div>
+			<div id="Email2InvalidFeedback" class="invalidFeedback">
+				- Email2 is malformed. You must use the format: sender@domain.com
+			</div>
+			<div id="Email3InvalidFeedback" class="invalidFeedback">
+				- Email3 is malformed. You must use the format: sender@domain.com
+			</div>
+		</div>
+	</div>
+</form>
+
+
+<script>
+	$(document).ready(function () {
+		$('#Country').select2();
+		$('#State').select2();
+
+		$("#DateLost").datepicker({
+			maxDate: new Date(),
+			numberOfMonths: 2,
+			changeMonth: true,
+			changeYear: true
+		});
+	});
+</script>
+
+
+<script>
+	/* **************************************
+	UI Setup
+	************************************** */
+	$(document).ready(function () {
+		$('.invalidFeedback').css('display', 'none');
+		$('#Description').val('');
+	});
+</script>
+<script>
+    /* **************************************
+    Validation
+    ************************************** */
+    $('#reportForm').on('submit', function() {
+        if(grecaptcha.getResponse() === '')
+        {
+            alert('Recaptcha required!');
+            return false;
+        }
+
+        return ValidateForm();
+    });
+
+
+	function ValidateForm(){
+		let isValid = true;
+		let FirstName = $.trim($('#FirstName').val());
+		let LastName = $.trim($('#LastName').val());
+		let Email1 = $.trim($('#Email1').val());
+		let Email2 = $.trim($('#Email2').val());
+		let Email3 = $.trim($('#Email3').val());
+
+		//First name required
+		if (FirstName === '') {
+			$('#FirstNameInvalidFeedback').show();
+			isValid = false;
+		}
+
+		//Last name required
+		if (LastName === '') {
+			$('#LastNameInvalidFeedback').show();
+			isValid = false;
+		}
+        
+        //Email1 is not empty? make sure its valid
+		if (Email1 !== '' && !validateEmail(Email1)) {
+            $('#Email1InvalidFeedback').show();
+            isValid = false;
+        }
+        else {
+            $('#Email1InvalidFeedback').hide();
+        }
+		
+        //Email2 is not empty? make sure its valid
+		if (Email2 !== '' && !validateEmail(Email2)) {
+            $('#Email2InvalidFeedback').show();
+            isValid = false;
+        }
+        else {
+            $('#Email2InvalidFeedback').hide();
+        }
+
+		//Email3 is not empty? make sure its valid
+		if (Email3 !== '' && !validateEmail(Email3)) {
+			$('#Email3InvalidFeedback').show();
+			isValid = false;
+		}
+		else {
+			$('#Email3InvalidFeedback').hide();
+		}
+        
+		return isValid;
+	}
+
+    
+	function validateEmail(email) {
+		var re = /\S+@@\S+\.\S+/;
+		return re.test(email);
+	}
+</script>
+
+<!-- ----------------------------------------------------
+-- Script to control phone number formating and masking
+----------------------------------------------------- -->
+<script type="text/javascript">
+	const isNumericInput = (event) => {
+		const key = event.keyCode;
+		return ((key >= 48 && key <= 57) || // Allow number line
+			(key >= 96 && key <= 105) // Allow number pad
+		);
+	};
+
+	const isModifierKey = (event) => {
+		const key = event.keyCode;
+		return (event.shiftKey === true || key === 35 || key === 36) || // Allow Shift, Home, End
+			(key === 8 || key === 9 || key === 13 || key === 46) || // Allow Backspace, Tab, Enter, Delete
+			(key > 36 && key < 41) || // Allow left, up, right, down
+			(
+				// Allow Ctrl/Command + A,C,V,X,Z
+				(event.ctrlKey === true || event.metaKey === true) &&
+				(key === 65 || key === 67 || key === 86 || key === 88 || key === 90)
+			)
+	};
+
+	const enforceFormat = (event) => {
+		// Input must be of a valid number format or a modifier key, and not longer than ten digits
+		if (!isNumericInput(event) && !isModifierKey(event)) {
+			event.preventDefault();
+		}
+	};
+
+	const formatToPhone = (event) => {
+		if (isModifierKey(event)) { return; }
+
+		const input = event.target.value.replace(/\D/g, '').substring(0, 10); // First ten digits of input only
+		const areaCode = input.substring(0, 3);
+		const middle = input.substring(3, 6);
+		const last = input.substring(6, 10);
+
+		if (input.length > 6) { event.target.value = `(${areaCode}) ${middle} - ${last}`; }
+		else if (input.length > 3) { event.target.value = `(${areaCode}) ${middle}`; }
+		else if (input.length > 0) { event.target.value = `(${areaCode}`; }
+	};
+
+	const inputElement1 = document.getElementById('Phone1');
+	const inputElement2 = document.getElementById('Phone2');
+	const inputElement3 = document.getElementById('Phone3');
+	inputElement1.addEventListener('keydown', enforceFormat);
+	inputElement1.addEventListener('keyup', formatToPhone);
+	inputElement2.addEventListener('keydown', enforceFormat);
+	inputElement2.addEventListener('keyup', formatToPhone);
+	inputElement3.addEventListener('keydown', enforceFormat);
+	inputElement3.addEventListener('keyup', formatToPhone);
+</script>

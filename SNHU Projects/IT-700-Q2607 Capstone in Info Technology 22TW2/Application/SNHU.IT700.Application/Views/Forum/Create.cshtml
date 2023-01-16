@@ -1,0 +1,124 @@
+﻿@{
+    ViewData["Title"] = "Forum | Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+
+	.invalidFeedback {
+		color: red;
+		font-style: italic;
+	}
+
+	.required {
+		color: red;
+		font-size: small;
+	}
+</style>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<h2 class="border-bottom">Create Forum</h2>
+
+<p>
+    <a href="~/Forum">Back to Forums Screen</a>
+</p>
+
+
+<form id="topicForm" action="Submit" method="post">
+	<h3 class="border-bottom">Forum Topic Name: </h3>
+	<div class="row">
+		<div class="col-md-auto">
+			<!-- ---------------------------------------------
+			-- Forum Topic
+			---------------------------------------------- -->
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="TopicText">
+					Topic
+				</span> 
+
+				<input	type="text" 
+						autocomplete="off" 
+						class="form-control" 
+						placeholder="Topic..."
+						id="Topic"
+					    name="Topic"
+					    aria-label="Topic"
+					    aria-describedby="Topic"
+						style="max-width: 300px;width:100%"/>
+			</div>
+		</div>
+	</div>
+
+	<!-- ---------------------------------------------
+	-- Submit
+	---------------------------------------------- -->
+	<div class="row">
+		<div class="col">
+			<div class="g-recaptcha" data-sitekey="@ViewBag.ReCaptchaKey"></div>
+
+			<button class="btn btn-primary btn-lg"
+					id="submitButton"
+					type="submit">
+				Submit
+			</button>
+			<button class="btn btn-secondary btn-lg"
+					id="resetButton"
+					type="reset">
+				Reset
+			</button>
+			<div id="SubmissionMessage" style="display:none">
+				Now submitting! please wait!!
+			</div>
+
+			<div id="TopicInvalidFeedback" class="invalidFeedback">
+				- Topic is Required!
+			</div>
+		</div>
+	</div>
+</form>
+
+
+
+<script>
+	/* **************************************
+	UI Setup
+	************************************** */
+	$(document).ready(function () {
+		$('.invalidFeedback').css('display', 'none');
+	});
+</script>
+<script>
+	/* **************************************
+	Validation
+	************************************** */
+	$('#topicForm').on('submit', function () {
+		if (grecaptcha.getResponse() === '') {
+			alert('Recaptcha required!');
+			return false;
+		}
+
+		if( ValidateForm() ){
+			$('#submitButton').hide();
+			$('#resetButton').hide();
+			$('#SubmissionMessage').show();
+			
+			return true;
+		}
+			
+		return false;
+	});
+
+
+	function ValidateForm() {
+		let isValid = true;
+		let Topic = $.trim($('#Topic').val());
+
+		//Topic required
+		if (Topic === '') {
+			$('#TopicInvalidFeedback').show();
+			isValid = false;
+		}
+
+		return isValid;
+	}
+</script>

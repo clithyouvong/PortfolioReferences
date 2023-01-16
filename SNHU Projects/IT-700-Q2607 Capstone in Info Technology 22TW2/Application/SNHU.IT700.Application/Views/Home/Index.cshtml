@@ -1,0 +1,76 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using SNHU.IT700.Application.Data;
+@inject SignInManager<ApplicationUser> SignInManager
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style type="text/css">
+    #CoverPageJumbotron {
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    @@media (min-width: 992px) {
+        #CoverPageJumbotron {
+            padding-bottom: 150px;
+        }
+    }
+</style>
+
+<!--
+<header class="pb-3 mb-4 border-bottom">
+    <span class="fs-4">Find Missing Individuals</span>
+</header>
+-->
+
+<div class="mb-4 bg-light rounded-3" id="CoverPageJumbotron" style="background-image: url(@ViewBag.Banner);">
+    <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">Help those in need</h1>
+        <p class="col-md-8 fs-4">Millions who have been displaced due to war, natural disaster, disease, or political conflict need your help</p>
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <button class="btn btn-primary btn-sm" type="button" onclick="location.href = 'Search';">Search our Databases</button>
+            <button class="btn btn-primary btn-sm" type="button" onclick="location.href = 'Report/Create';">Report Missing Love ones</button>
+        }
+        else
+        {
+            <button class="btn btn-primary btn-sm" type="button" onclick="location.href = 'Identity/Account/Login';">Login to Continue</button>
+            
+        }
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+    </div>
+</div>
+
+<div class="row align-items-md-stretch">
+    <div class="col-md-6">
+        <div class="h-100 p-5 text-white bg-dark rounded-3">
+            <h2>Make a Difference</h2>
+            <p>
+                Report someone that is missing. With a little help from the community, 
+                every little bit helps to get those back and reconnected with their 
+                loved ones.
+            </p>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <button class="btn btn-outline-light" type="button" onclick="location.href = 'Report/Create';">Report Missing Love ones</button>
+            }
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="h-100 p-5 bg-light border rounded-3">
+            <h2>Looking for someone?</h2>
+            <p>
+                Every database is different. Sometimes the missing link can be found 
+                with a quick search.
+            </p>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <button class="btn btn-outline-secondary" type="button" onclick="location.href = 'Search';">Search our Databases</button>
+            }
+        </div>
+    </div>
+</div>
+

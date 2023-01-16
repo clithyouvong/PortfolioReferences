@@ -1,0 +1,168 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2022-05-01",
+            "name": "SNHU-IT700-VNET-EastUS2/Application",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', 'SNHU-IT700-VNET-EastUS2')]"
+            ],
+            "properties": {
+                "addressPrefix": "10.0.1.0/24",
+                "networkSecurityGroup": {
+                    "id": "/subscriptions/c37ac3ad-755e-4200-b498-7fd7e8fea23a/resourceGroups/SNHU-IT700-ResourceGroup-EastUS2/providers/Microsoft.Network/networkSecurityGroups/SNHU-IT700-NSG-EastUS2"
+                },
+                "serviceEndpoints": [
+                    {
+                        "service": "Microsoft.Storage",
+                        "locations": [
+                            "eastus2",
+                            "centralus"
+                        ]
+                    }
+                ],
+                "delegations": [
+                    {
+                        "name": "Microsoft.Web.serverFarms",
+                        "id": "[concat(resourceId('Microsoft.Network/virtualNetworks/subnets', 'SNHU-IT700-VNET-EastUS2', 'Application'), '/delegations/Microsoft.Web.serverFarms')]",
+                        "properties": {
+                            "serviceName": "Microsoft.Web/serverFarms"
+                        },
+                        "type": "Microsoft.Network/virtualNetworks/subnets/delegations"
+                    }
+                ],
+                "privateEndpointNetworkPolicies": "Disabled",
+                "privateLinkServiceNetworkPolicies": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2022-05-01",
+            "name": "SNHU-IT700-VNET-EastUS2/default",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', 'SNHU-IT700-VNET-EastUS2')]"
+            ],
+            "properties": {
+                "addressPrefix": "10.0.0.0/24",
+                "networkSecurityGroup": {
+                    "id": "/subscriptions/c37ac3ad-755e-4200-b498-7fd7e8fea23a/resourceGroups/SNHU-IT700-ResourceGroup-EastUS2/providers/Microsoft.Network/networkSecurityGroups/SNHU-IT700-NSG-EastUS2"
+                },
+                "serviceEndpoints": [
+                    {
+                        "service": "Microsoft.KeyVault",
+                        "locations": [
+                            "*"
+                        ]
+                    },
+                    {
+                        "service": "Microsoft.AzureCosmosDB",
+                        "locations": [
+                            "*"
+                        ]
+                    },
+                    {
+                        "service": "Microsoft.Sql",
+                        "locations": [
+                            "eastus2"
+                        ]
+                    }
+                ],
+                "delegations": [],
+                "privateEndpointNetworkPolicies": "Disabled",
+                "privateLinkServiceNetworkPolicies": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2022-05-01",
+            "name": "SNHU-IT700-VNET-EastUS2",
+            "location": "eastus2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'SNHU-IT700-VNET-EastUS2', 'Application')]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'SNHU-IT700-VNET-EastUS2', 'default')]"
+            ],
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.0.0.0/24",
+                        "10.0.1.0/24"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "Application",
+                        "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'SNHU-IT700-VNET-EastUS2', 'Application')]",
+                        "properties": {
+                            "addressPrefix": "10.0.1.0/24",
+                            "networkSecurityGroup": {
+                                "id": "/subscriptions/c37ac3ad-755e-4200-b498-7fd7e8fea23a/resourceGroups/SNHU-IT700-ResourceGroup-EastUS2/providers/Microsoft.Network/networkSecurityGroups/SNHU-IT700-NSG-EastUS2"
+                            },
+                            "serviceEndpoints": [
+                                {
+                                    "service": "Microsoft.Storage",
+                                    "locations": [
+                                        "eastus2",
+                                        "centralus"
+                                    ]
+                                }
+                            ],
+                            "delegations": [
+                                {
+                                    "name": "Microsoft.Web.serverFarms",
+                                    "id": "[concat(resourceId('Microsoft.Network/virtualNetworks/subnets', 'SNHU-IT700-VNET-EastUS2', 'Application'), '/delegations/Microsoft.Web.serverFarms')]",
+                                    "properties": {
+                                        "serviceName": "Microsoft.Web/serverFarms"
+                                    },
+                                    "type": "Microsoft.Network/virtualNetworks/subnets/delegations"
+                                }
+                            ],
+                            "privateEndpointNetworkPolicies": "Disabled",
+                            "privateLinkServiceNetworkPolicies": "Enabled"
+                        },
+                        "type": "Microsoft.Network/virtualNetworks/subnets"
+                    },
+                    {
+                        "name": "default",
+                        "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'SNHU-IT700-VNET-EastUS2', 'default')]",
+                        "properties": {
+                            "addressPrefix": "10.0.0.0/24",
+                            "networkSecurityGroup": {
+                                "id": "/subscriptions/c37ac3ad-755e-4200-b498-7fd7e8fea23a/resourceGroups/SNHU-IT700-ResourceGroup-EastUS2/providers/Microsoft.Network/networkSecurityGroups/SNHU-IT700-NSG-EastUS2"
+                            },
+                            "serviceEndpoints": [
+                                {
+                                    "service": "Microsoft.KeyVault",
+                                    "locations": [
+                                        "*"
+                                    ]
+                                },
+                                {
+                                    "service": "Microsoft.AzureCosmosDB",
+                                    "locations": [
+                                        "*"
+                                    ]
+                                },
+                                {
+                                    "service": "Microsoft.Sql",
+                                    "locations": [
+                                        "eastus2"
+                                    ]
+                                }
+                            ],
+                            "delegations": [],
+                            "privateEndpointNetworkPolicies": "Disabled",
+                            "privateLinkServiceNetworkPolicies": "Enabled"
+                        },
+                        "type": "Microsoft.Network/virtualNetworks/subnets"
+                    }
+                ],
+                "virtualNetworkPeerings": [],
+                "enableDdosProtection": false
+            }
+        }
+    ]
+}

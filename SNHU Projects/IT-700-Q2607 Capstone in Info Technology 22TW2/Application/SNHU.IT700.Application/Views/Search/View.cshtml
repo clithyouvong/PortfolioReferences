@@ -1,0 +1,59 @@
+﻿@model IEnumerable<SNHU.IT700.Application.Models.SearchResponseModel>
+
+@{
+    ViewData["Title"] = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Search Results</h1>
+<a href="javascript:void(0);" onclick="history.go(-1);">Back to Search Screen</a>
+<div style="font-style:italic; font-size: small;">Search Results are limited to 1000. For more results, go back and filter your selections.</div>
+
+<p>
+    Total Records: @ViewBag.RowCount
+</p>
+<table class="table table-striped table-bordered table-hover table-sm">
+    <thead>
+        <tr>
+            <th>Status</th>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Description</th>
+            <th>Contact</th>
+            <th>Dates</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IndividualStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName) 
+                @Html.DisplayFor(modelItem => item.LastName)
+                (Age: @Html.DisplayFor(modelItem => item.Age))
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)<br/>
+                @Html.DisplayFor(modelItem => item.State) <br/>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td>
+                Gender: @Html.DisplayFor(modelItem => item.Gender)<br/>
+                Ethnicity: @Html.DisplayFor(modelItem => item.Ethnicity)<br/>
+                Hair: @Html.DisplayFor(modelItem => item.HairColor)<br/>
+                Eye: @Html.DisplayFor(modelItem => item.EyeColor)
+            </td>
+            <td>
+                Phone: @Html.DisplayFor(modelItem => item.Phone1)<br/>
+                Email: @Html.DisplayFor(modelItem => item.Email1)
+            </td>
+            <td>
+                Lost: @item.DateLost.ToShortDateString()<br/>
+                Reported: @item.DateCreated.ToShortDateString()
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

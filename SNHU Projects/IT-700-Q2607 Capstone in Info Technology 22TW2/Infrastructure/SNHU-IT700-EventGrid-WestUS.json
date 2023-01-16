@@ -1,0 +1,111 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.EventGrid/topics",
+            "apiVersion": "2022-06-15",
+            "name": "SNHU-IT700-EventGrid-WestUS",
+            "location": "westus",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "inputSchema": "EventGridSchema",
+                "publicNetworkAccess": "Enabled",
+                "inboundIpRules": [],
+                "disableLocalAuth": false,
+                "dataResidencyBoundary": "WithinGeopair"
+            }
+        },
+        {
+            "type": "Microsoft.EventGrid/topics/eventSubscriptions",
+            "apiVersion": "2022-06-15",
+            "name": "SNHU-IT700-EventGrid-WestUS/ContactUs",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventGrid/topics', 'SNHU-IT700-EventGrid-WestUS')]"
+            ],
+            "properties": {
+                "destination": {
+                    "properties": {
+                        "maxEventsPerBatch": 1,
+                        "preferredBatchSizeInKilobytes": 64
+                    },
+                    "endpointType": "WebHook"
+                },
+                "filter": {
+                    "includedEventTypes": [
+                        "ContactUs"
+                    ]
+                },
+                "eventDeliverySchema": "EventGridSchema",
+                "retryPolicy": {
+                    "maxDeliveryAttempts": 30,
+                    "eventTimeToLiveInMinutes": 1440
+                }
+            }
+        },
+        {
+            "type": "Microsoft.EventGrid/topics/eventSubscriptions",
+            "apiVersion": "2022-06-15",
+            "name": "SNHU-IT700-EventGrid-WestUS/PostForumPost",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventGrid/topics', 'SNHU-IT700-EventGrid-WestUS')]"
+            ],
+            "properties": {
+                "destination": {
+                    "properties": {
+                        "resourceId": "/subscriptions/c37ac3ad-755e-4200-b498-7fd7e8fea23a/resourceGroups/SNHU-IT700-ResourceGroup-WestUS/providers/Microsoft.Web/sites/SNHU-IT700-Functions-WestUSS/functions/PostForumPost",
+                        "maxEventsPerBatch": 1,
+                        "preferredBatchSizeInKilobytes": 64
+                    },
+                    "endpointType": "AzureFunction"
+                },
+                "filter": {
+                    "includedEventTypes": [
+                        "PostForumPost"
+                    ],
+                    "enableAdvancedFilteringOnArrays": true
+                },
+                "labels": [],
+                "eventDeliverySchema": "EventGridSchema",
+                "retryPolicy": {
+                    "maxDeliveryAttempts": 10,
+                    "eventTimeToLiveInMinutes": 120
+                }
+            }
+        },
+        {
+            "type": "Microsoft.EventGrid/topics/eventSubscriptions",
+            "apiVersion": "2022-06-15",
+            "name": "SNHU-IT700-EventGrid-WestUS/PostForumTopic",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventGrid/topics', 'SNHU-IT700-EventGrid-WestUS')]"
+            ],
+            "properties": {
+                "destination": {
+                    "properties": {
+                        "resourceId": "/subscriptions/c37ac3ad-755e-4200-b498-7fd7e8fea23a/resourceGroups/SNHU-IT700-ResourceGroup-WestUS/providers/Microsoft.Web/sites/SNHU-IT700-Functions-WestUSS/functions/PostForumTopic",
+                        "maxEventsPerBatch": 1,
+                        "preferredBatchSizeInKilobytes": 64
+                    },
+                    "endpointType": "AzureFunction"
+                },
+                "filter": {
+                    "includedEventTypes": [
+                        "PostForumTopic"
+                    ],
+                    "enableAdvancedFilteringOnArrays": true
+                },
+                "labels": [],
+                "eventDeliverySchema": "EventGridSchema",
+                "retryPolicy": {
+                    "maxDeliveryAttempts": 10,
+                    "eventTimeToLiveInMinutes": 120
+                }
+            }
+        }
+    ]
+}

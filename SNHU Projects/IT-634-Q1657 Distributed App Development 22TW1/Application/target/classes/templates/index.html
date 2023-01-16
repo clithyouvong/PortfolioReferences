@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+
+
+<!--
+  Colby Lithyouvong
+  IT-634-Q1657 Distributed App Development 22TW1
+  Final Project Part I Submission: Web Application With Annotated Code
+-->
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>SNHU Airlines | Flight Search</title>
+		<meta name="description" content="SNHU flight simulator search for flight screen"/>
+		<meta name="author" content="colby lithyouvong"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+
+		<!-- bootstrap -->
+		<link rel="stylesheet" href="/bootstrap/bootstrap.min.css" />
+		<script type="text/javascript" src="/bootstrap/bootstrap.min.js"></script>
+		
+		<!-- JQuery -->
+		<script type="text/javascript" src="/jquery/jquery-3.6.1.min.js"></script>
+		
+		<!-- JQuery UI -->
+		<link rel="stylesheet" href="/jquery-ui/jquery-ui.css">
+	 	<script src="/jquery-ui/jquery-ui.js"></script>
+	 	
+		<!-- Select Picker -->
+		<link rel="stylesheet" href="/select2/select2.min.css">
+		<script type="text/javascript" src="/select2/select2.min.js"></script>
+		
+		<!-- Axios -->
+		<script type="text/javascript" src="/axios/dist/axios.min.js"></script>
+		
+		<style type="text/css">
+			#originAirport,
+			#destinationAirport {
+				max-width: 200px;
+			}
+			
+			.invalidFeedback{
+				color: red;
+				font-style: italic;
+			}
+		</style>
+	</head>
+	<body>
+	
+		<header>
+			<!--Navigation section-->
+			<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+				<div class="container-fluid">
+					<a class="navbar-brand" href="/">SNHU Airlines</a>
+	
+					<button class="navbar-toggler" type="button"
+						data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+						aria-controls="navbarCollapse" aria-expanded="false"
+						aria-label="navbarcollapselabel">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+	
+					<div class="collapse navbar-collapse" id="navbarCollapse">
+						<ul class="navbar-nav me-auto mb-2 mb-md-0">
+							<li class="nav-item">
+								<a class="nav-link active" aria-current="page" href="/">Book</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">Check-In</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link">My Trips</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link">Flight Status</a>
+							</li>
+						</ul>
+						<div th:if="${loginAuthorized == null}" id="loginDiv">
+							<form name="loginForm" id="loginForm" th:action="@{/login}" method="get">
+								<button class="btn btn-outline-success" type="submit">Login</button>
+							</form>
+						</div>
+						<div th:if="${loginAuthorized != null}" id="logoutDiv">
+							<span style="color:ghostwhite;">Hello [(${loginAuthorized.firstName})]</span>
+							
+							<form name="accountForm" id="accountForm" th:action="@{/dashboard}" method="get" style="display:inline;">
+								<button class="btn btn-outline-secondary" type="submit">Account</button>
+							</form>	
+							
+							<form name="logoutForm" id="logoutForm" th:action="@{/logout}" method="get" style="display:inline;">
+								<button class="btn btn-outline-secondary" type="submit">Logout</button>
+							</form>						
+						</div>
+					</div>
+				</div>
+			</nav>
+		</header>
+
+
+		<main class="container" style="margin-top: 50px;">
+			<div class="bg-light p-5 rounded"
+				style="background-image: url('/images/airplane.jpg'); background-color: #cccccc; background-repeat: no-repeat; background-size: cover; min-height: 400px;">
+				<h1>SNHU Airlines</h1>
+				<p class="lead">TRAVELING THE WORLD JUST GOT EASIER</p>
+				<p>Enjoy world class travel with lower prices and easier checkin
+					processes. References
+					https://www.istockphoto.com/photos/airplane-sky.
+					https://www.istockphoto.com/photo/commercial-jet-flying-over-clouds-gm155380716-21639071.
+				</p>
+			</div>
+	
+			<p>&nbsp;</p>
+	
+			<form name="bookingForm" id="bookingForm" th:action="@{/availableFlights/}" th:object="${Search}" method="post">
+				<div class="row">
+					<!-- ---------------------------------------------
+			        -- Origin Airport
+			        ---------------------------------------------- -->
+					<div class="col-md-auto">
+						<div class="input-group mb-4">
+							<span class="input-group-text" id="originAirport.text">From</span> 
+							<select name="originAirport" id="originAirport" class="form-control" required th:field="*{originAirport}">
+							    <option value="">select origin airport..</option>
+							    <option th:each="airport : ${listAirports}" th:value="${airport.Code}" th:text="|${airport.Code} ${airport.Name} - ${airport.Country}"></option>
+							</select>
+						</div>	
+					</div>
+	
+					<!-- ---------------------------------------------
+			        -- Destination Airport
+			        ---------------------------------------------- -->
+					<div class="col-md-auto">
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="destinationAirport.text">To</span>
+							
+							<select name="destinationAirport" id="destinationAirport" class="form-control" required th:field="*{destinationAirport}">
+							    <option value="">select destination airport..</option>
+							    <option th:each="airport : ${listAirports}" th:value="${airport.Code}" th:text="|${airport.Code} ${airport.Name} - ${airport.Country}"></option>
+							</select>
+						</div>
+					</div>
+				</div>
+				
+				<div class="row">
+					<!-- ---------------------------------------------
+			        -- Round Trip or One Way Radios
+			        ---------------------------------------------- -->
+					<div class="col-md-auto">
+						<input 	class="form-check-input" 
+								type="radio"
+								name="roundTripOrOneWayRadios" 
+								id="RoundTripRadio" 
+								checked="checked"
+								required
+								value="roundTrip" 
+								th:field="*{RoundTripOrOneWay}"/> 
+						<label class="form-check-label" for="RoundTripRadio"> Round Trip </label>
+							
+						<input 	class="form-check-input" 
+								type="radio"
+								name="roundTripOrOneWayRadios" 
+								id="OneWayRadio" 
+								value="oneWay" 
+								required
+								th:field="*{RoundTripOrOneWay}"/>
+						<label class="form-check-label" for="OneWayRadio"> One Way </label>
+					</div>
+
+					<!-- ---------------------------------------------
+			        -- Leaving On
+			        ---------------------------------------------- -->
+					<div class="col-md-auto">
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="leavingOn.text">
+								Leaving On
+							</span> 
+								
+							<input 	type="text" 
+									autocomplete="off" 
+									class="form-control" 
+									placeholder="mm/dd/yyyy" 
+									id="leavingOn"
+									aria-label="leavingOn" 
+									aria-describedby="leavingOn"
+									style="max-width: 150px;"
+									required
+									th:field="*{LeavingOn}">
+						</div>
+					</div>
+
+					<!-- ---------------------------------------------
+			        -- Returning On
+			        ---------------------------------------------- -->
+					<div class="col-md-auto">
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="returningOn.text">
+								Returning On
+							</span> 
+								
+							<input 	type="text" 
+									autocomplete="off" 
+									class="form-control" 
+									placeholder="mm/dd/yyyy" 
+									id="returningOn"
+									aria-label="returningOn" 
+									aria-describedby="returningOn"
+									style="max-width: 150px;" 
+									required
+									th:field="*{ReturningOn}"/>
+						</div>
+					</div>
+				</div>
+					
+				<div class="row">
+					<div class="col-md-auto">
+						<!-- ---------------------------------------------
+				        -- Adult Passengers
+				        ---------------------------------------------- -->
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="adultPassengers.text">Adults (12+)</span> 
+							<select name="adultPassengers" id="adultPassengers" class="form-control" style="max-width: 100px;" th:field="*{AdultPassengers}">
+								<option value="1" selected>1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-auto">
+						<!-- ---------------------------------------------
+				        -- Children Passengers
+				        ---------------------------------------------- -->
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="childrenPassengers.text">Children (2-11)</span> 
+							<select name="childrenPassengers" id="childrenPassengers" class="form-control" style="max-width: 100px;" th:field="*{ChildrenPassengers}">
+								<option value="0" selected>0</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+							</select>
+						</div>
+					</div>
+				</div>
+	
+	
+				<!-- ---------------------------------------------
+		        -- Submit
+		        ---------------------------------------------- -->
+				<div class="row">
+					<div class="col">
+						<div id="searchForFlightsButton">
+							<input type="submit" value="Search" id="searchForFlightsButton" class="btn btn-primary" />
+									
+						    <div id="originAirportInvalidFeedback" class="invalidFeedback">
+						    	- Origin Airport is Required!
+					    	</div>
+						    <div id="destinationAirportInvalidFeedback" class="invalidFeedback">
+						    	- Destination Airport is Required!
+					    	</div>
+						    <div id="airportSelectionInvalidFeedback" class="invalidFeedback">
+						    	- Origin airport must be different from destination airport
+					    	</div>
+						    <div id="leavingOnInvalidFeedback" class="invalidFeedback">
+						    	- Leaving On is Required!
+						    </div>
+						    <div id="returningOnInvalidFeedback" class="invalidFeedback">
+						    	- Returning On is Required!
+					    	</div>
+					    	<div id="dateOrderInvalidFeedback" class="invalidFeedback">
+					    		- Date Leaving must either be the same or earlier than Date returning
+					    	</div>
+						</div>
+					</div>
+				</div>
+			</form>
+			<p>&nbsp;</p>
+			<hr />
+	
+	
+	
+			<!-- ---------------------------------------------
+		    -- Everything below this line is template code
+		    ---------------------------------------------- -->
+			<div class="container marketing">
+	
+				<!-- Three columns of text below the carousel -->
+				<div class="row">
+					<div class="col-lg-4">
+						<svg class="bd-placeholder-img rounded-circle" width="140"
+							height="140" xmlns="http://www.w3.org/2000/svg" role="img"
+							aria-label="Placeholder: 140x140"
+							preserveAspectRatio="xMidYMid slice" focusable="false">
+							
+				            <title>Placeholder</title>
+				            <rect width="100%" height="100%" fill="#777" />
+							<text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
+	          			</svg>
+	          			
+						<h2 class="fw-normal">Something</h2>
+						
+						<p>
+							Nulla tempus convallis suscipit. Nullam elementum dui orci,
+							blandit malesuada dui eleifend ut. Quisque suscipit ex purus, at
+							tempus tellus varius in.
+						</p>
+						
+						<p>
+							<a class="btn btn-secondary" href="#">learn more</a>
+						</p>
+					</div>
+					
+					<div class="col-lg-4">
+						<svg class="bd-placeholder-img rounded-circle" width="140"
+							height="140" xmlns="http://www.w3.org/2000/svg" role="img"
+							aria-label="Placeholder: 140x140"
+							preserveAspectRatio="xMidYMid slice" focusable="false">
+							
+				            <title>Placeholder</title>
+				            <rect width="100%" height="100%" fill="#777" />
+							<text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
+							
+	         		 	</svg>
+	         		 	
+						<h2 class="fw-normal">Something</h2>
+						
+						<p>
+							Nulla tempus convallis suscipit. Nullam elementum dui orci,
+							blandit malesuada dui eleifend ut. Quisque suscipit ex purus, at
+							tempus tellus varius in.</p>
+						<p>
+							<a class="btn btn-secondary" href="#">learn more</a>
+						</p>
+					</div>
+					
+					<div class="col-lg-4">
+						<svg class="bd-placeholder-img rounded-circle" width="140"
+							height="140" xmlns="http://www.w3.org/2000/svg" role="img"
+							aria-label="Placeholder: 140x140"
+							preserveAspectRatio="xMidYMid slice" focusable="false">
+				            <title>Placeholder</title>
+				            <rect width="100%" height="100%" fill="#777" />
+							<text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
+	          			</svg>
+						<h2 class="fw-normal">Something</h2>
+						<p>Nulla tempus convallis suscipit. Nullam elementum dui orci,
+							blandit malesuada dui eleifend ut. Quisque suscipit ex purus, at
+							tempus tellus varius in.</p>
+						<p>
+							<a class="btn btn-secondary" href="#">learn more</a>
+						</p>
+					</div>
+				</div>
+	
+	
+				<!-- START THE FEATURETTES -->
+				<p>&nbsp;</p>
+				<hr class="featurette-divider">
+	
+				<div class="row featurette">
+					<div class="col-md-7">
+						<h2 class="featurette-heading fw-normal lh-1">
+							Something <span class="text-muted">Something 2</span>
+						</h2>
+						<p class="lead">Sed enim magna, cursus vel nibh id, feugiat
+							molestie enim. Duis sed augue a nibh pharetra aliquet. Duis
+							lobortis massa elit, nec pretium leo aliquet id. Nam elementum et
+							dolor vitae ullamcorper. Vestibulum eu viverra leo. Suspendisse
+							luctus eros vel arcu placerat dignissim. Nam iaculis eros vitae
+							lacus pharetra, a semper mauris rhoncus. Phasellus sit amet est
+							quis felis tempor mollis in a mauris. Donec interdum eu sapien at
+							lacinia. Maecenas suscipit lectus tincidunt nunc vulputate
+							aliquam. Mauris ut condimentum nisl, ut dignissim sem. Praesent
+							magna lacus, sagittis sit amet venenatis sit amet, consectetur id
+							enim. Nam sagittis turpis eget tortor porta, id lacinia turpis
+							fermentum.</p>
+					</div>
+					<div class="col-md-5">
+						<svg
+							class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto"
+							width="500" height="500" xmlns="http://www.w3.org/2000/svg"
+							role="img" aria-label="Placeholder: 500x500"
+							preserveAspectRatio="xMidYMid slice" focusable="false">
+				            <title>Placeholder</title>
+				            <rect width="100%" height="100%" fill="#eee" />
+							<text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text>
+	          			</svg>
+	
+					</div>
+				</div>
+	
+				<hr class="featurette-divider">
+	
+				<div class="row featurette">
+					<div class="col-md-7 order-md-2">
+						<h2 class="featurette-heading fw-normal lh-1">
+							Something <span class="text-muted">Something 2</span>
+						</h2>
+						<p class="lead">Sed enim magna, cursus vel nibh id, feugiat
+							molestie enim. Duis sed augue a nibh pharetra aliquet. Duis
+							lobortis massa elit, nec pretium leo aliquet id. Nam elementum et
+							dolor vitae ullamcorper. Vestibulum eu viverra leo. Suspendisse
+							luctus eros vel arcu placerat dignissim. Nam iaculis eros vitae
+							lacus pharetra, a semper mauris rhoncus. Phasellus sit amet est
+							quis felis tempor mollis in a mauris. Donec interdum eu sapien at
+							lacinia. Maecenas suscipit lectus tincidunt nunc vulputate
+							aliquam. Mauris ut condimentum nisl, ut dignissim sem. Praesent
+							magna lacus, sagittis sit amet venenatis sit amet, consectetur id
+							enim. Nam sagittis turpis eget tortor porta, id lacinia turpis
+							fermentum.</p>
+					</div>
+					<div class="col-md-5 order-md-1">
+						<svg
+							class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto"
+							width="500" height="500" xmlns="http://www.w3.org/2000/svg"
+							role="img" aria-label="Placeholder: 500x500"
+							preserveAspectRatio="xMidYMid slice" focusable="false">
+	
+	            <title>Placeholder</title>
+	            <rect width="100%" height="100%" fill="#eee" />
+	            <text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text>
+	          </svg>
+	
+					</div>
+				</div>
+	
+				<hr class="featurette-divider">
+	
+				<div class="row featurette">
+					<div class="col-md-7">
+						<h2 class="featurette-heading fw-normal lh-1">
+							Something <span class="text-muted">Something 2</span>
+						</h2>
+						<p class="lead">Sed enim magna, cursus vel nibh id, feugiat
+							molestie enim. Duis sed augue a nibh pharetra aliquet. Duis
+							lobortis massa elit, nec pretium leo aliquet id. Nam elementum et
+							dolor vitae ullamcorper. Vestibulum eu viverra leo. Suspendisse
+							luctus eros vel arcu placerat dignissim. Nam iaculis eros vitae
+							lacus pharetra, a semper mauris rhoncus. Phasellus sit amet est
+							quis felis tempor mollis in a mauris. Donec interdum eu sapien at
+							lacinia. Maecenas suscipit lectus tincidunt nunc vulputate
+							aliquam. Mauris ut condimentum nisl, ut dignissim sem. Praesent
+							magna lacus, sagittis sit amet venenatis sit amet, consectetur id
+							enim. Nam sagittis turpis eget tortor porta, id lacinia turpis
+							fermentum.</p>
+					</div>
+					<div class="col-md-5">
+						<svg
+							class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto"
+							width="500" height="500" xmlns="http://www.w3.org/2000/svg"
+							role="img" aria-label="Placeholder: 500x500"
+							preserveAspectRatio="xMidYMid slice" focusable="false">
+	            <title>Placeholder</title>
+	            <rect width="100%" height="100%" fill="#eee" />
+							<text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text>
+	          </svg>
+	
+					</div>
+				</div>
+	
+				<hr class="featurette-divider">
+	
+				<!-- /END THE FEATURETTES -->
+	
+			</div>
+			<!-- /.container -->
+	
+	
+			<!-- FOOTER -->
+			<footer class="container position-sticky bottom-0 end-0" style="background-color:white;padding-top:10px;border-top: 1px solid gainsboro;">
+				<p class="float-end">
+					<a href="#">Help Center</a>
+				</p>
+				<p>
+					&copy; 2017–2022 Company, Inc. &middot; <a href="#">Private
+						Policy</a> &middot; <a href="#">Legal</a>
+				</p>
+			</footer>
+		</main>
+		
+		<script type="text/javascript">
+			/* **************************************
+			UI Setup
+			************************************** */
+			$(document).ready(function(){
+				$('#originAirport').select2();
+			    $('#destinationAirport').select2();
+			    
+	  			$( "#leavingOn" ).datepicker({
+	  				minDate: new Date(),
+	  				maxDate: "+11m",
+	  				numberOfMonths: 2,
+    				changeMonth: true,
+    				changeYear: true
+	  			});
+		  		$( "#returningOn" ).datepicker({
+	  				minDate: new Date(),
+	  				maxDate: "+1y",
+	  				numberOfMonths: 2,
+    				changeMonth: true,
+    				changeYear: true
+	  			});
+		  		
+		  		$(".select2-selection").css("height","100%");
+		  		
+				$('.invalidFeedback').css('display', 'none');
+				
+				$('#RoundTripRadio').prop('checked', 'checked');
+			});
+		</script>
+		<script type="text/javascript">
+			/* **************************************
+			Validation
+			************************************** */
+			$('#bookingForm').on('submit', function() {
+				return ValidateForm("all");
+			});
+			
+			$('#originAirport').on('change', function() {
+				ValidateForm("originAirport");
+			});
+			
+			$('#destinationAirport').on('change', function(){
+				ValidateForm("destinationAirport");
+			});
+
+			$('#leavingOn').on('change', function(){
+				ValidateForm("leavingOn");
+			});
+
+			$('#returningOn').on('change', function(){
+				ValidateForm("returningOn");
+			});
+			
+
+			function ValidateForm(mode){
+				let isValid = true;
+				let leavingOn = $.trim($('#leavingOn').val());
+				let returningOn = $.trim($('#returningOn').val());
+				let originAirport = $('#originAirport option:selected').val();
+				let destinationAirport = $('#destinationAirport option:selected').val();
+				let isRoundTripRadioChecked = $('#RoundTripRadio').is(':checked');
+				
+				//originAirport must be selected
+				if(mode == 'all' || mode === 'originAirport'){
+					if(originAirport === '') {
+						$('#originAirportInvalidFeedback').show();
+						isValid = false;
+					}
+					else {
+						$('#originAirportInvalidFeedback').hide();
+					}
+				}
+				
+				//destinationAirport must be selected
+				if(mode == 'all' || mode === 'destinationAirport'){
+					if(destinationAirport === ''){
+						$('#destinationAirportInvalidFeedback').show();
+						isValid = false;
+					}
+					else {
+						$('#destinationAirportInvalidFeedback').hide();
+					}
+				}	
+				
+				//origin airport must be different from destination airport
+				if(mode === 'all' || 
+				   mode === 'destinationAirport' ||
+				   mode === 'originAirport'){
+					if(originAirport === destinationAirport){
+						$('#airportSelectionInvalidFeedback').show();
+						isValid = false;
+					}
+					else {
+						$('#airportSelectionInvalidFeedback').hide();
+					}
+				}
+				
+				//leavingOn must not be empty
+				//leavingOn must be a date
+				if(mode == 'all' || mode === 'leavingOn'){
+					if(leavingOn === '' || !Date.parse(leavingOn)){
+						$('#leavingOnInvalidFeedback').show();
+						isValid = false;
+					}
+					else{
+						$('#leavingOnInvalidFeedback').hide();
+					}
+				}
+
+				//returningOn must not be empty
+				//returningOn must be a date
+				if(isRoundTripRadioChecked){
+					if(mode == 'all' || mode === 'returningOn'){
+						if(returningOn === '' || !Date.parse(returningOn)){
+							$('#returningOnInvalidFeedback').show();
+							isValid = false;
+						}
+						else{
+							$('#returningOnInvalidFeedback').hide();
+						}
+					}
+				}
+				
+				//date leaving must always be earlier or the same as the returning
+				if(isRoundTripRadioChecked){
+					if(	mode == 'all' || 
+						mode === 'leavingOn' || 
+						mode === 'returningOn'){
+						if(	Date.parse(leavingOn) &&
+							Date.parse(returningOn) &&
+							Date.parse(returningOn) < Date.parse(leavingOn) ){
+							$('#dateOrderInvalidFeedback').show();
+							isValid = false;
+						}
+						else{
+							$('#dateOrderInvalidFeedback').hide();
+						}
+					}
+				}
+				
+				return isValid;
+			}
+		</script>
+		<script type="text/javascript">
+			/* **************************************
+			Toggle for Radio
+			************************************** */
+			$("#RoundTripRadio").change(function() {
+				SetReturningOnTextBox(this);
+			});
+			
+			$("#OneWayRadio").change(function() {
+				SetReturningOnTextBox(this);
+			});
+			
+			//based on the RoundTripRadio and OneWayRadio,
+			//if the RoundTripRadio is checked, we should make sure that the ReturningOnTextbox
+			// is enabled
+			//otherwise, we should disable the ReturningOnTextBox and 
+			// clear the selection..
+			function SetReturningOnTextBox(obj){
+				let returningOn = $('#returningOn');
+				
+				if(obj.value === 'roundTrip'){
+				    returningOn.removeAttr('disabled').removeClass('disabled').prop('required','required');
+				}
+				else {
+			    	returningOn.prop('disabled', 'disabled').addClass('disabled').val('').removeProp('required');
+			    	$('#returningOnInvalidFeedback').hide();
+			    	$('#dateOrderInvalidFeedback').hide();
+				}
+			}
+		</script>
+		<script type="text/javascript">
+			/* **************************************
+			Axios; make a call to a restful service
+			************************************** */
+			$(document).ready(function(){
+				//const axios = require('axios');
+				
+				axios.get('https://test-colby-2022-09-23.azurewebsites.net/api/HelloWorld?code=zDCY3oEmdDt9wBAdoepdMZn7UlMxy8mfTbrT_WqKFxNKAzFubHeEOA==')
+				.then(function (response) {
+				  	console.log(response);
+				});			
+			});
+		</script>
+	</body>
+</html>

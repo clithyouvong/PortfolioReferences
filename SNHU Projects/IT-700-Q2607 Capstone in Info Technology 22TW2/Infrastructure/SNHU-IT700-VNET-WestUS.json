@@ -1,0 +1,158 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2022-05-01",
+            "name": "SNHU-IT700-VNET-WestUS/Application",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', 'SNHU-IT700-VNET-WestUS')]"
+            ],
+            "properties": {
+                "addressPrefix": "10.0.3.0/24",
+                "networkSecurityGroup": {
+                    "id": "/subscriptions/c37ac3ad-755e-4200-b498-7fd7e8fea23a/resourceGroups/SNHU-IT700-ResourceGroup-WestUS/providers/Microsoft.Network/networkSecurityGroups/SNHU-IT700-NSG-WestUS"
+                },
+                "serviceEndpoints": [
+                    {
+                        "service": "Microsoft.Storage",
+                        "locations": [
+                            "westus",
+                            "eastus"
+                        ]
+                    }
+                ],
+                "delegations": [
+                    {
+                        "name": "Microsoft.Web.serverFarms",
+                        "id": "[concat(resourceId('Microsoft.Network/virtualNetworks/subnets', 'SNHU-IT700-VNET-WestUS', 'Application'), '/delegations/Microsoft.Web.serverFarms')]",
+                        "properties": {
+                            "serviceName": "Microsoft.Web/serverFarms"
+                        },
+                        "type": "Microsoft.Network/virtualNetworks/subnets/delegations"
+                    }
+                ],
+                "privateEndpointNetworkPolicies": "Disabled",
+                "privateLinkServiceNetworkPolicies": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2022-05-01",
+            "name": "SNHU-IT700-VNET-WestUS/default",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', 'SNHU-IT700-VNET-WestUS')]"
+            ],
+            "properties": {
+                "addressPrefix": "10.0.2.0/24",
+                "networkSecurityGroup": {
+                    "id": "/subscriptions/c37ac3ad-755e-4200-b498-7fd7e8fea23a/resourceGroups/SNHU-IT700-ResourceGroup-WestUS/providers/Microsoft.Network/networkSecurityGroups/SNHU-IT700-NSG-WestUS"
+                },
+                "serviceEndpoints": [
+                    {
+                        "service": "Microsoft.Storage",
+                        "locations": [
+                            "westus",
+                            "eastus"
+                        ]
+                    },
+                    {
+                        "service": "Microsoft.KeyVault",
+                        "locations": [
+                            "*"
+                        ]
+                    }
+                ],
+                "delegations": [],
+                "privateEndpointNetworkPolicies": "Disabled",
+                "privateLinkServiceNetworkPolicies": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2022-05-01",
+            "name": "SNHU-IT700-VNET-WestUS",
+            "location": "westus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'SNHU-IT700-VNET-WestUS', 'default')]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'SNHU-IT700-VNET-WestUS', 'Application')]"
+            ],
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.0.2.0/24",
+                        "10.0.3.0/24"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "default",
+                        "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'SNHU-IT700-VNET-WestUS', 'default')]",
+                        "properties": {
+                            "addressPrefix": "10.0.2.0/24",
+                            "networkSecurityGroup": {
+                                "id": "/subscriptions/c37ac3ad-755e-4200-b498-7fd7e8fea23a/resourceGroups/SNHU-IT700-ResourceGroup-WestUS/providers/Microsoft.Network/networkSecurityGroups/SNHU-IT700-NSG-WestUS"
+                            },
+                            "serviceEndpoints": [
+                                {
+                                    "service": "Microsoft.Storage",
+                                    "locations": [
+                                        "westus",
+                                        "eastus"
+                                    ]
+                                },
+                                {
+                                    "service": "Microsoft.KeyVault",
+                                    "locations": [
+                                        "*"
+                                    ]
+                                }
+                            ],
+                            "delegations": [],
+                            "privateEndpointNetworkPolicies": "Disabled",
+                            "privateLinkServiceNetworkPolicies": "Enabled"
+                        },
+                        "type": "Microsoft.Network/virtualNetworks/subnets"
+                    },
+                    {
+                        "name": "Application",
+                        "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'SNHU-IT700-VNET-WestUS', 'Application')]",
+                        "properties": {
+                            "addressPrefix": "10.0.3.0/24",
+                            "networkSecurityGroup": {
+                                "id": "/subscriptions/c37ac3ad-755e-4200-b498-7fd7e8fea23a/resourceGroups/SNHU-IT700-ResourceGroup-WestUS/providers/Microsoft.Network/networkSecurityGroups/SNHU-IT700-NSG-WestUS"
+                            },
+                            "serviceEndpoints": [
+                                {
+                                    "service": "Microsoft.Storage",
+                                    "locations": [
+                                        "westus",
+                                        "eastus"
+                                    ]
+                                }
+                            ],
+                            "delegations": [
+                                {
+                                    "name": "Microsoft.Web.serverFarms",
+                                    "id": "[concat(resourceId('Microsoft.Network/virtualNetworks/subnets', 'SNHU-IT700-VNET-WestUS', 'Application'), '/delegations/Microsoft.Web.serverFarms')]",
+                                    "properties": {
+                                        "serviceName": "Microsoft.Web/serverFarms"
+                                    },
+                                    "type": "Microsoft.Network/virtualNetworks/subnets/delegations"
+                                }
+                            ],
+                            "privateEndpointNetworkPolicies": "Disabled",
+                            "privateLinkServiceNetworkPolicies": "Enabled"
+                        },
+                        "type": "Microsoft.Network/virtualNetworks/subnets"
+                    }
+                ],
+                "virtualNetworkPeerings": [],
+                "enableDdosProtection": false
+            }
+        }
+    ]
+}

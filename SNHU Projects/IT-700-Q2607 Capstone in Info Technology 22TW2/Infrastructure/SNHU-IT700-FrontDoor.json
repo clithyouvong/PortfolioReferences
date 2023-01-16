@@ -1,0 +1,254 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Network/frontdoors",
+            "apiVersion": "2021-06-01",
+            "name": "SNHU-IT700-FrontDoor",
+            "location": "Global",
+            "properties": {
+                "routingRules": [
+                    {
+                        "id": "[concat(resourceId('Microsoft.Network/frontdoors', 'SNHU-IT700-FrontDoor'), '/RoutingRules/SNHU-IT700-FrontDoor-RoutingRule')]",
+                        "name": "SNHU-IT700-FrontDoor-RoutingRule",
+                        "properties": {
+                            "routeConfiguration": {
+                                "forwardingProtocol": "HttpsOnly",
+                                "backendPool": {
+                                    "id": "[concat(resourceId('Microsoft.Network/frontdoors', 'SNHU-IT700-FrontDoor'), '/BackendPools/SNHU-IT700-FrontDoor-BackendPool')]"
+                                },
+                                "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration"
+                            },
+                            "resourceState": "Enabled",
+                            "frontendEndpoints": [
+                                {
+                                    "id": "[concat(resourceId('Microsoft.Network/frontdoors', 'SNHU-IT700-FrontDoor'), '/frontendendpoints/snhu-lithyouvong-com')]"
+                                }
+                            ],
+                            "acceptedProtocols": [
+                                "Https"
+                            ],
+                            "patternsToMatch": [
+                                "/*"
+                            ],
+                            "enabledState": "Enabled"
+                        }
+                    },
+                    {
+                        "id": "[concat(resourceId('Microsoft.Network/frontdoors', 'SNHU-IT700-FrontDoor'), '/RoutingRules/SNHU-IT700-FrontDoor-Func-RoutingRule')]",
+                        "name": "SNHU-IT700-FrontDoor-Func-RoutingRule",
+                        "properties": {
+                            "routeConfiguration": {
+                                "forwardingProtocol": "HttpsOnly",
+                                "cacheConfiguration": {
+                                    "queryParameterStripDirective": "StripNone",
+                                    "dynamicCompression": "Enabled"
+                                },
+                                "backendPool": {
+                                    "id": "[concat(resourceId('Microsoft.Network/frontdoors', 'SNHU-IT700-FrontDoor'), '/BackendPools/SNHU-IT700-FrontDoor-Func-BackendPool')]"
+                                },
+                                "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration"
+                            },
+                            "resourceState": "Enabled",
+                            "frontendEndpoints": [
+                                {
+                                    "id": "[concat(resourceId('Microsoft.Network/frontdoors', 'SNHU-IT700-FrontDoor'), '/frontendendpoints/snhufunc-lithyouvong-com')]"
+                                }
+                            ],
+                            "acceptedProtocols": [
+                                "Http",
+                                "Https"
+                            ],
+                            "patternsToMatch": [
+                                "/*"
+                            ],
+                            "enabledState": "Enabled"
+                        }
+                    },
+                    {
+                        "id": "[concat(resourceId('Microsoft.Network/frontdoors', 'SNHU-IT700-FrontDoor'), '/RoutingRules/SNHU-IT700-FrontDoor-RoutingRule-Forward')]",
+                        "name": "SNHU-IT700-FrontDoor-RoutingRule-Forward",
+                        "properties": {
+                            "routeConfiguration": {
+                                "redirectType": "Found",
+                                "redirectProtocol": "HttpsOnly",
+                                "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorRedirectConfiguration"
+                            },
+                            "resourceState": "Enabled",
+                            "frontendEndpoints": [
+                                {
+                                    "id": "[concat(resourceId('Microsoft.Network/frontdoors', 'SNHU-IT700-FrontDoor'), '/frontendendpoints/snhu-lithyouvong-com')]"
+                                }
+                            ],
+                            "acceptedProtocols": [
+                                "Http"
+                            ],
+                            "patternsToMatch": [
+                                "/*"
+                            ],
+                            "enabledState": "Enabled"
+                        }
+                    }
+                ],
+                "resourceState": "Enabled",
+                "loadBalancingSettings": [
+                    {
+                        "id": "[concat(resourceId('Microsoft.Network/frontdoors', 'SNHU-IT700-FrontDoor'), '/LoadBalancingSettings/loadBalancingSettings-1670997500299')]",
+                        "name": "loadBalancingSettings-1670997500299",
+                        "properties": {
+                            "resourceState": "Enabled",
+                            "sampleSize": 4,
+                            "successfulSamplesRequired": 2,
+                            "additionalLatencyMilliseconds": 0
+                        }
+                    },
+                    {
+                        "id": "[concat(resourceId('Microsoft.Network/frontdoors', 'SNHU-IT700-FrontDoor'), '/LoadBalancingSettings/loadBalancingSettings-1671386504919')]",
+                        "name": "loadBalancingSettings-1671386504919",
+                        "properties": {
+                            "resourceState": "Enabled",
+                            "sampleSize": 4,
+                            "successfulSamplesRequired": 2,
+                            "additionalLatencyMilliseconds": 0
+                        }
+                    }
+                ],
+                "healthProbeSettings": [
+                    {
+                        "id": "[concat(resourceId('Microsoft.Network/frontdoors', 'SNHU-IT700-FrontDoor'), '/HealthProbeSettings/healthProbeSettings-1670997500299')]",
+                        "name": "healthProbeSettings-1670997500299",
+                        "properties": {
+                            "resourceState": "Enabled",
+                            "path": "/",
+                            "protocol": "Https",
+                            "intervalInSeconds": 30,
+                            "enabledState": "Enabled",
+                            "healthProbeMethod": "Head"
+                        }
+                    },
+                    {
+                        "id": "[concat(resourceId('Microsoft.Network/frontdoors', 'SNHU-IT700-FrontDoor'), '/HealthProbeSettings/healthProbeSettings-1671386504919')]",
+                        "name": "healthProbeSettings-1671386504919",
+                        "properties": {
+                            "resourceState": "Enabled",
+                            "path": "/",
+                            "protocol": "Https",
+                            "intervalInSeconds": 30,
+                            "enabledState": "Enabled",
+                            "healthProbeMethod": "Head"
+                        }
+                    }
+                ],
+                "backendPools": [
+                    {
+                        "id": "[concat(resourceId('Microsoft.Network/frontdoors', 'SNHU-IT700-FrontDoor'), '/BackendPools/SNHU-IT700-FrontDoor-BackendPool')]",
+                        "name": "SNHU-IT700-FrontDoor-BackendPool",
+                        "properties": {
+                            "backends": [
+                                {
+                                    "address": "snhuappeus.lithyouvong.com",
+                                    "httpPort": 80,
+                                    "httpsPort": 443,
+                                    "priority": 1,
+                                    "weight": 50,
+                                    "backendHostHeader": "snhuappeus.lithyouvong.com",
+                                    "enabledState": "Enabled"
+                                },
+                                {
+                                    "address": "snhuappwus.lithyouvong.com",
+                                    "httpPort": 80,
+                                    "httpsPort": 443,
+                                    "priority": 1,
+                                    "weight": 50,
+                                    "backendHostHeader": "snhuappwus.lithyouvong.com",
+                                    "enabledState": "Enabled"
+                                }
+                            ],
+                            "resourceState": "Enabled",
+                            "loadBalancingSettings": {
+                                "id": "[concat(resourceId('Microsoft.Network/frontdoors', 'SNHU-IT700-FrontDoor'), '/LoadBalancingSettings/loadBalancingSettings-1670997500299')]"
+                            },
+                            "healthProbeSettings": {
+                                "id": "[concat(resourceId('Microsoft.Network/frontdoors', 'SNHU-IT700-FrontDoor'), '/HealthProbeSettings/healthProbeSettings-1670997500299')]"
+                            }
+                        }
+                    },
+                    {
+                        "id": "[concat(resourceId('Microsoft.Network/frontdoors', 'SNHU-IT700-FrontDoor'), '/BackendPools/SNHU-IT700-FrontDoor-Func-BackendPool')]",
+                        "name": "SNHU-IT700-FrontDoor-Func-BackendPool",
+                        "properties": {
+                            "backends": [
+                                {
+                                    "address": "snhu-it700-functions-eastus2.azurewebsites.net",
+                                    "httpPort": 80,
+                                    "httpsPort": 443,
+                                    "priority": 1,
+                                    "weight": 50,
+                                    "backendHostHeader": "snhu-it700-functions-eastus2.azurewebsites.net",
+                                    "enabledState": "Enabled"
+                                },
+                                {
+                                    "address": "snhu-it700-functions-westuss.azurewebsites.net",
+                                    "httpPort": 80,
+                                    "httpsPort": 443,
+                                    "priority": 1,
+                                    "weight": 50,
+                                    "backendHostHeader": "snhu-it700-functions-westuss.azurewebsites.net",
+                                    "enabledState": "Enabled"
+                                }
+                            ],
+                            "resourceState": "Enabled",
+                            "loadBalancingSettings": {
+                                "id": "[concat(resourceId('Microsoft.Network/frontdoors', 'SNHU-IT700-FrontDoor'), '/loadBalancingSettings/loadBalancingSettings-1671386504919')]"
+                            },
+                            "healthProbeSettings": {
+                                "id": "[concat(resourceId('Microsoft.Network/frontdoors', 'SNHU-IT700-FrontDoor'), '/healthProbeSettings/healthProbeSettings-1671386504919')]"
+                            }
+                        }
+                    }
+                ],
+                "frontendEndpoints": [
+                    {
+                        "id": "[concat(resourceId('Microsoft.Network/frontdoors', 'SNHU-IT700-FrontDoor'), '/FrontendEndpoints/SNHU-IT700-FrontDoor-azurefd-net')]",
+                        "name": "SNHU-IT700-FrontDoor-azurefd-net",
+                        "properties": {
+                            "resourceState": "Enabled",
+                            "hostName": "SNHU-IT700-FrontDoor.azurefd.net",
+                            "sessionAffinityEnabledState": "Disabled",
+                            "sessionAffinityTtlSeconds": 0
+                        }
+                    },
+                    {
+                        "id": "[concat(resourceId('Microsoft.Network/frontdoors', 'SNHU-IT700-FrontDoor'), '/FrontendEndpoints/snhu-lithyouvong-com')]",
+                        "name": "snhu-lithyouvong-com",
+                        "properties": {
+                            "resourceState": "Enabled",
+                            "hostName": "snhu.lithyouvong.com",
+                            "sessionAffinityEnabledState": "Enabled",
+                            "sessionAffinityTtlSeconds": 0
+                        }
+                    },
+                    {
+                        "id": "[concat(resourceId('Microsoft.Network/frontdoors', 'SNHU-IT700-FrontDoor'), '/FrontendEndpoints/snhufunc-lithyouvong-com')]",
+                        "name": "snhufunc-lithyouvong-com",
+                        "properties": {
+                            "resourceState": "Enabled",
+                            "hostName": "snhufunc.lithyouvong.com",
+                            "sessionAffinityEnabledState": "Enabled",
+                            "sessionAffinityTtlSeconds": 0
+                        }
+                    }
+                ],
+                "backendPoolsSettings": {
+                    "enforceCertificateNameCheck": "Enabled",
+                    "sendRecvTimeoutSeconds": 30
+                },
+                "enabledState": "Enabled",
+                "friendlyName": "SNHU-IT700-FrontDoor"
+            }
+        }
+    ]
+}

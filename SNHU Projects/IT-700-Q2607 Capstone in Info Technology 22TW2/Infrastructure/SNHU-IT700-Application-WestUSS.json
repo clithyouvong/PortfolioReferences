@@ -1,0 +1,1822 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Application-WestUSS",
+            "location": "West US",
+            "kind": "app,linux",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "snhuappwus.lithyouvong.com",
+                        "sslState": "SniEnabled",
+                        "thumbprint": "5C3D719B05F18F3ACADC7D8FBEEE99045E893A16",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "snhu-it700-application-westuss.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "snhu-it700-application-westuss.scm.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "serverFarmId": "/subscriptions/c37ac3ad-755e-4200-b498-7fd7e8fea23a/resourceGroups/SNHU-IT700-ResourceGroup-WestUS/providers/Microsoft.Web/serverfarms/SNHU-IT700-AppServicePlan-WestUS",
+                "reserved": true,
+                "isXenon": false,
+                "hyperV": false,
+                "vnetRouteAllEnabled": true,
+                "vnetImagePullEnabled": false,
+                "vnetContentShareEnabled": false,
+                "siteConfig": {
+                    "numberOfWorkers": 1,
+                    "linuxFxVersion": "DOTNETCORE|7.0",
+                    "acrUseManagedIdentityCreds": false,
+                    "alwaysOn": false,
+                    "http20Enabled": true,
+                    "functionAppScaleLimit": 0,
+                    "minimumElasticInstanceCount": 0
+                },
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": false,
+                "clientCertEnabled": false,
+                "clientCertMode": "Required",
+                "hostNamesDisabled": false,
+                "customDomainVerificationId": "FC53E8E94A6BE5EA094EF1EC3377AEEDB6C948A2D744911B6AF42AE3602A5035",
+                "containerSize": 0,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": true,
+                "redundancyMode": "None",
+                "storageAccountRequired": false,
+                "virtualNetworkSubnetId": "/subscriptions/c37ac3ad-755e-4200-b498-7fd7e8fea23a/resourceGroups/SNHU-IT700-ResourceGroup-WestUS/providers/Microsoft.Network/virtualNetworks/SNHU-IT700-VNET-WestUS/subnets/Application",
+                "keyVaultReferenceIdentity": "SystemAssigned"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Application-WestUSS/ftp",
+            "location": "West US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ],
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Application-WestUSS/scm",
+            "location": "West US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ],
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Application-WestUSS/web",
+            "location": "West US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ],
+            "properties": {
+                "numberOfWorkers": 1,
+                "defaultDocuments": [
+                    "Default.htm",
+                    "Default.html",
+                    "Default.asp",
+                    "index.htm",
+                    "index.html",
+                    "iisstart.htm",
+                    "default.aspx",
+                    "index.php",
+                    "hostingstart.html"
+                ],
+                "netFrameworkVersion": "v4.0",
+                "linuxFxVersion": "DOTNETCORE|7.0",
+                "requestTracingEnabled": false,
+                "remoteDebuggingEnabled": false,
+                "remoteDebuggingVersion": "VS2019",
+                "httpLoggingEnabled": false,
+                "acrUseManagedIdentityCreds": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": false,
+                "publishingUsername": "$SNHU-IT700-Application-WestUSS",
+                "scmType": "GitHubAction",
+                "use32BitWorkerProcess": true,
+                "webSocketsEnabled": false,
+                "alwaysOn": false,
+                "managedPipelineMode": "Integrated",
+                "virtualApplications": [
+                    {
+                        "virtualPath": "/",
+                        "physicalPath": "site\\wwwroot",
+                        "preloadEnabled": false
+                    }
+                ],
+                "loadBalancing": "LeastRequests",
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "autoHealEnabled": false,
+                "vnetName": "d8e4204c-67e6-4b8e-a910-3d192fa8d3af_Application",
+                "vnetRouteAllEnabled": true,
+                "vnetPrivatePortsCount": 0,
+                "localMySqlEnabled": false,
+                "managedServiceIdentityId": 12097,
+                "ipSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 2147483647,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 2147483647,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictionsUseMain": false,
+                "http20Enabled": true,
+                "minTlsVersion": "1.2",
+                "scmMinTlsVersion": "1.2",
+                "ftpsState": "FtpsOnly",
+                "preWarmedInstanceCount": 0,
+                "healthCheckPath": "/",
+                "functionsRuntimeScaleMonitoringEnabled": false,
+                "minimumElasticInstanceCount": 0,
+                "azureStorageAccounts": {}
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Application-WestUSS/16a82798-f22c-4366-a0d7-50f4daea7043",
+            "location": "West US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "N/A",
+                "deployer": "GITHUB_ZIP_DEPLOY",
+                "message": "{\"type\":\"deployment\",\"sha\":\"75f21981c7e20d2408b5cea65396f00ae6960393\",\"repoName\":\"Lithiumion4321/SNHU-IT700-Q2607\",\"slotName\":\"Production\",\"commitMessage\":\"Update Program.cs\"}",
+                "start_time": "2023-01-14T19:51:14.2811021Z",
+                "end_time": "2023-01-14T19:51:28.0885617Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Application-WestUSS/29199e65-dd40-41bd-85ff-b2476911aac6",
+            "location": "West US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "N/A",
+                "deployer": "GITHUB_ZIP_DEPLOY",
+                "message": "{\"type\":\"deployment\",\"sha\":\"0a1ce607a7bc1e03378c49403b42a541b09684c1\",\"repoName\":\"Lithiumion4321/SNHU-IT700-Q2607\",\"slotName\":\"Production\",\"commitMessage\":\"Update SearchController.cs\"}",
+                "start_time": "2023-01-14T19:20:16.0915805Z",
+                "end_time": "2023-01-14T19:20:38.6997054Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Application-WestUSS/39f549ec-ffb2-4faf-b32b-1408e99626db",
+            "location": "West US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "N/A",
+                "deployer": "GITHUB_ZIP_DEPLOY",
+                "message": "{\"type\":\"deployment\",\"sha\":\"1b02e3ea4819f6107ad10c80fdf589cfeeac3a0c\",\"repoName\":\"Lithiumion4321/SNHU-IT700-Q2607\",\"slotName\":\"Production\",\"commitMessage\":\"Update Program.cs\"}",
+                "start_time": "2023-01-14T21:46:52.2801011Z",
+                "end_time": "2023-01-14T21:47:07.0419871Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Application-WestUSS/649ff931-384f-493b-b9d5-67285fc4a769",
+            "location": "West US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "N/A",
+                "deployer": "GITHUB_ZIP_DEPLOY",
+                "message": "{\"type\":\"deployment\",\"sha\":\"27d4cba1942afbbc8091bc6229d0685647ccb105\",\"repoName\":\"Lithiumion4321/SNHU-IT700-Q2607\",\"slotName\":\"Production\",\"commitMessage\":\"Update Program.cs\"}",
+                "start_time": "2023-01-14T20:32:58.7721765Z",
+                "end_time": "2023-01-14T20:33:13.0782525Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Application-WestUSS/93c380e8-7bb6-4e9e-9c2c-7963c4c63acb",
+            "location": "West US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "N/A",
+                "deployer": "GITHUB_ZIP_DEPLOY",
+                "message": "{\"type\":\"deployment\",\"sha\":\"0cfb37be7c72a050dce15cada30ae4e524ccd08f\",\"repoName\":\"Lithiumion4321/SNHU-IT700-Q2607\",\"slotName\":\"Production\",\"commitMessage\":\"rest\"}",
+                "start_time": "2023-01-14T19:35:58.952725Z",
+                "end_time": "2023-01-14T19:36:09.9665783Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Application-WestUSS/9cb34b2a-8b49-4f4f-9f23-1c814f6d474c",
+            "location": "West US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "N/A",
+                "deployer": "GITHUB_ZIP_DEPLOY",
+                "message": "{\"type\":\"deployment\",\"sha\":\"89ef3aa718cdf9145c2557285ac4aed27233ed15\",\"repoName\":\"Lithiumion4321/SNHU-IT700-Q2607\",\"slotName\":\"Production\",\"commitMessage\":\"Added Citations documentation section\"}",
+                "start_time": "2023-01-15T23:39:49.080466Z",
+                "end_time": "2023-01-15T23:40:17.0967513Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Application-WestUSS/a4d6411b-0186-4363-b62c-c783563fbc7f",
+            "location": "West US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "N/A",
+                "deployer": "GITHUB_ZIP_DEPLOY",
+                "message": "{\"type\":\"deployment\",\"sha\":\"009cd3371f606650f5e4fbbeaea9c19afb296d50\",\"repoName\":\"Lithiumion4321/SNHU-IT700-Q2607\",\"slotName\":\"Production\",\"commitMessage\":\"Update Program.cs\"}",
+                "start_time": "2023-01-14T20:45:32.1961603Z",
+                "end_time": "2023-01-14T20:45:47.0557117Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Application-WestUSS/b0ff70cf-4ec9-4afb-8048-92989c2c91cc",
+            "location": "West US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "N/A",
+                "deployer": "GITHUB_ZIP_DEPLOY",
+                "message": "{\"type\":\"deployment\",\"sha\":\"9e57ea5ffea8d2da19f49c1b71185ee50179f270\",\"repoName\":\"Lithiumion4321/SNHU-IT700-Q2607\",\"slotName\":\"Production\",\"commitMessage\":\"Update Program.cs\"}",
+                "start_time": "2023-01-14T20:59:47.7131499Z",
+                "end_time": "2023-01-14T21:00:01.0679921Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Application-WestUSS/bcc1d6bb-8867-4ad1-b946-a222b00366a6",
+            "location": "West US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "N/A",
+                "deployer": "GITHUB_ZIP_DEPLOY",
+                "message": "{\"type\":\"deployment\",\"sha\":\"ee0d9597f788667204e60dc4df3afed0b4b29268\",\"repoName\":\"Lithiumion4321/SNHU-IT700-Q2607\",\"slotName\":\"Production\",\"commitMessage\":\"Update Program.cs\"}",
+                "start_time": "2023-01-14T20:17:41.729348Z",
+                "end_time": "2023-01-14T20:17:53.7239798Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Application-WestUSS/ec2373b0-cd53-44ad-9fbc-8a637113f22d",
+            "location": "West US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "N/A",
+                "deployer": "GITHUB_ZIP_DEPLOY",
+                "message": "{\"type\":\"deployment\",\"sha\":\"2a0251d7cfcbab6ede35870fc9f675bbc5ffbbe5\",\"repoName\":\"Lithiumion4321/SNHU-IT700-Q2607\",\"slotName\":\"Production\",\"commitMessage\":\"Merge branch 'main' of https://github.com/Lithiumion4321/SNHU-IT700-Q2607\"}",
+                "start_time": "2023-01-15T23:57:06.7166041Z",
+                "end_time": "2023-01-15T23:57:21.4254483Z",
+                "active": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Application-WestUSS/snhuappwus.lithyouvong.com",
+            "location": "West US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ],
+            "properties": {
+                "siteName": "SNHU-IT700-Application-WestUSS",
+                "hostNameType": "Verified",
+                "sslState": "SniEnabled",
+                "thumbprint": "5C3D719B05F18F3ACADC7D8FBEEE99045E893A16"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Application-WestUSS/snhu-it700-application-westuss.azurewebsites.net",
+            "location": "West US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ],
+            "properties": {
+                "siteName": "SNHU-IT700-Application-WestUSS",
+                "hostNameType": "Verified"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-17T15_32_29_1251985",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-18T15_32_32_4771707",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-19T01_32_33_7487151",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-19T20_32_36_3891385",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-20T05_32_37_7811501",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-20T20_32_39_6797309",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-21T05_32_40_9280595",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-22T05_32_44_3117268",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-22T20_32_46_2395313",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-23T05_32_47_4407807",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-23T20_32_49_5239256",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-24T05_32_50_7841067",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-24T20_32_52_7457559",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-25T05_32_54_1144991",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-25T20_32_56_0493985",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-26T05_32_57_2725335",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-26T20_32_59_3672518",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-27T05_33_00_6548455",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-27T20_33_02_5992653",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-28T05_33_03_8239983",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-28T20_33_05_8385184",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-29T05_33_07_1039174",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-29T20_33_09_1331053",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-30T05_33_10_6187159",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-30T20_33_12_4763255",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-31T05_33_13_7083308",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2022-12-31T20_33_15_7598355",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-01T05_33_17_3338464",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-01T20_33_19_0483849",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-02T02_33_19_8790988",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-02T05_33_20_3517128",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-02T12_33_21_2931015",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-02T15_33_21_7598287",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-02T20_33_22_3561740",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-03T02_33_23_2568852",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-03T05_33_23_6359301",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-03T12_33_24_5529327",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-03T15_33_25_1189313",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-03T20_33_25_7565628",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-04T02_33_26_4684214",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-04T05_33_26_9519321",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-04T12_33_27_9200776",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-04T15_33_28_3591053",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-04T20_33_29_1636151",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-05T02_33_29_8056782",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-05T05_33_30_2323933",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-05T12_33_31_2954870",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-05T15_33_31_6410074",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-05T20_33_32_3835580",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-06T02_33_33_0555150",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-06T05_33_33_5100227",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-06T12_33_34_4726148",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-06T15_33_34_9365892",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-06T20_33_35_5992253",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-07T02_33_36_3285596",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-07T05_33_36_8393031",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-07T12_33_37_7669874",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-07T15_33_38_2299525",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-07T20_33_38_8113845",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-08T02_33_39_6286074",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-08T05_33_40_0703341",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-08T12_33_41_0725306",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-08T15_33_41_4768574",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-08T20_33_42_1308045",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-09T02_33_42_9015919",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-09T05_33_43_4155454",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-09T12_33_44_4186028",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-09T15_33_44_7233896",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-09T20_33_45_4265760",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-10T02_33_46_1500213",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-10T05_33_46_6826931",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-10T12_33_47_6039499",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-10T15_33_48_0622827",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-10T20_33_48_6813590",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-11T02_33_49_6578683",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-11T05_33_50_0625639",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-11T12_33_50_8422300",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-11T15_33_51_2941240",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-11T20_33_51_9921345",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-12T01_33_52_7135553",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-12T02_33_52_7666598",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-12T03_33_52_9204387",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-12T04_33_53_1561186",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-12T05_33_53_2121448",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-12T06_33_53_3763995",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-12T07_33_53_4347755",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-12T08_33_53_6306694",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-12T09_33_53_7430541",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-12T10_33_53_8617454",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-12T11_33_54_1439330",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-12T12_33_54_2172299",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-12T13_33_54_2189523",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-12T14_33_54_3853760",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-12T15_33_54_6291056",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-12T16_33_54_6904556",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-12T17_33_54_8461713",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-12T18_33_55_0204011",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-12T19_33_55_0847331",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-12T20_33_55_2314836",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-12T21_33_55_3390697",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-12T22_33_55_4652438",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-12T23_33_55_5821300",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-13T00_33_55_7129144",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-13T01_33_55_9043697",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-13T02_33_55_9617344",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-13T03_33_56_1566245",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-13T04_33_56_4879944",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-13T05_33_56_4535934",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-13T06_33_56_5367045",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-13T07_33_56_6956858",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-13T08_33_56_8053801",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-13T09_33_56_9054072",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-13T10_33_57_0504545",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-13T11_33_57_2856470",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-13T12_33_57_3151433",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-13T13_33_57_5331858",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-13T14_33_57_6007745",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-13T15_33_57_7759226",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-13T16_33_57_8415075",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-13T17_33_58_0625595",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-13T18_33_58_1718591",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-13T20_29_06_5592033",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-13T21_29_06_7598412",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-13T22_29_07_0354246",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-13T23_29_07_2749165",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T00_29_07_3637560",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T01_29_07_8160489",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T02_29_07_8059243",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T03_29_07_9152015",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T04_29_08_1351326",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T05_29_08_4194701",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T06_29_08_9369428",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T07_29_08_6991015",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T08_29_08_9624664",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T09_29_09_2186326",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T10_29_09_3773007",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T11_29_09_6106478",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T12_29_09_9908577",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T13_29_09_9759782",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T14_29_10_4615064",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T15_29_10_7467199",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T16_29_10_4551492",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T17_29_10_8301962",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T18_29_10_9902911",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T19_29_11_1665213",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T20_29_11_1290735",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T21_29_11_4639839",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T22_29_11_6621361",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-14T23_29_11_8031402",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T00_29_12_0856849",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T01_29_12_3074456",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T02_29_12_4476965",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T03_29_12_6780534",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T04_29_12_8238093",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T05_29_12_9603492",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T06_29_13_1807280",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T07_29_13_3343458",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T08_29_13_5825494",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T09_29_13_8802727",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T10_29_14_0033899",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T11_29_14_1390775",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T12_29_14_5432899",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T13_29_14_6451101",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T14_29_14_8338959",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T15_29_14_9112969",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T16_29_15_1235187",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T17_29_15_3613152",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T18_29_15_5921720",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T19_29_15_7211243",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T20_29_15_8191318",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T21_29_15_9746162",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T22_29_16_3935695",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-15T23_29_16_4301343",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-16T00_29_16_6926781",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-16T01_29_16_8492972",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-16T02_29_17_2155304",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/snapshots",
+            "apiVersion": "2015-08-01",
+            "name": "SNHU-IT700-Application-WestUSS/2023-01-16T03_29_17_3937045",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/virtualNetworkConnections",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Application-WestUSS/d8e4204c-67e6-4b8e-a910-3d192fa8d3af_Application",
+            "location": "West US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Application-WestUSS')]"
+            ],
+            "properties": {
+                "vnetResourceId": "/subscriptions/c37ac3ad-755e-4200-b498-7fd7e8fea23a/resourceGroups/SNHU-IT700-ResourceGroup-WestUS/providers/Microsoft.Network/virtualNetworks/SNHU-IT700-VNET-WestUS/subnets/Application",
+                "isSwift": true
+            }
+        }
+    ]
+}

@@ -1,0 +1,254 @@
+﻿@{
+    ViewData["Title"] = "Contact Us";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style type="text/css">
+    #Description {
+        resize:none;
+    }
+
+    .invalidFeedback {
+        color: red;
+        font-style: italic;
+    }
+
+    .required {
+        color: red;
+        font-size: small;
+    }
+</style>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+@Html.Raw((String)ViewBag.Message)
+
+<h1 class="border-bottom">Contact Us</h1>
+
+<img src="@Html.Raw((String)ViewBag.Banner)" alt="" style="width:100%;height:auto;" />
+
+<p>
+    Do you have questions or need to make an inquiry? Please use the form below to send us a 
+    message directly, and we'll get to you as soon as we can.
+</p>
+
+<p>&nbsp;</p>
+
+<div class="container px-5 my-5">
+    <form id="contactForm" action="Contact/Submit" method="post">
+        <div class="form-floating mb-3">
+            <input  class="form-control" 
+                    id="NameOfSubmitter" 
+                    name="NameOfSubmitter" 
+                    type="text" 
+                    placeholder="Your Name" 
+                    maxlength="126"  
+                    autocomplete="off" />
+            <label for="NameOfSubmitter">Your Name <span class="required">*</span></label>
+        </div>
+        <div class="form-floating mb-3">
+            <input  class="form-control" 
+                    id="NameOfLostIndividual" 
+                    name="NameOfLostIndividual" 
+                    type="text" 
+                    placeholder="Name of Lost Individual (optional)" 
+                    maxlength="256" 
+                    autocomplete="off" />
+            <label for="NameOfLostIndividual">Name of Lost Individual (optional)</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input  class="form-control" 
+                    id="LastKnownLocation" 
+                    name="LastKnownLocation" 
+                    type="text" 
+                    placeholder="Last known location (optional)" 
+                    maxlength="256" 
+                    autocomplete="off" />
+            <label for="LastKnownLocation">Last known location (optional)</label>
+        </div>
+        <div class="form-floating mb-3">
+            <textarea   class="form-control" 
+                        id="Description" 
+                        name="Description" 
+                        type="text" 
+                        placeholder="Description of Individual or Inquiry" 
+                        style="height: 10rem;" 
+                        requiredautocomplete="off"></textarea>
+            <label for="Description">Description of Individual or Inquiry <span class="required">*</span></label>
+        </div>
+        <div class="form-floating mb-3">
+            <input  class="form-control" 
+                    id="EmailAddress" 
+                    name="EmailAddress" 
+                    type="email" 
+                    placeholder="Your Email Address" 
+                    maxlength="126" 
+                    autocomplete="off" />
+            <label for="EmailAddress">Your Email Address <span class="required">*</span></label>
+        </div>
+        <div class="form-floating mb-3">
+            <input  class="form-control" 
+                    id="PhoneNumber" 
+                    name="PhoneNumber" 
+                    type="text" 
+                    placeholder="Your Phone Number (optional)" 
+                    maxlength="50" 
+                    autocomplete="off" />
+            <label for="PhoneNumber">Your Phone Number (optional)</label>
+        </div>
+        <div class="d-grid">
+            <div class="md-3">
+                <div class="g-recaptcha" data-sitekey="@ViewBag.ReCaptchaKey"></div>
+
+                <button class="btn btn-primary btn-lg g-recaptcha"
+                        id="submitButton" 
+                        type="submit"
+                        asp-area="" asp-controller="Contact" asp-action="Submit">
+                        Submit
+                </button>
+
+                <div id="NameOfSubmitterInvalidFeedback" class="invalidFeedback">
+                    - Name of Submitter is Required!
+                </div>
+                <div id="DescriptionInvalidFeedback" class="invalidFeedback">
+                    - Description is required!
+                </div>
+                <div id="EmailAddressInvalidFeedback" class="invalidFeedback">
+                    - Email is required!
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<script>
+	/* **************************************
+	UI Setup
+	************************************** */
+    $(document).ready(function () {
+        $('.invalidFeedback').css('display', 'none');
+        $('#Description').txt('');
+    });
+</script>
+<script>
+    /* **************************************
+    Validation
+    ************************************** */
+    $('#contactForm').on('submit', function() {
+        if(grecaptcha.getResponse() === '')
+        {
+            alert('Recaptcha required!');
+            return false;
+        }
+
+        return ValidateForm("all");
+    });
+
+    $('#NameOfSubmitter').keyup(function () {
+		ValidateForm("NameOfSubmitter");
+    });
+    $('#Description').keyup(function () {
+		ValidateForm("Description");
+    });
+    $('#EmailAddress').keyup(function () {
+		ValidateForm("EmailAddress");
+    });
+
+
+	function ValidateForm(mode){
+		let isValid = true;
+		let NameOfSubmitter = $.trim($('#NameOfSubmitter').val());
+		let Description = $.trim($('#Description').val());
+		let EmailAddress = $.trim($('#EmailAddress').val());
+
+		//NameOfSubmitter must not be empty
+		if(mode == 'all' || mode === 'NameOfSubmitter'){
+			if(NameOfSubmitter === '') {
+				$('#NameOfSubmitterInvalidFeedback').show();
+				isValid = false;
+			}
+			else {
+				$('#NameOfSubmitterInvalidFeedback').hide();
+			}
+		}
+
+        //Description must not be empty
+        if(mode == 'all' || mode === 'Description'){
+            if(Description === '') {
+                $('#DescriptionInvalidFeedback').show();
+                isValid = false;
+            }
+            else {
+                $('#DescriptionInvalidFeedback').hide();
+            }
+        }
+        
+        //EmailAddress must not be empty
+        if(mode == 'all' || mode === 'EmailAddress'){
+            if (EmailAddress === '' || !validateEmail(EmailAddress)) {
+                $('#EmailAddressInvalidFeedback').show();
+                isValid = false;
+            }
+            else {
+                $('#EmailAddressInvalidFeedback').hide();
+            }
+        }
+        
+		return isValid;
+	}
+
+    
+	function validateEmail(email) {
+		var re = /\S+@@\S+\.\S+/;
+		return re.test(email);
+	}
+</script>
+
+<!-- ----------------------------------------------------
+-- Script to control phone number formating and masking
+----------------------------------------------------- -->
+<script type="text/javascript">
+    const isNumericInput = (event) => {
+        const key = event.keyCode;
+        return ((key >= 48 && key <= 57) || // Allow number line
+            (key >= 96 && key <= 105) // Allow number pad
+        );
+    };
+
+    const isModifierKey = (event) => {
+        const key = event.keyCode;
+        return (event.shiftKey === true || key === 35 || key === 36) || // Allow Shift, Home, End
+            (key === 8 || key === 9 || key === 13 || key === 46) || // Allow Backspace, Tab, Enter, Delete
+            (key > 36 && key < 41) || // Allow left, up, right, down
+            (
+                // Allow Ctrl/Command + A,C,V,X,Z
+                (event.ctrlKey === true || event.metaKey === true) &&
+                (key === 65 || key === 67 || key === 86 || key === 88 || key === 90)
+            )
+    };
+
+    const enforceFormat = (event) => {
+        // Input must be of a valid number format or a modifier key, and not longer than ten digits
+        if (!isNumericInput(event) && !isModifierKey(event)) {
+            event.preventDefault();
+        }
+    };
+
+    const formatToPhone = (event) => {
+        if (isModifierKey(event)) { return; }
+
+        const input = event.target.value.replace(/\D/g, '').substring(0, 10); // First ten digits of input only
+        const areaCode = input.substring(0, 3);
+        const middle = input.substring(3, 6);
+        const last = input.substring(6, 10);
+
+        if (input.length > 6) { event.target.value = `(${areaCode}) ${middle} - ${last}`; }
+        else if (input.length > 3) { event.target.value = `(${areaCode}) ${middle}`; }
+        else if (input.length > 0) { event.target.value = `(${areaCode}`; }
+    };
+
+    const inputElement = document.getElementById('PhoneNumber');
+    inputElement.addEventListener('keydown', enforceFormat);
+    inputElement.addEventListener('keyup', formatToPhone);
+</script>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<logins>
+    <login>
+        <username>bar</username>
+        <password>W3613Q4WxCvWkpmBKXcR9g==</password>
+        <firstName>bar</firstName>
+        <middleName>f</middleName>
+        <lastName>foo</lastName>
+        <dateOfBirth>10/16/2022</dateOfBirth>
+        <gender>Male</gender>
+        <phone>(800) 111 - 2222</phone>
+        <email>bar.foo@foobar.com</email>
+        <key>vYFeYKhuWxAU/sJ/gYterA==</key>
+    </login>
+</logins>

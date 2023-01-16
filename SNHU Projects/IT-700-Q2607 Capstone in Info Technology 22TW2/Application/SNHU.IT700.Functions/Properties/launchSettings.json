@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SNHU.IT700.Functions": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7105"
+    }
+  }
+}

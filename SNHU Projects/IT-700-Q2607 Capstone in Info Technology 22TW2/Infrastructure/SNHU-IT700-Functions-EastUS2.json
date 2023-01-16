@@ -1,0 +1,572 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2",
+            "location": "East US 2",
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/c37ac3ad-755e-4200-b498-7fd7e8fea23a/resourceGroups/SNHU-IT700-ResourceGroup-EastUS2/providers/microsoft.insights/components/SNHU-IT700-Functions-EastUS2",
+                "hidden-link: /app-insights-instrumentation-key": "7a0836dd-0ff5-4956-a1f5-e81465d7d817",
+                "hidden-link: /app-insights-conn-string": "InstrumentationKey=7a0836dd-0ff5-4956-a1f5-e81465d7d817;IngestionEndpoint=https://eastus2-0.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus2.livediagnostics.monitor.azure.com/"
+            },
+            "kind": "functionapp",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "snhufunceus2.lithyouvong.com",
+                        "sslState": "SniEnabled",
+                        "thumbprint": "5C3D719B05F18F3ACADC7D8FBEEE99045E893A16",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "snhu-it700-functions-eastus2.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "snhu-it700-functions-eastus2.scm.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "serverFarmId": "/subscriptions/c37ac3ad-755e-4200-b498-7fd7e8fea23a/resourceGroups/SNHU-IT700-ResourceGroup-EastUS2/providers/Microsoft.Web/serverfarms/ASP-SNHUIT700ResourceGroupEastUS2-ba70",
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "vnetRouteAllEnabled": false,
+                "vnetImagePullEnabled": false,
+                "vnetContentShareEnabled": false,
+                "siteConfig": {
+                    "numberOfWorkers": 1,
+                    "acrUseManagedIdentityCreds": false,
+                    "alwaysOn": false,
+                    "http20Enabled": false,
+                    "functionAppScaleLimit": 200,
+                    "minimumElasticInstanceCount": 0
+                },
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": false,
+                "clientCertEnabled": false,
+                "clientCertMode": "Required",
+                "hostNamesDisabled": false,
+                "customDomainVerificationId": "FC53E8E94A6BE5EA094EF1EC3377AEEDB6C948A2D744911B6AF42AE3602A5035",
+                "containerSize": 1536,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": true,
+                "redundancyMode": "None",
+                "storageAccountRequired": false,
+                "keyVaultReferenceIdentity": "SystemAssigned"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2/ftp",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Functions-EastUS2')]"
+            ],
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/c37ac3ad-755e-4200-b498-7fd7e8fea23a/resourceGroups/SNHU-IT700-ResourceGroup-EastUS2/providers/microsoft.insights/components/SNHU-IT700-Functions-EastUS2",
+                "hidden-link: /app-insights-instrumentation-key": "7a0836dd-0ff5-4956-a1f5-e81465d7d817",
+                "hidden-link: /app-insights-conn-string": "InstrumentationKey=7a0836dd-0ff5-4956-a1f5-e81465d7d817;IngestionEndpoint=https://eastus2-0.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus2.livediagnostics.monitor.azure.com/"
+            },
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2/scm",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Functions-EastUS2')]"
+            ],
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/c37ac3ad-755e-4200-b498-7fd7e8fea23a/resourceGroups/SNHU-IT700-ResourceGroup-EastUS2/providers/microsoft.insights/components/SNHU-IT700-Functions-EastUS2",
+                "hidden-link: /app-insights-instrumentation-key": "7a0836dd-0ff5-4956-a1f5-e81465d7d817",
+                "hidden-link: /app-insights-conn-string": "InstrumentationKey=7a0836dd-0ff5-4956-a1f5-e81465d7d817;IngestionEndpoint=https://eastus2-0.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus2.livediagnostics.monitor.azure.com/"
+            },
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2/web",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Functions-EastUS2')]"
+            ],
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/c37ac3ad-755e-4200-b498-7fd7e8fea23a/resourceGroups/SNHU-IT700-ResourceGroup-EastUS2/providers/microsoft.insights/components/SNHU-IT700-Functions-EastUS2",
+                "hidden-link: /app-insights-instrumentation-key": "7a0836dd-0ff5-4956-a1f5-e81465d7d817",
+                "hidden-link: /app-insights-conn-string": "InstrumentationKey=7a0836dd-0ff5-4956-a1f5-e81465d7d817;IngestionEndpoint=https://eastus2-0.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus2.livediagnostics.monitor.azure.com/"
+            },
+            "properties": {
+                "numberOfWorkers": 1,
+                "defaultDocuments": [
+                    "Default.htm",
+                    "Default.html",
+                    "Default.asp",
+                    "index.htm",
+                    "index.html",
+                    "iisstart.htm",
+                    "default.aspx",
+                    "index.php"
+                ],
+                "netFrameworkVersion": "v6.0",
+                "requestTracingEnabled": false,
+                "remoteDebuggingEnabled": false,
+                "remoteDebuggingVersion": "VS2019",
+                "httpLoggingEnabled": false,
+                "acrUseManagedIdentityCreds": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": false,
+                "publishingUsername": "$SNHU-IT700-Functions-EastUS2",
+                "scmType": "GitHubAction",
+                "use32BitWorkerProcess": true,
+                "webSocketsEnabled": false,
+                "alwaysOn": false,
+                "managedPipelineMode": "Integrated",
+                "virtualApplications": [
+                    {
+                        "virtualPath": "/",
+                        "physicalPath": "site\\wwwroot",
+                        "preloadEnabled": false
+                    }
+                ],
+                "loadBalancing": "LeastRequests",
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "autoHealEnabled": false,
+                "vnetRouteAllEnabled": false,
+                "vnetPrivatePortsCount": 0,
+                "cors": {
+                    "allowedOrigins": [
+                        "https://portal.azure.com"
+                    ],
+                    "supportCredentials": false
+                },
+                "localMySqlEnabled": false,
+                "managedServiceIdentityId": 27081,
+                "ipSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 2147483647,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 2147483647,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictionsUseMain": false,
+                "http20Enabled": false,
+                "minTlsVersion": "1.2",
+                "scmMinTlsVersion": "1.2",
+                "ftpsState": "FtpsOnly",
+                "preWarmedInstanceCount": 0,
+                "functionAppScaleLimit": 200,
+                "functionsRuntimeScaleMonitoringEnabled": false,
+                "minimumElasticInstanceCount": 0,
+                "azureStorageAccounts": {}
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2/05bd1cc3a8e94a0aa3ce20eefbad1de0",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Functions-EastUS2')]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "N/A",
+                "deployer": "GITHUB_ZIP_DEPLOY",
+                "message": "{\"type\":\"deployment\",\"sha\":\"f2979a70c77c18ca9e7ba7833861f22af5a773ed\",\"repoName\":\"Lithiumion4321/SNHU-IT700-Q2607\",\"slotName\":\"production\"}",
+                "start_time": "2023-01-11T03:14:05.0315979Z",
+                "end_time": "2023-01-11T03:14:14.1593357Z",
+                "active": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2/2193154d116c4e5695ec5e27af0da9e4",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Functions-EastUS2')]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "N/A",
+                "deployer": "GITHUB_ZIP_DEPLOY",
+                "message": "{\"type\":\"deployment\",\"sha\":\"4f99723e341d1db1030a3c20b6de62cbd57102cc\",\"repoName\":\"Lithiumion4321/SNHU-IT700-Q2607\",\"slotName\":\"production\"}",
+                "start_time": "2023-01-06T04:43:36.065731Z",
+                "end_time": "2023-01-06T04:43:47.1681728Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2/23b63e6d19a645068736f82ce981f1ce",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Functions-EastUS2')]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "N/A",
+                "deployer": "GITHUB_ZIP_DEPLOY",
+                "message": "{\"type\":\"deployment\",\"sha\":\"d06217fb2f2b232990271eb45240e25e36cd2537\",\"repoName\":\"Lithiumion4321/SNHU-IT700-Q2607\",\"slotName\":\"production\"}",
+                "start_time": "2023-01-05T03:53:12.7709491Z",
+                "end_time": "2023-01-05T03:53:23.7239642Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2/5bc7a7a38edc4796b81f3d89f3550b7f",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Functions-EastUS2')]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "N/A",
+                "deployer": "GITHUB_ZIP_DEPLOY",
+                "message": "{\"type\":\"deployment\",\"sha\":\"f5e9530e0bf451c6c02fe0af3c8aa75c52034aa6\",\"repoName\":\"Lithiumion4321/SNHU-IT700-Q2607\",\"slotName\":\"production\"}",
+                "start_time": "2023-01-07T04:40:44.7215394Z",
+                "end_time": "2023-01-07T04:40:55.9937381Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2/8d6538e5394b458ca7044ea0cd90c5ee",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Functions-EastUS2')]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "N/A",
+                "deployer": "GITHUB_ZIP_DEPLOY",
+                "message": "{\"type\":\"deployment\",\"sha\":\"945dfe39e6307bc71f6f7d7d0a6c5005195def82\",\"repoName\":\"Lithiumion4321/SNHU-IT700-Q2607\",\"slotName\":\"production\"}",
+                "start_time": "2023-01-03T04:14:58.9864794Z",
+                "end_time": "2023-01-03T04:15:08.7131964Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2/9ea7d3e7e5ea401ea1dc364d339365df",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Functions-EastUS2')]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "N/A",
+                "deployer": "GITHUB_ZIP_DEPLOY",
+                "message": "{\"type\":\"deployment\",\"sha\":\"6d75159ca52f278dd95e9fb77fee5250697e8402\",\"repoName\":\"Lithiumion4321/SNHU-IT700-Q2607\",\"slotName\":\"production\"}",
+                "start_time": "2023-01-05T03:41:43.9754661Z",
+                "end_time": "2023-01-05T03:41:54.9825519Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2/d52655b2643a4860950fa41592ca7210",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Functions-EastUS2')]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "N/A",
+                "deployer": "GITHUB_ZIP_DEPLOY",
+                "message": "{\"type\":\"deployment\",\"sha\":\"23427b82a1106b6ab61b437f935d8d0484f97fbf\",\"repoName\":\"Lithiumion4321/SNHU-IT700-Q2607\",\"slotName\":\"production\"}",
+                "start_time": "2023-01-05T03:20:46.5341105Z",
+                "end_time": "2023-01-05T03:20:56.3788597Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2/e91e379e3f7044c69ebad7b27e13818c",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Functions-EastUS2')]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "N/A",
+                "deployer": "GITHUB_ZIP_DEPLOY",
+                "message": "{\"type\":\"deployment\",\"sha\":\"9d8cb2d6f3ce8e2793647a2be760d5bc1126f782\",\"repoName\":\"Lithiumion4321/SNHU-IT700-Q2607\",\"slotName\":\"production\"}",
+                "start_time": "2023-01-03T03:46:10.7722573Z",
+                "end_time": "2023-01-03T03:46:19.74406Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2/eb98a1ee367f4293824e1db65831bf5e",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Functions-EastUS2')]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "N/A",
+                "deployer": "GITHUB_ZIP_DEPLOY",
+                "message": "{\"type\":\"deployment\",\"sha\":\"de41d9396ac18509cb845db48fb90db2ae1b539a\",\"repoName\":\"Lithiumion4321/SNHU-IT700-Q2607\",\"slotName\":\"production\"}",
+                "start_time": "2023-01-04T04:16:21.4397305Z",
+                "end_time": "2023-01-04T04:16:31.0130187Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2/fb9d21244f5d4e34bbbaa01b6cffd032",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Functions-EastUS2')]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "N/A",
+                "deployer": "GITHUB_ZIP_DEPLOY",
+                "message": "{\"type\":\"deployment\",\"sha\":\"3a836f8ae64037bd40f0b2c240f7b7dfd3efdff1\",\"repoName\":\"Lithiumion4321/SNHU-IT700-Q2607\",\"slotName\":\"production\"}",
+                "start_time": "2023-01-02T05:40:43.272429Z",
+                "end_time": "2023-01-02T05:40:51.3851006Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/functions",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2/GetForumPosts",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Functions-EastUS2')]"
+            ],
+            "properties": {
+                "script_root_path_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/GetForumPosts/",
+                "script_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/bin/SNHU.IT700.Functions.dll",
+                "config_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/GetForumPosts/function.json",
+                "test_data_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/data/Functions/sampledata/GetForumPosts.dat",
+                "href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/functions/GetForumPosts",
+                "config": {},
+                "invoke_url_template": "https://snhu-it700-functions-eastus2.azurewebsites.net/api/getforumposts",
+                "language": "DotNetAssembly",
+                "isDisabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/functions",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2/GetForums",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Functions-EastUS2')]"
+            ],
+            "properties": {
+                "script_root_path_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/GetForums/",
+                "script_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/bin/SNHU.IT700.Functions.dll",
+                "config_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/GetForums/function.json",
+                "test_data_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/data/Functions/sampledata/GetForums.dat",
+                "href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/functions/GetForums",
+                "config": {},
+                "invoke_url_template": "https://snhu-it700-functions-eastus2.azurewebsites.net/api/getforums",
+                "language": "DotNetAssembly",
+                "isDisabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/functions",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2/GetReportFilters",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Functions-EastUS2')]"
+            ],
+            "properties": {
+                "script_root_path_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/GetReportFilters/",
+                "script_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/bin/SNHU.IT700.Functions.dll",
+                "config_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/GetReportFilters/function.json",
+                "test_data_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/data/Functions/sampledata/GetReportFilters.dat",
+                "href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/functions/GetReportFilters",
+                "config": {},
+                "invoke_url_template": "https://snhu-it700-functions-eastus2.azurewebsites.net/api/getreportfilters",
+                "language": "DotNetAssembly",
+                "isDisabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/functions",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2/GetSearchFilters",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Functions-EastUS2')]"
+            ],
+            "properties": {
+                "script_root_path_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/GetSearchFilters/",
+                "script_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/bin/SNHU.IT700.Functions.dll",
+                "config_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/GetSearchFilters/function.json",
+                "test_data_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/data/Functions/sampledata/GetSearchFilters.dat",
+                "href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/functions/GetSearchFilters",
+                "config": {},
+                "invoke_url_template": "https://snhu-it700-functions-eastus2.azurewebsites.net/api/getsearchfilters",
+                "language": "DotNetAssembly",
+                "isDisabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/functions",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2/GetSearchResults",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Functions-EastUS2')]"
+            ],
+            "properties": {
+                "script_root_path_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/GetSearchResults/",
+                "script_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/bin/SNHU.IT700.Functions.dll",
+                "config_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/GetSearchResults/function.json",
+                "test_data_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/data/Functions/sampledata/GetSearchResults.dat",
+                "href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/functions/GetSearchResults",
+                "config": {},
+                "invoke_url_template": "https://snhu-it700-functions-eastus2.azurewebsites.net/api/getsearchresults",
+                "language": "DotNetAssembly",
+                "isDisabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/functions",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2/PostForumPost",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Functions-EastUS2')]"
+            ],
+            "properties": {
+                "script_root_path_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/PostForumPost/",
+                "script_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/bin/SNHU.IT700.Functions.dll",
+                "config_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/PostForumPost/function.json",
+                "test_data_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/data/Functions/sampledata/PostForumPost.dat",
+                "href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/functions/PostForumPost",
+                "config": {},
+                "language": "DotNetAssembly",
+                "isDisabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/functions",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2/PostForumTopic",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Functions-EastUS2')]"
+            ],
+            "properties": {
+                "script_root_path_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/PostForumTopic/",
+                "script_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/bin/SNHU.IT700.Functions.dll",
+                "config_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/PostForumTopic/function.json",
+                "test_data_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/data/Functions/sampledata/PostForumTopic.dat",
+                "href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/functions/PostForumTopic",
+                "config": {},
+                "language": "DotNetAssembly",
+                "isDisabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/functions",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2/PostReportResults",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Functions-EastUS2')]"
+            ],
+            "properties": {
+                "script_root_path_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/PostReportResults/",
+                "script_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/bin/SNHU.IT700.Functions.dll",
+                "config_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/site/wwwroot/PostReportResults/function.json",
+                "test_data_href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/vfs/data/Functions/sampledata/PostReportResults.dat",
+                "href": "https://snhu-it700-functions-eastus2.azurewebsites.net/admin/functions/PostReportResults",
+                "config": {},
+                "invoke_url_template": "https://snhu-it700-functions-eastus2.azurewebsites.net/api/postreportresults",
+                "language": "DotNetAssembly",
+                "isDisabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2/snhufunceus2.lithyouvong.com",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Functions-EastUS2')]"
+            ],
+            "properties": {
+                "siteName": "SNHU-IT700-Functions-EastUS2",
+                "hostNameType": "Verified",
+                "sslState": "SniEnabled",
+                "thumbprint": "5C3D719B05F18F3ACADC7D8FBEEE99045E893A16"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "apiVersion": "2022-03-01",
+            "name": "SNHU-IT700-Functions-EastUS2/snhu-it700-functions-eastus2.azurewebsites.net",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'SNHU-IT700-Functions-EastUS2')]"
+            ],
+            "properties": {
+                "siteName": "SNHU-IT700-Functions-EastUS2",
+                "hostNameType": "Verified"
+            }
+        }
+    ]
+}
